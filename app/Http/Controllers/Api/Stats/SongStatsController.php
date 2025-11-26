@@ -18,7 +18,7 @@ class SongStatsController extends Controller
     public function show(Request $request): JsonResponse
     {
         $s = new SongService;
-        $stats = $s->getSongStats();
+        $stats = $s->getRandomSongs();
         if (count($stats) > 0) {
             return response()->json($stats, 200);
         } else {

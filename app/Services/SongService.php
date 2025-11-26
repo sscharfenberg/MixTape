@@ -248,34 +248,18 @@ class SongService
      * @function get Song stats
      * @return array[]
      */
-    public function getSongStats(): array
+    public function getRandomSongs(): array
     {
-        $longestSong = Song::orderBy('duration', 'desc')
-            ->with('artist')
+        return Song::with('artist')
             ->with('album')
             ->with('genre')
-            ->first();
-        $shortestSong = Song::orderBy('duration', 'asc')
-            ->with('artist')
-            ->with('album')
-            ->with('genre')
-            ->first();
-        $newestSong = Song::orderBy('modified_at', 'desc')
-            ->with('artist')
-            ->with('album')
-            ->with('genre')
-            ->first();
-        $oldestSong = Song::orderBy('modified_at', 'asc')
-            ->with('artist')
-            ->with('album')
-            ->with('genre')
-            ->first();
-        return [
-            'longest' => $this->formatSong($longestSong),
-            'shortest' => $this->formatSong($shortestSong),
-            'newest' => $this->formatSong($newestSong),
-            'oldest' => $this->formatSong($oldestSong),
-        ];
+            ->with('albumArtist')
+            ->inRandomOrder()
+            ->limit(config('collection.stats.songs.random'))
+            ->get()
+            ->map(function (Song $song) {
+                return $this->formatSong($song);
+            })->toArray();
     }
 
 }

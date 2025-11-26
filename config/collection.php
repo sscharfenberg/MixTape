@@ -83,7 +83,10 @@ return [
             'num_top' => 4
         ],
         'albums' => [
-            'random' => 3
+            'random' => 4
+        ],
+        'songs' => [
+            'random' => 4
         ]
     ]
 

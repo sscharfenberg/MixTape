@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import axios from "axios";
+import { formatDecimals, formatSeconds } from "@/formatters/numbers";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppWidget from "Components/Widget/AppWidget.vue";
+import axios from "axios";
 import { push } from "notivue";
 import { onMounted, ref } from "vue";
-import { formatBytes, formatDecimals, formatSeconds } from "../../../formatters/numbers";
 const isLoading = ref(false);
-const data = ref(null);
+const data = ref({});
 const hasError = ref(false);
 const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
     axios
-        .get("/api/stats/genres")
+        .get("/api/stats/albums")
         .then(response => {
-            if (response.data?.length > 1) {
+            if (response.data && response.data.length > 0) {
                 hasError.value = false;
                 data.value = response.data;
             }
@@ -37,40 +37,43 @@ onMounted(() => {
 </script>
 
 <template>
-    <app-widget :loading="isLoading" icon="genre" :error="hasError" @refresh="fetchData()" :refresh-button="true">
-        <template #title>Top Genres</template>
+    <app-widget :loading="isLoading" icon="album" :error="hasError" @refresh="fetchData()" :refresh-button="true">
+        <template #title>Random Albums</template>
         <template #body>
             <nav class="stats" v-if="data?.length">
                 <router-link
-                    v-for="genre in data"
-                    :key="genre.id"
+                    v-for="album in data"
+                    :key="album.id"
                     class="stats__item stats__item--link"
-                    :to="{ name: 'genre', params: { id: genre.encodedName } }"
+                    :to="{ name: 'album', params: { id: album.id } }"
                 >
                     <span class="stats__item-meta">
-                        <span class="stats__item-hdl">{{ genre.name }}</span>
-                        <span class="highlight">
-                            <app-icon name="file" />
-                            {{ formatBytes(genre.size) }}
+                        <span class="stats__item-hdl">
+                            <app-icon name="album" />
+                            {{ album.name }}
+                        </span>
+                        <span class="subitem">
+                            <app-icon name="time" />
+                            {{ formatSeconds(album.duration) }}
                         </span>
                     </span>
                     <span class="stats__item-row">
-                        <span class="subitem">
-                            <app-icon name="time" />
-                            {{ formatSeconds(genre.duration) }}
+                        <span class="highlight">
+                            <app-icon name="artist" />
+                            {{ album.artist.name }}
                         </span>
                         <span class="subitem pull-right">
-                            {{ formatDecimals(genre.numSongs) }}
-                            Dateien
+                            {{ formatDecimals(album.numSongs) }}
+                            Songs
                         </span>
                     </span>
                 </router-link>
             </nav>
         </template>
         <template #footer>
-            <router-link class="btn primary" :to="{ name: 'genres' }">
-                <app-icon name="genre" />
-                Alle Genres
+            <router-link class="btn primary" :to="{ name: 'albums' }">
+                <app-icon name="music" />
+                Alle Alben
             </router-link>
         </template>
     </app-widget>
