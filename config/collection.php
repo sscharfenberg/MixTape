@@ -87,6 +87,9 @@ return [
         ],
         'songs' => [
             'random' => 4
+        ],
+        'artists' => [
+            'random' => 4
         ]
     ]
 

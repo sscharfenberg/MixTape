@@ -88,7 +88,7 @@ $main: (
         "landscape": math.round(s.$base * 0.6),
         "desktop": math.round(s.$base * 0.8)
     ),
-    "widget-min-width": math.round(s.$base * 20),
+    "widget-min-width": math.round(s.$base * 24),
     "song-name": (
         "base": s.$base * 1.4,
         "portrait": s.$base * 1.8,

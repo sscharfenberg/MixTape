@@ -12,7 +12,7 @@ const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
     axios
-        .get("/api/stats/songs")
+        .get("/api/widget/song")
         .then(response => {
             if (response.data?.length) {
                 hasError.value = false;
@@ -23,7 +23,7 @@ const fetchData = () => {
             console.error(error);
             push.error({
                 title: error.code,
-                message: error.message
+                message: error.response?.data?.message || error.message
             });
             hasError.value = true;
         })
@@ -38,7 +38,7 @@ onMounted(() => {
 
 <template>
     <app-widget :loading="isLoading" icon="music" :error="hasError" @refresh="fetchData()" :refresh-button="true">
-        <template #title>Random Songs</template>
+        <template #title>Zufalls Songs</template>
         <template #body>
             <nav class="stats" v-if="data?.length">
                 <router-link

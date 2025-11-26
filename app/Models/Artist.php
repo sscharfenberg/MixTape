@@ -56,11 +56,19 @@ class Artist extends Model
     ];
 
     /**
-     * Get the songs for the artists.
+     * Get the songs for the artist.
      */
     public function songs(): HasMany
     {
         return $this->hasMany(Song::class, 'artist_id', 'id');
+    }
+
+    /**
+     * Get the albums for the artist.
+     */
+    public function albums(): HasMany
+    {
+        return $this->hasMany(Album::class, 'album_artist_id', 'id');
     }
 
 }

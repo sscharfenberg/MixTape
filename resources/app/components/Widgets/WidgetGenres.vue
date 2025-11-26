@@ -12,7 +12,7 @@ const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
     axios
-        .get("/api/stats/genres")
+        .get("/api/widget/genre")
         .then(response => {
             if (response.data?.length > 1) {
                 hasError.value = false;
@@ -23,7 +23,7 @@ const fetchData = () => {
             console.error(error);
             push.error({
                 title: error.code,
-                message: error.message
+                message: error.response?.data?.message || error.message
             });
             hasError.value = true;
         })

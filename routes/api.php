@@ -9,21 +9,26 @@ Route::prefix('api')->group(function () {
      * Stats Controllers
      */
     // Global Stats Controller
-    Route::get('/stats/global',
-        [\App\Http\Controllers\Api\Stats\GlobalStatsController::class, "show"]
+    Route::get('/widget/global',
+        [\App\Http\Controllers\Api\Widget\GlobalWidgetController::class, "show"]
     );
     // Song Stats Controller
-    Route::get('/stats/songs',
-        [\App\Http\Controllers\Api\Stats\SongStatsController::class, "show"]
+    Route::get('/widget/song',
+        [\App\Http\Controllers\Api\Widget\SongWidgetController::class, "show"]
     );
     // Genre Stats Controller
-    Route::get('/stats/genres',
-        [\App\Http\Controllers\Api\Stats\GenreStatsController::class, "show"]
+    Route::get('/widget/genre',
+        [\App\Http\Controllers\Api\Widget\GenreWidgetController::class, "show"]
     );
     // Album Stats Controller
-    Route::get('/stats/albums',
-        [\App\Http\Controllers\Api\Stats\AlbumStatsController::class, "show"]
+    Route::get('/widget/album',
+        [\App\Http\Controllers\Api\Widget\AlbumWidgetController::class, "show"]
     );
+    // Artist Widget Controller
+    Route::get('/widget/artist',
+        [\App\Http\Controllers\Api\Widget\ArtistWidgetController::class, "show"]
+    );
+
 
     /**
      * Music Controllers

@@ -12,11 +12,12 @@ const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
     axios
-        .get("/api/widget/album")
+        .get("/api/widget/artist")
         .then(response => {
             if (response.data?.length > 0) {
                 hasError.value = false;
                 data.value = response.data;
+                console.log(response.data);
             }
         })
         .catch(error => {
@@ -38,32 +39,32 @@ onMounted(() => {
 
 <template>
     <app-widget :loading="isLoading" icon="album" :error="hasError" @refresh="fetchData()" :refresh-button="true">
-        <template #title>Zufalls Alben</template>
+        <template #title>Zufalls Künstler</template>
         <template #body>
-            <nav class="stats" v-if="data?.length">
+            <nav class="stats" v-if="data?.length && !hasError">
                 <router-link
-                    v-for="album in data"
-                    :key="album.id"
+                    v-for="artist in data"
+                    :key="artist.id"
                     class="stats__item stats__item--link"
-                    :to="{ name: 'album', params: { id: album.id } }"
+                    :to="{ name: 'artist', params: { id: artist.encodedName } }"
                 >
                     <span class="stats__item-meta">
-                        <span class="stats__item-hdl">
-                            <app-icon name="album" />
-                            {{ album.name }}
+                        <span class="highlight">
+                            <app-icon name="artist" />
+                            {{ artist.name }}
                         </span>
                         <span class="subitem">
-                            <app-icon name="time" />
-                            {{ formatSeconds(album.duration) }}
+                            <app-icon name="album" />
+                            {{ artist.albums.length }}
                         </span>
                     </span>
                     <span class="stats__item-row">
-                        <span class="highlight">
-                            <app-icon name="artist" />
-                            {{ album.artist.name }}
+                        <span class="subitem highlight">
+                            <app-icon name="time" />
+                            {{ formatSeconds(artist.songsDuration) }}
                         </span>
                         <span class="subitem pull-right">
-                            {{ formatDecimals(album.numSongs) }}
+                            {{ formatDecimals(artist.numSongs) }}
                             Songs
                         </span>
                     </span>
@@ -73,7 +74,7 @@ onMounted(() => {
         <template #footer>
             <router-link class="btn primary" :to="{ name: 'albums' }">
                 <app-icon name="music" />
-                Alle Alben
+                Alle Künstler
             </router-link>
         </template>
     </app-widget>

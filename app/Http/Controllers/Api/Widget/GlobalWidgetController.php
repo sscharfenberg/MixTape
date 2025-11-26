@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Stats;
+namespace App\Http\Controllers\Api\Widget;
 
 use App\Http\Controllers\Controller;
 use App\Models\GlobalProperties;
@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\Finder\Glob;
 
-class GlobalStatsController extends Controller
+class GlobalWidgetController extends Controller
 {
     /**
      * @param Request $request

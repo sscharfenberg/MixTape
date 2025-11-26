@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api\Stats;
+namespace App\Http\Controllers\Api\Widget;
 
 use App\Http\Controllers\Controller;
-use App\Services\AlbumService;
+use App\Models\Song;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Services\SongService;
 
-class AlbumStatsController extends Controller
+class SongWidgetController extends Controller
 {
 
     /**
@@ -16,13 +17,13 @@ class AlbumStatsController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
-        $a = new AlbumService;
-        $stats = $a->getRandomAlbums();
+        $s = new SongService;
+        $stats = $s->getRandomSongs();
         if (count($stats) > 0) {
-            return response()->json($stats);
+            return response()->json($stats, 200);
         } else {
             return response()
-                ->json(['message' => 'Fehler beim laden der Album Stats.'], 422);
+                ->json(['message' => 'Fehler beim laden der Kachel Songs.'], 422);
         }
     }
 

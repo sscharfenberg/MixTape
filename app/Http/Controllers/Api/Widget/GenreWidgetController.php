@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\Stats;
+namespace App\Http\Controllers\Api\Widget;
 
 use App\Http\Controllers\Controller;
 use App\Services\GenreService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class GenreStatsController extends Controller
+class GenreWidgetController extends Controller
 {
     /**
      * @param Request $request
@@ -25,7 +25,7 @@ class GenreStatsController extends Controller
             );
         } else {
             return response()
-                ->json(['message' => 'Fehler beim laden der Genres.'], 422);
+                ->json(['message' => 'Fehler beim Laden der Kachel Genres.'], 422);
         }
     }
 }

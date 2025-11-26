@@ -58,6 +58,23 @@ export const musicRoutes = [
                         meta: { title: "Album", icon: "guitar" }
                     }
                 ]
+            },
+            {
+                path: "artists",
+                children: [
+                    {
+                        path: "",
+                        component: () => import("../../views/Music/Artists/PageArtists.vue"),
+                        name: "artists",
+                        meta: { title: "Alle Künstler", icon: "artist" }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../../views/Music/Artists/Artist/PageArtist.vue"),
+                        name: "artist",
+                        meta: { title: "Künstler", icon: "guitar" }
+                    }
+                ]
             }
         ]
     }

@@ -13,7 +13,7 @@ const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
     axios
-        .get("/api/stats/global")
+        .get("/api/widget/global")
         .then(response => {
             if (response.data && response.data.music) {
                 hasError.value = false;
@@ -24,7 +24,7 @@ const fetchData = () => {
             console.error(error);
             push.error({
                 title: error.code,
-                message: error.message
+                message: error.response?.data?.message || error.message
             });
             hasError.value = true;
         })

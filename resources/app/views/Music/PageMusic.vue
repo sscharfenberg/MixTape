@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import WidgetAlbums from "Components/Widgets/WidgetAlbums.vue";
+import WidgetArtists from "Components/Widgets/WidgetArtists.vue";
 import WidgetGenres from "Components/Widgets/WidgetGenres.vue";
 import WidgetSongs from "Components/Widgets/WidgetSongs.vue";
 </script>
 
 <template>
     <div class="widget-grid">
-        <widget-songs />
         <widget-genres />
+        <widget-artists />
         <widget-albums />
+        <widget-songs />
     </div>
 </template>
