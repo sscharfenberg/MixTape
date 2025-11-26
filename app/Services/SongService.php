@@ -1,0 +1,281 @@
+<?php
+
+namespace App\Services;
+use App\Models\Song;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
+class SongService
+{
+
+    /**
+     * @function format song in json format with all needed infos
+     * @param Song $song
+     * @param bool $getCover
+     * @param bool $getMp3
+     * @return array
+     */
+    public function formatSong (Song $song, bool $getCover = false, bool $getMp3 = false): array
+    {
+        $u = new UrlSafeService;
+        $a = new AlbumService;
+        $json = [
+            'name' => $song->name,
+            'track' => $song->track,
+            'disc' => $song->disc,
+            'publisher' => $song->publisher,
+            'composer' => $song->composer,
+            'codec' => $song->codec,
+            'channel' => $song->channel,
+            'size' => $song->size,
+            'duration' => $song->duration,
+            'sampleRate' => $song->sample_rate,
+            'bitRate' => $song->bit_rate,
+            'vbr' => $song->vbr,
+            'inlineCover' => $song->cover,
+            'artist' => [
+                'id' => $song->artist->id,
+                'name' => $song->artist->name,
+                'encodedName' => $u->encode($song->artist->name)
+            ],
+            'album' => [
+                'id' => $song->album->id,
+                'name' => $song->album->name,
+                'encodedName' => $u->encode($song->album->name),
+                'year' => $song->album->year,
+                'tracks' => $song->album->songs->count(),
+                'discTracks' => $song->album->songs->filter(function ($albumSong) use ($song) {
+                    return $albumSong->disc == $song->disc;
+                })->count(),
+                'discs' => count($a->getDiscsByAlbum($song->album))
+            ],
+            'genre' => [
+                'id' => $song->genre->id,
+                'name' => $song->genre->name,
+                'encodedName' => $u->encode($song->genre->name)
+            ],
+            'encodedPath' => $u->encode($song->path),
+            'path' => $song->path,
+            'modifiedAt' => Carbon::parse("$song->modified_at Europe/Berlin")
+                ->format('Y-m-d\TH:i:sP')
+        ];
+        // only copy files if we explicitly should do so (mostly song page)
+        if ($getCover) {
+            $json['cover'] = $this->getCoverPath($song);
+        }
+        if ($getMp3) {
+            $json['mp3Path'] = $this->getSongPath($song);
+        }
+
+        // add info for albumArtist relation if it exists
+        if ($song->albumArtist) {
+            $json['albumArtist'] = [
+                'id' => $song->albumArtist->id,
+                'name' => $song->albumArtist->name
+            ];
+        }
+
+        return $json;
+
+    }
+
+    /**
+     * @function get next and prev links for a song.
+     * @param Song $song
+     * @return array
+     */
+    public function getNavigation (Song $song): array
+    {
+        $a = new AlbumService;
+        $u = new UrlSafeService;
+        $currentTrack = $song->track;
+        $currentDisc = $song->disc;
+        $numDiscs = count($a->getDiscsByAlbum($song->album));
+        $albumSongs = $song->album->songs; // all songs from the album
+        $discSongs = $albumSongs->filter(function ($song) use ($currentDisc) {
+            return $song->disc == $currentDisc;
+        });
+        $numTracks = count($albumSongs);
+        $nextTrackNumber = $song->track;
+        $nextDiscNumber = $song->disc;
+        $hasNext = false;
+        $prevTrackNumber = $song->track;
+        $prevDiscNumber = $song->disc;
+        $hasPrev = false;
+        $nav = [];
+        // one disc: easy.
+        if ($numDiscs === 1) {
+            // more than one track on disc, and not the last.
+            // last track or only one track: no next.
+            if ($currentTrack < $numTracks && $numTracks > 1) {
+                $nextTrackNumber += 1;
+                $hasNext = true;
+            }
+            // only for tracks 2+. track 1: no prev.
+            if ($currentTrack > 1) {
+                $prevTrackNumber -= 1;
+                $hasPrev = true;
+            }
+        }
+        // more than one disc: shits getting complicated.
+        else if ($numDiscs > 1) {
+            // not the last track on current disc
+            if ($song->track < count($discSongs)) {
+                $nextTrackNumber += 1;
+                $hasNext = true;
+            }
+            // last track, but not the last disc
+            else if ($song->track == count($discSongs) && $currentDisc < $numDiscs) {
+                $nextTrackNumber = 1;
+                $nextDiscNumber += 1;
+                $hasNext = true;
+            }
+            // not the first track, ez
+            if ($currentTrack != 1) {
+                $prevTrackNumber -= 1;
+                $hasPrev = true;
+            }
+            // first track on discs 2+
+            else if ($currentDisc != 1) {
+                $prevDiscNumber -= 1;
+                $prevTrackNumber = $albumSongs->filter(function ($song) use ($prevDiscNumber) {
+                    return $song->disc == $prevDiscNumber;
+                })->max('track');
+                $hasPrev = true;
+            }
+        }
+
+        // prepare json for next and prev track
+        if ($hasNext) {
+            $nextTrack = $albumSongs->filter(function ($song) use ($nextTrackNumber, $nextDiscNumber) {
+                return $song->track == $nextTrackNumber && $song->disc == $nextDiscNumber;
+            })->first();
+            if ($nextTrack) {
+                $nav['next'] = [
+                    'encodedPath' => $u->encode($nextTrack->path),
+                    'track' => $nextTrack->track,
+                    'disc' => $nextTrack->disc,
+                    'name' => $nextTrack->name,
+                ];
+            }
+        }
+        if ($hasPrev) {
+            $prevTrack = $albumSongs->filter(function ($song) use ($prevTrackNumber, $prevDiscNumber) {
+                return $song->track == $prevTrackNumber && $song->disc == $prevDiscNumber;
+            })->first();
+            if ($prevTrack) {
+                $nav['prev'] = [
+                    'encodedPath' => $u->encode($prevTrack->path),
+                    'track' => $prevTrack->track,
+                    'disc' => $prevTrack->disc,
+                    'name' => $prevTrack->name,
+                ];
+            }
+        }
+
+        return $nav;
+    }
+
+    /**
+     * @function copy Folder.jpg to storage, get filename for cover
+     * @param Song $song
+     * @return string
+     */
+    private function getCoverPath(Song $song): string
+    {
+        // get path of Folder.jpg file
+        $path = explode('/', $song->path);
+        array_pop($path); // remove last entry; filename of the song.
+        $path[] = config('collection.coverFile.name');
+        $coverPath = config('collection.server.music.path').implode('/', $path);
+
+        // TODO: get inline cover from mp3 if it exists.
+
+        // create new filename
+        $fileInfo = new \SplFileInfo($coverPath);
+        $extension = $fileInfo->getExtension();
+        $storageFileName = $song->id.".".$extension;
+
+        // copy file to public disc if it doesn't yet exist.
+        if (Storage::missing($storageFileName)) {
+            Storage::disk('public')
+                ->put($storageFileName, file_get_contents($coverPath));
+        }
+
+        return $storageFileName;
+    }
+
+    /**
+     * @function copy mp3 file to storage if needed, get filename
+     * @param Song $song
+     * @return string
+     */
+    private function getSongPath(Song $song): string
+    {
+        // create new filename
+        $serverPath = config('collection.server.music.path')."/".$song->path;
+        $fileInfo = new \SplFileInfo($serverPath);
+        $extension = $fileInfo->getExtension();
+        $storageFileName = $song->id.".".$extension;
+
+        // copy file to public disc if it doesn't yet exist.
+        if (Storage::missing($storageFileName)) {
+            Storage::disk('public')
+                ->put($storageFileName, file_get_contents($serverPath));
+        }
+
+        return $storageFileName;
+    }
+
+
+    /**
+     * @function return all songs with all relations.
+     * @return array
+     */
+    public function getAllSongs(): array
+    {
+        return Song::with('artist')
+            ->with('album')
+            ->with('genre')
+            ->with('albumArtist')
+            ->get()
+            ->map(function ($song) {
+                return $this->formatSong($song);
+            })->toArray();
+    }
+
+    /**
+     * @function get Song stats
+     * @return array[]
+     */
+    public function getSongStats(): array
+    {
+        $longestSong = Song::orderBy('duration', 'desc')
+            ->with('artist')
+            ->with('album')
+            ->with('genre')
+            ->first();
+        $shortestSong = Song::orderBy('duration', 'asc')
+            ->with('artist')
+            ->with('album')
+            ->with('genre')
+            ->first();
+        $newestSong = Song::orderBy('modified_at', 'desc')
+            ->with('artist')
+            ->with('album')
+            ->with('genre')
+            ->first();
+        $oldestSong = Song::orderBy('modified_at', 'asc')
+            ->with('artist')
+            ->with('album')
+            ->with('genre')
+            ->first();
+        return [
+            'longest' => $this->formatSong($longestSong),
+            'shortest' => $this->formatSong($shortestSong),
+            'newest' => $this->formatSong($newestSong),
+            'oldest' => $this->formatSong($oldestSong),
+        ];
+    }
+
+}

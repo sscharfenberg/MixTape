@@ -1,0 +1,190 @@
+/******************************************************************************
+ * contextual color tokens
+ * @type {Sass}
+ * these variables are used in other scss files or vue components.
+ * this file gets @forwarded from ../_index.scss
+ * Usage
+ * @use "Abstracts/colors" as c;
+ *****************************************************************************/
+@use "sass:map"; // https://sass-lang.com/documentation/modules/map
+@use "sass:color"; // https://sass-lang.com/documentation/modules/color
+@use "global-color-tokens" as c;
+
+// app base colors
+$app: (
+    "background-dark": #{linear-gradient(hsl(from #111 h s l / 70%) 0 0),
+    url("Assets/images/bg-dark.jpg")},
+    "background-light": #{linear-gradient(hsl(from #eee h s l / 70%) 0 0),
+    url("Assets/images/bg-light.jpg")},
+    "surface": light-dark(map.get(c.$grey, "abbey"), map.get(c.$grey, "fog")),
+    "spinner-1": light-dark(map.get(c.$brand, "viking", color), map.get(c.$brand, "viking", color)),
+    "spinner-2": light-dark(map.get(c.$brand, "christine", color), map.get(c.$brand, "christine", color))
+) !default;
+
+// header colors
+$header: (
+    "title": linear-gradient(
+            map.get(c.$brand, "viking", "color") 45%,
+            #fff 50%,
+            map.get(c.$brand, "christine", "color") 60%
+        ),
+    "navitem-background": light-dark(map.get(c.$grey, "fog"), map.get(c.$grey, "abbey")),
+    "navitem-surface": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+    "navitem-border": light-dark(map.get(c.$grey, "abbey"), map.get(c.$grey, "fog")),
+    "navitem-background-hover": light-dark(map.get(c.$grey, "white"), map.get(c.$grey, "black")),
+    "navitem-surface-hover": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+    "navitem-border-hover": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+    "navitem-background-selected": light-dark(
+            map.get(c.$brand, "christine", "contrast"),
+            map.get(c.$brand, "viking", "contrast")
+        ),
+    "navitem-surface-selected": light-dark(
+            map.get(c.$brand, "christine", "color"),
+            map.get(c.$brand, "viking", "color")
+        )
+) !default;
+
+// colors for main landmark
+$main: (
+    "row1-background": light-dark(
+            color.adjust(map.get(c.$grey, "infra"), $alpha: -0.7),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.8)
+        ),
+    "row1-surface": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),
+    "row1-background-hover": light-dark(
+            color.adjust(map.get(c.$grey, "infra"), $alpha: -0.5),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.6)
+        ),
+    "row2-background": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.5),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.4)
+        ),
+    "row2-background-hover": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.3),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.2)
+        ),
+    "row2-surface": light-dark(map.get(c.$grey, "bunker"), map.get(c.$grey, "mystic")),
+    "highlighted": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.4),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.4)
+        ),
+    "song-name-surface": light-dark(map.get(c.$grey, "abbey"), map.get(c.$grey, "infra")),
+    "details-meta-link-background-hover": light-dark(map.get(c.$grey, "white"), map.get(c.$grey, "black")),
+    "details-meta-link-surface-hover": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+    "tooltip-background": light-dark(
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.1),
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.1)
+        ),
+    "tooltip-surface": light-dark(map.get(c.$grey, "astral"), map.get(c.$grey, "ebony")),
+    "cover-border": light-dark(
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.7),
+            color.adjust(map.get(c.$grey, "iron"), $alpha: -0.8)
+        ),
+    "player-background": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.6),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.6)
+        ),
+    "player-border": light-dark(
+            color.adjust(map.get(c.$grey, "infra"), $alpha: -0.2),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.6)
+        ),
+    "player-surface": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),
+    "player-btn-background": light-dark(map.get(c.$grey, "infra"), map.get(c.$grey, "bunker")),
+    "player-btn-surface": light-dark(map.get(c.$grey, "abbey"), map.get(c.$grey, "infra")),
+    "player-track": light-dark(map.get(c.$grey, "infra"), map.get(c.$grey, "bunker")),
+    "player-track-fill": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
+    "player-track-progress": light-dark(map.get(c.$grey, "iron"), map.get(c.$grey, "asher")),
+    "autoplay-knob-background": light-dark(map.get(c.$grey, "infra"), map.get(c.$grey, "bunker")),
+    "page-header-line": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
+    "breadcrumb-item-background": light-dark(map.get(c.$grey, "mystic"), map.get(c.$grey, "bunker")),
+    "breadcrumb-item-background-hover": light-dark(map.get(c.$grey, "white"), map.get(c.$grey, "black")),
+    "breadcrumb-item-background-active": light-dark(
+            map.get(c.$brand, "christine", "contrast"),
+            map.get(c.$brand, "viking", "contrast")
+        ),
+    "breadcrumb-item-surface": light-dark(map.get(c.$grey, "bunker"), map.get(c.$grey, "astral")),
+    "breadcrumb-item-surface-hover": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+    "breadcrumb-item-surface-active": light-dark(
+            map.get(c.$brand, "christine", "color"),
+            map.get(c.$brand, "viking", "color")
+        ),
+    "table-border": light-dark(
+            color.adjust(map.get(c.$grey, "infra"), $alpha: -0.2),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.6)
+        ),
+    "table-cell-background-odd": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.8),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.8)
+        ),
+    "table-cell-surface-odd": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),
+    "table-cell-background-even": light-dark(
+            color.adjust(map.get(c.$grey, "astral"), $alpha: -0.8),
+            color.adjust(map.get(c.$grey, "ebony"), $alpha: -0.8)
+        ),
+    "table-cell-surface-even": light-dark(map.get(c.$grey, "bunker"), map.get(c.$grey, "mystic")),
+    "table-cell-background-hover": light-dark(
+            color.adjust(map.get(c.$grey, "white"), $alpha: -0.3),
+            color.adjust(map.get(c.$grey, "black"), $alpha: -0.3)
+        ),
+    "table-cell-surface-hover": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+    "table-select-border": light-dark(
+            color.adjust(map.get(c.$grey, "astral"), $alpha: -0.4),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.6)
+        )
+) !default;
+
+// widget colors
+$widget: (
+    "background": hsl(from light-dark(map.get(c.$grey, "iron"), map.get(c.$grey, "ebony")) h s l / 25%),
+    "loader-background": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.05),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.05)
+        ),
+    "border-from": light-dark(map.get(c.$grey, "iron"), map.get(c.$grey, "asher")),
+    "border-to": light-dark(map.get(c.$grey, "fog"), map.get(c.$grey, "abbey")),
+    "loader-surface": light-dark(map.get(c.$grey, "asher"), map.get(c.$grey, "iron"))
+) !default;
+
+// styles for app-button
+$button: (
+    "default": (
+        "background": light-dark(map.get(c.$grey, "astral"), map.get(c.$grey, "ebony")),
+        "surface": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+        "border": light-dark(map.get(c.$grey, "abbey"), map.get(c.$grey, "fog")),
+        "background-hover": light-dark(
+                color.adjust(map.get(c.$grey, "astral"), $lightness: -20%),
+                color.adjust(map.get(c.$grey, "ebony"), $lightness: -20%)
+            ),
+        "surface-hover": light-dark(
+                color.adjust(map.get(c.$grey, "black"), $lightness: 10%),
+                color.adjust(map.get(c.$grey, "white"), $lightness: 10%)
+            ),
+        "border-hover": light-dark(
+                color.adjust(map.get(c.$grey, "black"), $lightness: 10%),
+                color.adjust(map.get(c.$grey, "white"), $lightness: 10%)
+            )
+    ),
+    "primary": (
+        "background": light-dark(map.get(c.$brand, "christine", "contrast"), map.get(c.$brand, "viking", "contrast")),
+        "surface": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
+        "border": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
+        "background-hover": light-dark(#fff, color.adjust(map.get(c.$brand, "viking", "contrast"), $lightness: -20%)),
+        "surface-hover": light-dark(#000, color.adjust(map.get(c.$brand, "viking", "color"), $lightness: 30%)),
+        "border-hover": light-dark(#000, color.adjust(map.get(c.$brand, "viking", "color"), $lightness: 30%))
+    )
+) !default;
+
+// colors for footer landmark
+$footer: (
+    "themeswitch-background-selected": light-dark(
+            map.get(c.$brand, "christine", "contrast"),
+            map.get(c.$brand, "viking", "contrast")
+        ),
+    "themeswitch-surface-selected": light-dark(
+            map.get(c.$brand, "christine", "color"),
+            map.get(c.$brand, "viking", "color")
+        ),
+    "themeswitch-background": light-dark(map.get(c.$grey, "astral"), map.get(c.$grey, "ebony")),
+    "themeswitch-surface": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+    "themeswitch-border": light-dark(map.get(c.$grey, "abbey"), map.get(c.$grey, "fog"))
+) !default;

@@ -1,0 +1,74 @@
+/******************************************************************************
+ * detail page metadata
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/mixins" as m;
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/typography" as t;
+@use "Abstracts/shadows" as sh;
+@use "Abstracts/timings" as ti;
+
+.details-metadata {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+
+    padding: 0;
+    margin: 0;
+
+    gap: 1ch;
+
+    list-style: none;
+
+    > li:not(.details-link),
+    > li.details-link a {
+        display: flex;
+        align-items: center;
+
+        height: 100%;
+
+        gap: 1ch;
+
+        background-color: map.get(c.$main, "row1-background");
+        color: map.get(c.$main, "row1-surface");
+
+        list-style: none;
+
+        text-decoration: none;
+
+        transition:
+            background-color map.get(ti.$timings, "fast") linear,
+            color map.get(ti.$timings, "fast") linear;
+
+        @include m.mqset(
+            "padding",
+            #{map.get(s.$main, "row-padding", "base")},
+            #{map.get(s.$main, "row-padding", "portrait")},
+            #{map.get(s.$main, "row-padding", "landscape")},
+            #{map.get(s.$main, "row-padding", "desktop")}
+        );
+
+        &:nth-child(even) {
+            background: map.get(c.$main, "row2-background");
+            color: map.get(c.$main, "row2-surface");
+        }
+
+        &.highlight {
+            font-weight: bold;
+            text-shadow: map.get(sh.$main, "song-meta-highlight");
+        }
+
+        .inside {
+            display: flex;
+            align-items: center;
+
+            gap: 1ch;
+        }
+    }
+
+    > li.details-link a:hover {
+        background-color: map.get(c.$main, "details-meta-link-background-hover");
+        color: map.get(c.$main, "details-meta-link-surface-hover");
+    }
+}

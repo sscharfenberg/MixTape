@@ -1,0 +1,74 @@
+/******************************************************************************
+ * .btn styles
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "sass:color";
+@use "Abstracts/sizes" as s;
+@use "Abstracts/colors" as c;
+@use "Abstracts/mixins" as m;
+@use "Abstracts/timings" as ti;
+@use "Abstracts/easing" as e;
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+
+    padding: #{map.get(s.$button, "padding")};
+    border: map.get(s.$button, "border") solid transparent;
+
+    color: map.get(c.$button, "color");
+
+    border-radius: map.get(s.$button, "radius");
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color map.get(ti.$timings, "fast") linear,
+        color map.get(ti.$timings, "fast") linear,
+        border-color map.get(ti.$timings, "fast") linear;
+
+    @include m.mqset("gap", #{map.get(s.$button, "gap", "base")}, #{map.get(s.$button, "gap", "portrait")});
+
+    &.default {
+        background-color: map.get(c.$button, "default", "background");
+        color: map.get(c.$button, "default", "surface");
+        border-color: map.get(c.$button, "default", "border");
+
+        &:not([disabled]):hover {
+            background: map.get(c.$button, "default", "background-hover");
+            color: map.get(c.$button, "default", "surface-hover");
+            border-color: map.get(c.$button, "default", "border-hover");
+        }
+    }
+
+    &.primary {
+        background-color: map.get(c.$button, "primary", "background");
+        color: map.get(c.$button, "primary", "surface");
+        border-color: map.get(c.$button, "primary", "border");
+
+        &:not([disabled]):hover {
+            background: map.get(c.$button, "primary", "background-hover");
+            color: map.get(c.$button, "primary", "surface-hover");
+            border-color: map.get(c.$button, "primary", "border-hover");
+        }
+    }
+
+    &:disabled {
+        opacity: 0.5;
+
+        cursor: not-allowed;
+    }
+
+    &.short {
+        padding: #{map.get(s.$button, "padding-short")};
+    }
+
+    span {
+        display: block;
+
+        line-height: 24px;
+    }
+}

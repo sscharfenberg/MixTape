@@ -1,0 +1,56 @@
+/******************************************************************************
+ * .widget
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/mixins" as m;
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@forward "stats";
+@forward "grid";
+
+.widget {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+
+    min-height: 120px;
+
+    gap: 1lh;
+
+    background: map.get(c.$widget, "background");
+    backdrop-filter: blur(12px);
+
+    border-radius: map.get(s.$widget, "radius");
+
+    @include m.mqset(
+        "padding",
+        #{map.get(s.$widget, "padding", "base")},
+        #{map.get(s.$widget, "padding", "portrait")},
+        #{map.get(s.$widget, "padding", "landscape")},
+        #{map.get(s.$widget, "padding", "desktop")}
+    );
+
+    &::before {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+
+        border: map.get(s.$widget, "border") solid transparent;
+
+        background: linear-gradient(to bottom right, map.get(c.$widget, "border-from"), map.get(c.$widget, "border-to"))
+            border-box;
+
+        border-radius: inherit;
+        mask:
+            linear-gradient(black, black) border-box,
+            linear-gradient(black, black) padding-box;
+        mask-composite: subtract;
+
+        content: "";
+    }
+
+    &-footer {
+        margin-top: auto;
+    }
+}

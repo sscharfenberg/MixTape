@@ -1,0 +1,180 @@
+/******************************************************************************
+ * contextual size tokens
+ * @type {Sass}
+ * these variables are used in other scss files or vue components.
+ * this file gets @forwarded from _index.scss
+ * use
+ * @use "Abstracts/sizes" as s;
+ *****************************************************************************/
+@use "sass:math"; // https://sass-lang.com/documentation/modules/math/
+@use "sass:map"; // https://sass-lang.com/documentation/modules/map
+@use "global-size-tokens" as s;
+
+// size tokens used everywhere in the app.
+$app: (
+    "max": (
+        "cage": map.get(s.$max, "cage"),
+        "form": map.get(s.$max, "form")
+    ),
+    "font-size": (
+        "base": s.$base * 0.9,
+        "portrait": s.$base * 1,
+        "landscape": s.$base * 1,
+        "desktop": s.$base * 1
+    ),
+    "icons": (
+        "tiny": s.$base,
+        "small": s.$base * 1.2,
+        "medium": s.$base * 1.5,
+        "large": s.$base * 2,
+        "xlarge": s.$base * 4,
+        "max": s.$base * 6
+    ),
+    "border": (
+        "base": math.round(s.$base * 0.125),
+        "featured": math.round(s.$base * 0.375)
+    ),
+    "radius": (
+        "base": math.round(s.$base * 0.25),
+        "featured": math.round(s.$base * 0.375)
+    ),
+    "padding": (
+        "base": math.round(s.$base * 0.5),
+        "portrait": math.round(s.$base * 1),
+        "landscape": math.round(s.$base * 1.15),
+        "desktop": math.round(s.$base * 1.5)
+    )
+) !default;
+
+// size tokens for header landmark
+$header: (
+    "padding": (
+        "base": math.round(s.$base * 0.5),
+        "portrait": math.round(s.$base * 0.75),
+        "landscape": math.round(s.$base * 1),
+        "desktop": math.round(s.$base * 1.2)
+    ),
+    "font-size": (
+        "base": s.$base * 1.3,
+        "portrait": s.$base * 2,
+        "landscape": s.$base * 2.5,
+        "desktop": s.$base * 3
+    ),
+    "gap": (
+        "base": s.$base * 1,
+        "portrait": s.$base * 1.2,
+        "landscape": s.$base * 1.5,
+        "desktop": s.$base * 2
+    ),
+    "logo-height": (
+        "base": s.$base * 2.5,
+        "portrait": s.$base * 3,
+        "landscape": s.$base * 4,
+        "desktop": s.$base * 5
+    ),
+    "navitem-padding": (
+        "base": #{s.$base * 0.25},
+        "portrait": #{s.$base * 0.5}
+    ),
+    "navitem-radius": map.get(s.$radius, "base"),
+    "navitem-border": map.get(s.$border, "base")
+) !default;
+
+// size tokens for main landmark
+$main: (
+    "row-padding": (
+        "base": math.round(s.$base * 0.4),
+        "portrait": math.round(s.$base * 0.5),
+        "landscape": math.round(s.$base * 0.6),
+        "desktop": math.round(s.$base * 0.8)
+    ),
+    "widget-min-width": math.round(s.$base * 20),
+    "song-name": (
+        "base": s.$base * 1.4,
+        "portrait": s.$base * 1.8,
+        "landscape": s.$base * 2.2,
+        "desktop": s.$base * 5
+    ),
+    "cover-radius": map.get(s.$radius, "featured"),
+    "cover-border": (
+        "base": math.round(s.$base * 0.45),
+        "landscape": math.round(s.$base * 0.6)
+    ),
+    "player-border": map.get(s.$border, "base"),
+    "player-radius": map.get(s.$radius, "featured"),
+    "switch-pit": map.get(s.$radius, "featured"),
+    "page-header-font-size": (
+        "base": s.$base * 1.2,
+        "portrait": s.$base * 1.4,
+        "landscape": s.$base * 1.8,
+        "desktop": s.$base * 2.5
+    ),
+    "page-header-line": (
+        "base": 2px,
+        "portrait": 2px,
+        "landscape": 4px,
+        "desktop": 6px
+    ),
+    "page-header-radius": map.get(s.$radius, "base"),
+    "breadcrumb": (
+        "height": math.round(map.get($app, "icons", "medium") * 1.15),
+        "height-landscape": math.round(map.get($app, "icons", "large") * 1.15),
+        "padding": 0 7px 0 20px,
+        "padding-landscape": 0 10px 0 30px,
+        "radius": map.get(s.$radius, "base")
+    ),
+    "table-border": map.get(s.$border, "base"),
+    "table-border-radius": map.get(s.$radius, "base"),
+    "table-select-border": map.get(s.$border, "base"),
+    "table-select-radius": map.get(s.$radius, "base"),
+    "table-input-padding": math.round(s.$base * 0.4) math.round(s.$base * 0.8),
+    "table-button-radius": map.get(s.$radius, "base")
+) !default;
+
+// size tokens for widgets
+$widget: (
+    "radius": map.get(s.$radius, "featured"),
+    "border": map.get(s.$border, "base"),
+    "padding": (
+        "base": math.round(s.$base * 0.6),
+        "portrait": math.round(s.$base * 0.7),
+        "landscape": math.round(s.$base * 0.85),
+        "desktop": math.round(s.$base * 1)
+    ),
+    "title-font-size": (
+        "base": math.round(s.$base * 1.1),
+        "portrait": math.round(s.$base * 1.2),
+        "landscape": math.round(s.$base * 1.3),
+        "desktop": math.round(s.$base * 1.5)
+    )
+) !default;
+
+// size tokens for app-button
+$button: (
+    "padding": #{s.$base * 0.4 s.$base * 0.8},
+    "padding-short": #{s.$base * 0.2 s.$base * 0.8},
+    "gap": (
+        "base": s.$base * 0.25,
+        "portrait": s.$base * 0.5
+    ),
+    "radius": map.get(s.$radius, "featured"),
+    "border": map.get(s.$border, "base")
+) !default;
+
+// size tokens for footer landmark
+$footer: (
+    "margin": (
+        "base": math.round(s.$base * 0.5),
+        "portrait": math.round(s.$base * 0.75),
+        "landscape": math.round(s.$base * 1),
+        "desktop": math.round(s.$base * 1.2)
+    ),
+    "theme-gap": (
+        "base": s.$base * 0.75,
+        "portrait": s.$base * 0.85,
+        "landscape": s.$base * 1
+    ),
+    "themeswitch-border": map.get(s.$border, "base"),
+    "themeswitch-radius": map.get(s.$radius, "base"),
+    "themeswitch-padding": math.round(s.$base * 0.2) math.round(s.$base * 0.5)
+) !default;

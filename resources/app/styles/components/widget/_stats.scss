@@ -1,0 +1,113 @@
+/******************************************************************************
+ * widget stats block
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/colors" as c;
+@use "Abstracts/mixins" as m;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/timings" as ti;
+
+.stats {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+    margin: 0;
+
+    gap: 1ch;
+
+    list-style: none;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        gap: 1ch;
+
+        background: map.get(c.$main, "row1-background");
+        color: map.get(c.$main, "row1-surface");
+
+        text-decoration: none;
+
+        @include m.mqset(
+            "padding",
+            #{map.get(s.$main, "row-padding", "base")},
+            #{map.get(s.$main, "row-padding", "portrait")},
+            #{map.get(s.$main, "row-padding", "landscape")},
+            #{map.get(s.$main, "row-padding", "desktop")}
+        );
+
+        &:nth-child(odd) {
+            background: map.get(c.$main, "row2-background");
+            color: map.get(c.$main, "row2-surface");
+        }
+
+        .highlight,
+        .subitem {
+            display: flex;
+            align-items: center;
+
+            gap: 0.5ch;
+
+            &.pull-left {
+                margin-right: auto;
+            }
+
+            &.pull-right {
+                margin-left: auto;
+            }
+        }
+
+        .highlight {
+            padding: 0.5ch 1ch;
+            margin-left: auto;
+
+            background-color: map.get(c.$main, "highlighted");
+        }
+
+        &:first-of-type {
+            border-top-left-radius: map.get(s.$widget, "radius");
+            border-top-right-radius: map.get(s.$widget, "radius");
+        }
+
+        &:last-of-type {
+            border-bottom-right-radius: map.get(s.$widget, "radius");
+            border-bottom-left-radius: map.get(s.$widget, "radius");
+        }
+
+        &--link {
+            transition: background-color map.get(ti.$timings, "fast") linear;
+
+            &:hover {
+                background-color: map.get(c.$main, "row1-background-hover");
+            }
+
+            &:nth-child(odd):hover {
+                background-color: map.get(c.$main, "row2-background-hover");
+            }
+        }
+
+        &-row {
+            display: flex;
+            align-items: center;
+
+            flex: 0 0 100%;
+
+            gap: 1ch;
+        }
+    }
+
+    &__item-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        flex: 0 0 100%;
+
+        > span:first-child {
+            font-weight: bold;
+        }
+    }
+}

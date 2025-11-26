@@ -1,0 +1,160 @@
+/******************************************************************************
+ * datatable style overrides. original styles in vendor/datatables
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map"; // https://sass-lang.com/documentation/modules/map
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/mixins" as m;
+@use "Abstracts/timings" as ti;
+
+// styling the table
+table.display.responsive {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    thead th {
+        border-top: map.get(s.$main, "table-border") solid map.get(c.$main, "table-border");
+
+        background-color: map.get(c.$main, "table-cell-background-even");
+        color: map.get(c.$main, "table-cell-surface-even");
+    }
+
+    tbody td {
+        border-top-width: 0;
+    }
+
+    thead th,
+    tbody td {
+        border-right: map.get(s.$main, "table-border") solid map.get(c.$main, "table-border");
+        border-bottom: map.get(s.$main, "table-border") solid map.get(c.$main, "table-border");
+
+        &:first-child {
+            border-left: map.get(s.$main, "table-border") solid map.get(c.$main, "table-border");
+        }
+    }
+
+    tbody tr:nth-of-type(odd) {
+        background-color: map.get(c.$main, "table-cell-background-odd");
+        color: map.get(c.$main, "table-cell-surface-odd");
+        box-shadow: none;
+    }
+
+    tbody tr:nth-of-type(even) {
+        background-color: map.get(c.$main, "table-cell-background-even");
+        color: map.get(c.$main, "table-cell-surface-even");
+        box-shadow: none;
+    }
+
+    tbody tr:hover {
+        background-color: map.get(c.$main, "table-cell-background-hover");
+        color: map.get(c.$main, "table-cell-surface-hover");
+
+        cursor: pointer;
+    }
+
+    tr:first-child {
+        // rounded corners on desktop
+        th:first-child {
+            border-top-left-radius: map.get(s.$main, "table-border-radius");
+        }
+
+        th:last-child {
+            border-top-right-radius: map.get(s.$main, "table-border-radius");
+        }
+    }
+
+    tr:last-child {
+        td:first-child {
+            border-bottom-left-radius: map.get(s.$main, "table-border-radius");
+        }
+
+        td:last-child {
+            border-bottom-right-radius: map.get(s.$main, "table-border-radius");
+        }
+    }
+}
+
+// styling the datatables meta elements
+div.dt-container .dt-search,
+div.dt-container .dt-length {
+    display: flex;
+    align-items: center;
+
+    gap: 1ch;
+}
+
+div.dt-container .dt-input {
+    padding: map.get(s.$main, "table-input-padding");
+    border: map.get(s.$main, "table-select-border") solid map.get(c.$main, "table-select-border");
+
+    outline: 0;
+
+    border-radius: map.get(s.$main, "table-select-radius");
+}
+
+div.dt-container .dt-search .dt-input {
+    margin-left: 0;
+}
+
+.dt-paging nav {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 0.5ch;
+}
+
+.dt-paging-button {
+    display: inline-flex;
+    align-items: center;
+
+    padding: #{map.get(s.$button, "padding")};
+    border: map.get(s.$button, "border") solid map.get(c.$button, "default", "border");
+
+    background-color: map.get(c.$button, "default", "background");
+
+    color: map.get(c.$button, "default", "surface") !important;
+
+    border-radius: map.get(s.$main, "table-button-radius");
+
+    line-height: 1;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color map.get(ti.$timings, "fast") linear,
+        color map.get(ti.$timings, "fast") linear,
+        border-color map.get(ti.$timings, "fast") linear;
+
+    @include m.mqset("gap", #{map.get(s.$button, "gap", "base")}, #{map.get(s.$button, "gap", "portrait")});
+
+    &:not(.disabled):hover {
+        background: map.get(c.$button, "default", "background-hover");
+        color: map.get(c.$button, "default", "surface-hover") !important;
+        border-color: map.get(c.$button, "default", "border-hover");
+    }
+
+    &.current {
+        background-color: map.get(c.$button, "primary", "background");
+        color: map.get(c.$button, "primary", "surface") !important;
+        border-color: map.get(c.$button, "primary", "border");
+
+        &:not(.disabled):hover {
+            background: map.get(c.$button, "primary", "background-hover");
+            color: map.get(c.$button, "primary", "surface-hover") !important;
+            border-color: map.get(c.$button, "primary", "border-hover");
+        }
+    }
+
+    &[aria-disabled="true"],
+    &.disabled {
+        opacity: 0.5;
+
+        color: map.get(c.$button, "default", "surface") !important;
+
+        cursor: not-allowed;
+    }
+}

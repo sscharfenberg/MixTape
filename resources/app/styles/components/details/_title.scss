@@ -1,0 +1,67 @@
+@use "sass:map";
+@use "Abstracts/mixins" as m;
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/typography" as t;
+@use "Abstracts/shadows" as sh;
+
+.details-title {
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+
+    gap: 1ch;
+
+    h2 {
+        margin: 0;
+
+        color: map.get(c.$main, "song-name-surface");
+
+        font-family: map.get(t.$main, "song-name");
+
+        font-weight: 900;
+        line-height: 1.2;
+
+        text-shadow: map.get(sh.$main, "song-name");
+        letter-spacing: -1px;
+
+        @include m.mqset(
+            "font-size",
+            #{map.get(s.$main, "song-name", "base")},
+            #{map.get(s.$main, "song-name", "portrait")},
+            #{map.get(s.$main, "song-name", "landscape")},
+            #{map.get(s.$main, "song-name", "desktop")}
+        );
+    }
+
+    img {
+        width: 120px;
+        height: auto;
+        border: map.get(s.$main, "cover-border", "base") solid map.get(c.$main, "cover-border");
+
+        border-radius: map.get(s.$main, "cover-radius");
+
+        @include m.mq("portrait") {
+            width: 200px;
+        }
+
+        @include m.mq("landscape") {
+            border-width: map.get(s.$main, "cover-border", "landscape");
+        }
+    }
+
+    @include m.mq("portrait") {
+        flex-direction: row;
+
+        gap: 1ch;
+    }
+
+    &__title {
+        display: flex;
+        flex-direction: column;
+
+        gap: 0.5ch;
+    }
+}

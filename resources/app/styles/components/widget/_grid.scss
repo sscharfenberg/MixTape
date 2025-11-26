@@ -1,0 +1,13 @@
+/******************************************************************************
+ * widget wrapper
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/sizes" as s;
+
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(map.get(s.$main, "widget-min-width"), 100%), 1fr));
+
+    gap: 2ch;
+}
