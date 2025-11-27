@@ -71,7 +71,7 @@ onMounted(() => {
             </nav>
         </template>
         <template #footer>
-            <router-link class="btn primary" :to="{ name: 'albums' }">
+            <router-link class="btn primary" :to="{ name: 'artists' }">
                 <app-icon name="artist" />
                 Alle Künstler
             </router-link>

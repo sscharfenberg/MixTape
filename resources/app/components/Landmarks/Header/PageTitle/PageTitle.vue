@@ -24,7 +24,7 @@ const route = useRoute();
     display: flex;
     align-items: center;
 
-    margin: 0;
+    margin: 0 0 1ch;
     gap: 0.5ch;
 
     font-family: map.get(t.$main, "page-header");

@@ -36,6 +36,8 @@ const route = useRoute();
 
     overflow: hidden;
 
+    margin-bottom: 1ch;
+
     border-radius: map.get(s.$main, "breadcrumb", "radius");
 
     box-shadow: map.get(sh.$main, "breadcrumb");
