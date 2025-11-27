@@ -64,4 +64,20 @@ class ArtistService
             })->toArray();
         return array_values($artists);
     }
+
+    /**
+     * @function get all artists in json format, including non albumArtists
+     * @return array
+     */
+    public function getAllArtists():array
+    {
+        $artists = Artist::with('songs')
+            ->with('albums')
+            ->get()
+            ->map(function (Artist $artist) {
+                return $this->formatArtist($artist);
+            })->toArray();
+        return array_values($artists);
+    }
+
 }
