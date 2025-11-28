@@ -27,12 +27,16 @@ class ArtistService
             'id' => $artist->id,
             'name' => $artist->name,
             'encodedName' => $u->encode($artist->name),
-            'albums' => $albums->map(function (Album $album) use ($u) {
+            'albums' => $albums->map(function (Album $album) use ($u, $artist) {
                 return [
                     'id' => $album->id,
                     'name' => $album->name,
                     'encodedName' => $u->encode($album->name),
+                    'numSongs' => $album->songs->count(),
+                    'discs' => $album->songs->unique('disc')->count(),
+                    'duration' => $album->songs->sum('duration'),
                     'year' => $album->year,
+                    'size' => $album->songs->sum('size'),
                 ];
             })->toArray(),
             'numAlbums' => $albums->count(),

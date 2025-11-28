@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <ul class="details-metadata">
+    <ul class="details-metadata short">
         <li v-if="genre.duration" v-tippy="{ content: 'Gesamte Laufzeit' }">
             <app-icon name="time" />
             {{ formatSeconds(genre.duration) }}

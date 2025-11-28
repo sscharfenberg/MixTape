@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import AppIcon from "Components/AppIcon/AppIcon.vue";
+
 defineProps({
     name: {
         type: String,
@@ -22,7 +24,10 @@ defineProps({
                 :checked="tab.checked"
                 @change="$emit('tabchange', tab.idx)"
             />
-            <label :for="`tab-${name}-${tab.idx}`">{{ tab.label }}</label>
+            <label :for="`tab-${name}-${tab.idx}`">
+                <app-icon v-if="tab.icon" :name="tab.icon" />
+                {{ tab.label }}
+            </label>
         </li>
     </ul>
 </template>
@@ -45,9 +50,11 @@ ul {
     list-style: none;
 
     label {
-        display: block;
+        display: flex;
+        align-items: center;
 
         border: map.get(s.$main, "tabnav-border") solid transparent;
+        gap: 1ch;
 
         background-color: map.get(c.$main, "tabnav-background");
         color: map.get(c.$main, "tabnav-surface");

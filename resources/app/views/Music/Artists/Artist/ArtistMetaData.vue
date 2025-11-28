@@ -11,13 +11,13 @@ defineProps({
 
 <template>
     <ul class="details-metadata short">
-        <li v-if="data.numSongs" v-tippy="{ content: 'Songs' }">
-            <app-icon name="music" />
-            {{ formatDecimals(data.numSongs) }}
-        </li>
         <li v-if="data.numAlbums" v-tippy="{ content: 'Alben' }">
             <app-icon name="album" />
             {{ formatDecimals(data.numAlbums) }}
+        </li>
+        <li v-if="data.numSongs" v-tippy="{ content: 'Songs' }">
+            <app-icon name="music" />
+            {{ formatDecimals(data.numSongs) }}
         </li>
         <li v-if="data.songsDuration" v-tippy="{ content: 'Laufzeit' }">
             <app-icon name="time" />
