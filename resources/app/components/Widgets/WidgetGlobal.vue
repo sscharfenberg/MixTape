@@ -88,7 +88,7 @@ onMounted(() => {
                         </span>
                         <span class="highlight">
                             <app-icon name="file" />
-                            {{ formatBytes(data.audiobooks.size) }}
+                            {{ formatBytes(data.total.size) }}
                         </span>
                     </div>
                     <div class="stats__item-row">
