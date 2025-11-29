@@ -65,9 +65,10 @@ const onTabChange = val => (currentTabIndex.value = val);
                     { idx: 1, label: `Songs (${data.songs.length})`, icon: 'music', checked: currentTabIndex === 1 }
                 ]"
                 @tabchange="onTabChange"
-            />
-            <artist-albums-table v-if="currentTabIndex === 0" :albums="data.albums" />
-            <artist-songs-table v-if="currentTabIndex === 1" :songs="data.songs" />
+            >
+                <artist-albums-table v-if="currentTabIndex === 0" :albums="data.albums" />
+                <artist-songs-table v-if="currentTabIndex === 1" :songs="data.songs" />
+            </tabbed-navigation>
         </div>
     </section>
 </template>

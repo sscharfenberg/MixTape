@@ -14,22 +14,27 @@ defineProps({
 </script>
 
 <template>
-    <ul role="list" aria-label="Verfügbare Optionen">
-        <li v-for="tab in tabs" :key="tab.idx">
-            <input
-                type="radio"
-                :name="name"
-                :id="`tab-${name}-${tab.idx}`"
-                :value="tab.idx"
-                :checked="tab.checked"
-                @change="$emit('tabchange', tab.idx)"
-            />
-            <label :for="`tab-${name}-${tab.idx}`">
-                <app-icon v-if="tab.icon" :name="tab.icon" />
-                {{ tab.label }}
-            </label>
-        </li>
-    </ul>
+    <div class="tabbed-navigation">
+        <ul role="list" aria-label="Verfügbare Optionen">
+            <li v-for="tab in tabs" :key="tab.idx">
+                <input
+                    type="radio"
+                    :name="name"
+                    :id="`tab-${name}-${tab.idx}`"
+                    :value="tab.idx"
+                    :checked="tab.checked"
+                    @change="$emit('tabchange', tab.idx)"
+                />
+                <label :for="`tab-${name}-${tab.idx}`">
+                    <app-icon v-if="tab.icon" :name="tab.icon" />
+                    {{ tab.label }}
+                </label>
+            </li>
+        </ul>
+        <div class="tab-content-area">
+            <slot />
+        </div>
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -44,7 +49,7 @@ ul {
     grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
 
     padding: 0;
-    margin: 2ch 0 1ch;
+    margin: 2ch 0 0;
     gap: 1ch;
 
     list-style: none;
@@ -96,5 +101,14 @@ ul {
             border-color: map.get(c.$main, "tabnav-border-active");
         }
     }
+}
+
+.tab-content-area {
+    padding: 1ch 2ch;
+    border: map.get(s.$main, "tabnav-border") solid map.get(c.$main, "tabnav-background");
+    border-top-width: 0;
+
+    border-bottom-right-radius: map.get(s.$main, "tabnav-radius");
+    border-bottom-left-radius: map.get(s.$main, "tabnav-radius");
 }
 </style>
