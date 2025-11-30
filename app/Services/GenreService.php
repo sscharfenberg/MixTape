@@ -94,6 +94,7 @@ class GenreService
             ->each(function ($genre) use (&$json, $l, $u, $f) {
                 $json[] = $l->formatSearchItem(
                     'genre',
+                    'genre',
                     $u->encode($genre->name),
                     $genre->name,
                     $f->formatDuration($genre->duration),

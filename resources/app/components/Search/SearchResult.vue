@@ -14,14 +14,14 @@ defineProps({
 </script>
 
 <template>
-    <nav v-if="results.length > 0" class="search-result">
+    <nav v-if="results.length > 0" class="search-result list">
         <router-link
             v-for="(item, index) in results"
             :key="index"
             :to="{ name: item.link.to, params: { id: item.link.param } }"
         >
             <span class="hdl">
-                <app-icon :name="item.link.to" />
+                <app-icon :name="item.toIcon" />
                 {{ item.label }}
             </span>
             <span class="aside">

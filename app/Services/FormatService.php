@@ -38,9 +38,8 @@ class FormatService
         $dateString = str_replace(' Stunde', 'h', $dateString);
         $dateString = str_replace(' Minuten', 'm', $dateString);
         $dateString = str_replace(' Minute', 'm', $dateString);
-        $dateString = str_replace(' Sekunde', 's', $dateString);
         $dateString = str_replace(' Sekunden', 's', $dateString);
-        return str_replace('n', '', $dateString);
+        return str_replace(' Sekunde', 's', $dateString);
     }
 
     public function formatBytes($bytes, $precision = 2): string

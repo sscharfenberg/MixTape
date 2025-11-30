@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Song;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use wapmorgan\Mp3Info\Mp3Info;
 
 class SongService
 {
@@ -181,28 +182,46 @@ class SongService
      * @param Song $song
      * @return string
      */
-    private function getCoverPath(Song $song): string
+    public function getCoverPath(Song $song): string
     {
-        // get path of Folder.jpg file
-        $path = explode('/', $song->path);
-        array_pop($path); // remove last entry; filename of the song.
-        $path[] = config('collection.coverFile.name');
-        $coverPath = config('collection.server.music.path').implode('/', $path);
 
-        // TODO: get inline cover from mp3 if it exists.
+        // no inline cover, try external "Folder.jpg" file
+        if(!$song->cover) {
+            // get path of Folder.jpg file
+            $path = explode('/', $song->path);
+            array_pop($path); // remove last entry; filename of the song.
+            $path[] = config('collection.coverFile.name');
+            $coverPath = config('collection.server.music.path').implode('/', $path);
 
-        // create new filename
-        $fileInfo = new \SplFileInfo($coverPath);
-        $extension = $fileInfo->getExtension();
-        $storageFileName = $song->id.".".$extension;
+            // create new filename
+            $fileInfo = new \SplFileInfo($coverPath);
+            $extension = $fileInfo->getExtension();
+            $storageFileName = $song->id.".".$extension;
 
-        // copy file to public disc if it doesn't yet exist.
-        if (Storage::missing($storageFileName)) {
-            Storage::disk('public')
-                ->put($storageFileName, file_get_contents($coverPath));
+            // copy file to public disc if it doesn't yet exist.
+            if (Storage::missing($storageFileName) && file_exists($coverPath)) {
+                Storage::disk('public')
+                    ->put($storageFileName, file_get_contents($coverPath));
+            }
+
+            if (!file_exists($coverPath) && Storage::missing($storageFileName)) {
+                return "";
+            }
         }
 
-        return $storageFileName;
+        // inline cover in mp3 file
+        else {
+            $full_path = config('collection.server.music.path').$song->path;
+            $audio = new Mp3Info($full_path, true);
+            $storageFileName = $song->id.".jpg";
+            // copy file to public disc if it doesn't yet exist.
+            if (Storage::missing($storageFileName)) {
+                Storage::disk('public')
+                    ->put($storageFileName, $audio->getCover());
+            }
+        }
+
+        return "/storage/".$storageFileName;
     }
 
     /**
@@ -281,6 +300,7 @@ class SongService
             ->each(function ($song) use (&$json, $l, $f, $u) {
                 $json[] = $l->formatSearchItem(
                     'song',
+                    'music',
                     $u->encode($song->path),
                     $song->artist->name." - ".$song->name,
                     $f->formatDuration($song->duration),

@@ -126,6 +126,7 @@ class ArtistService
             ->each(function ($artist) use (&$json, $l, $u, $f) {
                 $json[] = $l->formatSearchItem(
                     'artist',
+                    'artist',
                     $u->encode($artist->name),
                     $artist->name,
                     $f->formatDuration($artist->duration),

@@ -12,7 +12,7 @@
     justify-content: space-between;
     flex-direction: column;
 
-    gap: 1ch;
+    gap: 2ch;
 
     h3 {
         margin: 0;
@@ -37,14 +37,14 @@
     }
 
     img {
-        width: 120px;
+        width: 200px;
         height: auto;
         border: map.get(s.$main, "cover-border", "base") solid map.get(c.$main, "cover-border");
 
         border-radius: map.get(s.$main, "cover-radius");
 
         @include m.mq("portrait") {
-            width: 200px;
+            width: 320px;
         }
 
         @include m.mq("landscape") {
@@ -55,7 +55,7 @@
     @include m.mq("portrait") {
         flex-direction: row;
 
-        gap: 1ch;
+        gap: 4ch;
     }
 
     &__title {

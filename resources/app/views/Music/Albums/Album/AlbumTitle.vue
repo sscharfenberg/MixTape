@@ -13,6 +13,7 @@ defineProps({
         <div class="details-title__title">
             <h3>{{ title }}</h3>
         </div>
-        <img v-if="cover && cover.length === 40" :src="`/storage/${cover}`" :alt="title" />
+        <img v-if="cover && cover.length > 48" :src="cover" :alt="title" />
+        <img v-else src="./missing-cover.jpg" alt="Cover fehlt!" v-tippy="{ content: 'Cover fehlt!' }" />
     </header>
 </template>

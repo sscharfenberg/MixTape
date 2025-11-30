@@ -164,21 +164,8 @@ class AlbumService
      */
     private function getCover(Album $album): string
     {
-        // get path of Folder.jpg file
-        $coverPath = $this->getAlbumCoverPath($album);
-
-        // create new filename
-        $fileInfo = new \SplFileInfo($coverPath);
-        $extension = $fileInfo->getExtension();
-        $storageFileName = $album->id.".".$extension;
-
-        // copy file to public disc if it doesn't yet exist.
-        if (Storage::missing($storageFileName)) {
-            Storage::disk('public')
-                ->put($storageFileName, file_get_contents($coverPath));
-        }
-
-        return $storageFileName;
+        $s = new SongService;
+        return $s->getCoverPath($album->songs->first());
     }
 
     /**
@@ -280,6 +267,7 @@ class AlbumService
             })->sortByDesc('duration')
             ->each(function ($album) use (&$json, $l, $f) {
                 $json[] = $l->formatSearchItem(
+                    'album',
                     'album',
                     $album->id,
                     $album->name,
