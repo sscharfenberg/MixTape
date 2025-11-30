@@ -37,7 +37,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <app-widget :loading="isLoading" icon="music" :error="hasError" @refresh="fetchData()" :refresh-button="true">
+    <app-widget
+        :loading="isLoading"
+        icon="music"
+        :error="hasError"
+        @refresh="fetchData()"
+        :refresh-button="true"
+        ajax-url="/api/music/search/songs"
+    >
         <template #title>Songs</template>
         <template #body>
             <nav class="stats" v-if="data?.length">

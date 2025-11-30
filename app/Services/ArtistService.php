@@ -105,7 +105,7 @@ class ArtistService
     }
 
     /**
-     * @function search database for genres
+     * @function search database for artists
      * @param string $name
      * @return array
      */

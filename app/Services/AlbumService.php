@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Album;
+use App\Models\Artist;
 use App\Models\Song;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -257,6 +258,36 @@ class AlbumService
 
         return $zipFileName;
 
+    }
+
+    /**
+     * @function search database for album
+     * @param string $name
+     * @return array
+     */
+    public function searchAlbumByName(string $name): array
+    {
+        $json = [];
+        $l = new LibraryService;
+        $f = new FormatService;
+        Album::whereAny(['name', 'year'], 'like', "%$name%")
+            ->with('songs')
+            ->take(config('collection.search_max.albums'))
+            ->get()
+            ->map(function ($album) {
+                $album->duration = $album->songs->sum('duration');
+                return $album;
+            })->sortByDesc('duration')
+            ->each(function ($album) use (&$json, $l, $f) {
+                $json[] = $l->formatSearchItem(
+                    'album',
+                    $album->id,
+                    $album->name,
+                    $f->formatDuration($album->duration),
+                    "time"
+                );
+            })->toArray();
+        return array_values($json);
     }
 
 }

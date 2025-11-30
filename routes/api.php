@@ -41,6 +41,10 @@ Route::prefix('api')->group(function () {
     Route::get('/music/songs/{path}',
         [\App\Http\Controllers\Api\Music\SongController::class, "show"]
     );
+    // Song Search Controller
+    Route::get('/music/search/songs/{search}',
+        [\App\Http\Controllers\Api\Music\SongSearchController::class, "show"]
+    );
 
     // Genres Controller
     Route::get('/music/genres',
@@ -65,6 +69,10 @@ Route::prefix('api')->group(function () {
     );
     Route::get('/music/albums/{id}/download',
         [\App\Http\Controllers\Api\Music\AlbumController::class, "download"]
+    );
+    // Album Search Controller
+    Route::get('/music/search/albums/{search}',
+        [\App\Http\Controllers\Api\Music\AlbumSearchController::class, "show"]
     );
 
     // Artists Controller

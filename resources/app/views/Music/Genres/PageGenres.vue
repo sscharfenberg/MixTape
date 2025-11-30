@@ -66,7 +66,6 @@ const dataTableOptions = {
     ],
     fnRowCallback: (nRow, aData) => {
         nRow.addEventListener("click", () => {
-            console.log(aData.encodedName);
             router.push({
                 name: "genre",
                 params: { id: aData.encodedName }

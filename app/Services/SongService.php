@@ -262,4 +262,32 @@ class SongService
             })->toArray();
     }
 
+    /**
+     * @function search database for album
+     * @param string $name
+     * @return array
+     */
+    public function searchSongByName(string $name): array
+    {
+        $json = [];
+        $l = new LibraryService;
+        $f = new FormatService;
+        $u = new UrlSafeService;
+        Song::whereLike('name', "%$name%", caseSensitive: false)
+            ->with('artist')
+            ->take(config('collection.search_max.artists'))
+            ->get()
+            ->sortBy('path')
+            ->each(function ($song) use (&$json, $l, $f, $u) {
+                $json[] = $l->formatSearchItem(
+                    'song',
+                    $u->encode($song->path),
+                    $song->artist->name." - ".$song->name,
+                    $f->formatDuration($song->duration),
+                    "time"
+                );
+            })->toArray();
+        return array_values($json);
+    }
+
 }
