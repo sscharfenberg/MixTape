@@ -43,61 +43,67 @@ onMounted(() => {
         <template #body>
             <ul class="stats">
                 <li class="stats__item">
-                    <div class="stats__item-meta">
-                        <span class="stats__item-hdl">
-                            <app-icon name="music" />
-                            Musik
-                        </span>
-                        <span class="highlight">
-                            <app-icon name="file" />
-                            {{ formatBytes(data.music.size) }}
-                        </span>
-                    </div>
-                    <div class="stats__item-row">
-                        <span class="subitem">{{ formatDecimals(data.music.files) }} Dateien</span>
-                        <span class="subitem pull-right">
-                            <app-icon name="time" />
-                            {{ formatSeconds(data.music.duration) }}
-                        </span>
-                    </div>
+                    <span class="stats__col">
+                        <div class="stats__item-meta">
+                            <span class="stats__item-hdl">
+                                <app-icon name="music" />
+                                Musik
+                            </span>
+                            <span class="highlight">
+                                <app-icon name="file" />
+                                {{ formatBytes(data.music.size) }}
+                            </span>
+                        </div>
+                        <div class="stats__item-row">
+                            <span class="subitem">{{ formatDecimals(data.music.files) }} Dateien</span>
+                            <span class="subitem pull-right">
+                                <app-icon name="time" />
+                                {{ formatSeconds(data.music.duration) }}
+                            </span>
+                        </div>
+                    </span>
                 </li>
                 <li class="stats__item">
-                    <div class="stats__item-meta">
-                        <span class="stats__item-hdl">
-                            <app-icon name="audiobook" />
-                            Hörbücher
-                        </span>
-                        <span class="highlight">
-                            <app-icon name="file" />
-                            {{ formatBytes(data.audiobooks.size) }}
-                        </span>
-                    </div>
-                    <div class="stats__item-row">
-                        <span class="subitem">{{ formatDecimals(data.audiobooks.files) }} Dateien</span>
-                        <span class="subitem pull-right">
-                            <app-icon name="time" />
-                            {{ formatSeconds(data.audiobooks.duration) }}
-                        </span>
-                    </div>
+                    <span class="stats__col">
+                        <div class="stats__item-meta">
+                            <span class="stats__item-hdl">
+                                <app-icon name="audiobook" />
+                                Hörbücher
+                            </span>
+                            <span class="highlight">
+                                <app-icon name="file" />
+                                {{ formatBytes(data.audiobooks.size) }}
+                            </span>
+                        </div>
+                        <div class="stats__item-row">
+                            <span class="subitem">{{ formatDecimals(data.audiobooks.files) }} Dateien</span>
+                            <span class="subitem pull-right">
+                                <app-icon name="time" />
+                                {{ formatSeconds(data.audiobooks.duration) }}
+                            </span>
+                        </div>
+                    </span>
                 </li>
                 <li class="stats__item">
-                    <div class="stats__item-meta">
-                        <span class="stats__item-hdl">
-                            <app-icon name="sum" />
-                            Gesamt
-                        </span>
-                        <span class="highlight">
-                            <app-icon name="file" />
-                            {{ formatBytes(data.total.size) }}
-                        </span>
-                    </div>
-                    <div class="stats__item-row">
-                        <span class="subitem">{{ formatDecimals(data.total.files) }} Dateien</span>
-                        <span class="subitem pull-right">
-                            <app-icon name="time" class="pull-right" />
-                            {{ formatSeconds(data.total.duration) }}
-                        </span>
-                    </div>
+                    <span class="stats__col">
+                        <div class="stats__item-meta">
+                            <span class="stats__item-hdl">
+                                <app-icon name="sum" />
+                                Gesamt
+                            </span>
+                            <span class="highlight">
+                                <app-icon name="file" />
+                                {{ formatBytes(data.total.size) }}
+                            </span>
+                        </div>
+                        <div class="stats__item-row">
+                            <span class="subitem">{{ formatDecimals(data.total.files) }} Dateien</span>
+                            <span class="subitem pull-right">
+                                <app-icon name="time" class="pull-right" />
+                                {{ formatSeconds(data.total.duration) }}
+                            </span>
+                        </div>
+                    </span>
                 </li>
                 <li class="stats__item">
                     <app-icon name="datetime" />

@@ -86,6 +86,9 @@ class AlbumService
         ) {
             $arr['downloadLink'] = "/api/music/albums/".$album->id."/download";
         }
+        if ($album->thumbnail) {
+            $arr['thumbnail'] = $album->thumbnail;
+        }
         return $arr;
     }
 
@@ -128,6 +131,7 @@ class AlbumService
                 $album->duration = $album->songs->sum('duration');
                 $album->fileSize = $album->songs->sum('size');
                 $album->discs = $album->songs->unique('disc')->count();
+                $album->thumbnail = $this->getCoverThumb($album);
                 return $this->formatAlbum($album);
             })->toArray();
     }
@@ -161,11 +165,24 @@ class AlbumService
      * @function copy Folder.jpg to storage, get filename for cover
      * @param Album $album
      * @return string
+     * @throws \Exception
      */
     private function getCover(Album $album): string
     {
         $s = new SongService;
         return $s->getCoverPath($album->songs->first());
+    }
+
+    /**
+     * @function get thumbnail for album cover
+     * @param Album $album
+     * @return string
+     * @throws \Exception
+     */
+    private function getCoverThumb(Album $album): string
+    {
+        $s = new SongService;
+        return $s->getCoverPath($album->songs->first(), true);
     }
 
     /**

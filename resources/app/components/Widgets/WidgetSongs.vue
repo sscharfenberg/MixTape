@@ -54,20 +54,23 @@ onMounted(() => {
                     :key="song.id"
                     :to="{ name: 'song', params: { id: song.encodedPath } }"
                 >
-                    <span class="stats__item-meta">
-                        <span>
-                            <app-icon name="music" />
-                            {{ song.name }}
+                    <img v-if="song.thumbnail" class="thumbnail" :src="song.thumbnail" alt="Thumbnail" />
+                    <span class="stats__col">
+                        <span class="stats__item-meta">
+                            <span>
+                                <app-icon name="music" />
+                                {{ song.name }}
+                            </span>
                         </span>
-                    </span>
-                    <span class="stats__item-row">
-                        <span class="subitem highlight">
-                            <app-icon name="artist" />
-                            {{ song.artist.name }}
-                        </span>
-                        <span class="subitem pull-right">
-                            <app-icon name="time" />
-                            {{ formatSeconds(song.duration) }}
+                        <span class="stats__item-row">
+                            <span class="subitem highlight">
+                                <app-icon name="artist" />
+                                {{ song.artist.name }}
+                            </span>
+                            <span class="subitem pull-right">
+                                <app-icon name="time" />
+                                {{ formatSeconds(song.duration) }}
+                            </span>
                         </span>
                     </span>
                 </router-link>

@@ -21,8 +21,7 @@
 
     &__item {
         display: flex;
-        align-items: center;
-        flex-wrap: wrap;
+        align-items: flex-start;
 
         gap: 1ch;
 
@@ -108,5 +107,18 @@
         > span:first-child {
             font-weight: bold;
         }
+    }
+
+    &__col {
+        display: flex;
+
+        flex-grow: 1;
+        flex-flow: row wrap;
+
+        gap: 1ch;
+    }
+
+    .thumbnail {
+        border-radius: map.get(s.$widget, "cover-radius");
     }
 }

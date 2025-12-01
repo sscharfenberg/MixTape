@@ -24,6 +24,8 @@ return [
             ".smbdelete*"
         ],
         'download_album_threshold' => 1024 * 1024 * 200, // 200MiB
+        'thumb_width' => 60,
+        'cover_width' => 300
     ],
 
     /*

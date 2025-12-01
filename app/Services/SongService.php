@@ -5,6 +5,7 @@ use App\Models\Song;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use wapmorgan\Mp3Info\Mp3Info;
+use Intervention\Image\Laravel\Facades\Image;
 
 class SongService
 {
@@ -14,9 +15,10 @@ class SongService
      * @param Song $song
      * @param bool $getCover
      * @param bool $getMp3
+     * @param bool $getThumbnail
      * @return array
      */
-    public function formatSong (Song $song, bool $getCover = false, bool $getMp3 = false): array
+    public function formatSong (Song $song, bool $getCover = false, bool $getMp3 = false, bool $getThumbnail = false): array
     {
         $u = new UrlSafeService;
         $a = new AlbumService;
@@ -63,6 +65,9 @@ class SongService
         // only copy files if we explicitly should do so (mostly song page)
         if ($getCover) {
             $json['cover'] = $this->getCoverPath($song);
+        }
+        if ($getThumbnail) {
+            $json['thumbnail'] = $this->getCoverPath($song, true);
         }
         if ($getMp3) {
             $json['mp3Path'] = $this->getSongPath($song);
@@ -180,49 +185,89 @@ class SongService
     /**
      * @function copy Folder.jpg to storage, get filename for cover
      * @param Song $song
+     * @param bool $thumb
      * @return string
+     * @throws \Exception
      */
-    public function getCoverPath(Song $song): string
+    public function getCoverPath(Song $song, bool $thumb = false): string
     {
 
-        // no inline cover, try external "Folder.jpg" file
-        if(!$song->cover) {
-            // get path of Folder.jpg file
-            $path = explode('/', $song->path);
-            array_pop($path); // remove last entry; filename of the song.
-            $path[] = config('collection.coverFile.name');
-            $coverPath = config('collection.server.music.path').implode('/', $path);
+        $path = explode('/', $song->path);
+        array_pop($path); // remove last entry; filename of the song.
+        $path[] = config('collection.coverFile.name');
+        $coverPath = config('collection.server.music.path').implode('/', $path);
 
-            // create new filename
-            $fileInfo = new \SplFileInfo($coverPath);
-            $extension = $fileInfo->getExtension();
-            $storageFileName = $song->id.".".$extension;
-
-            // copy file to public disc if it doesn't yet exist.
-            if (Storage::missing($storageFileName) && file_exists($coverPath)) {
-                Storage::disk('public')
-                    ->put($storageFileName, file_get_contents($coverPath));
+        // use inline cover first, since it tends to be better quality.
+        if ($song->cover) {
+            $full_path = config('collection.server.music.path').$song->path;
+            $audio = new Mp3Info($full_path, true);
+            if ($thumb) {
+                $storageFileName = $song->id."-thumb.jpg";
+            } else {
+                $storageFileName = $song->id.".jpg";
             }
-
-            if (!file_exists($coverPath) && Storage::missing($storageFileName)) {
-                return "";
+            // copy file to public disc if it doesn't yet exist.
+            if (Storage::missing($storageFileName)) {
+                $image =  Image::read($audio->getCover());
+                if ($thumb) {
+                    $image = $this->scaleDownThumbnail($image);
+                } else {
+                    $image = $this->scaleDownCover($image);
+                }
+                Storage::disk('public')
+                    ->put($storageFileName, $image->encode());
             }
         }
 
-        // inline cover in mp3 file
-        else {
-            $full_path = config('collection.server.music.path').$song->path;
-            $audio = new Mp3Info($full_path, true);
-            $storageFileName = $song->id.".jpg";
-            // copy file to public disc if it doesn't yet exist.
-            if (Storage::missing($storageFileName)) {
-                Storage::disk('public')
-                    ->put($storageFileName, $audio->getCover());
+        // no inline cover - do we have a external "Folder.jpg" file?
+        else if (file_exists($coverPath)) {
+            // create new filename
+            $fileInfo = new \SplFileInfo($coverPath);
+            $extension = $fileInfo->getExtension();
+            if ($thumb) {
+                $storageFileName = $song->id."-thumb.".$extension;
+            } else {
+                $storageFileName = $song->id.".".$extension;
             }
+            // copy file to public disc if it doesn't yet exist.
+            if (Storage::missing($storageFileName) && file_exists($coverPath)) {
+                $image = Image::read(file_get_contents($coverPath));
+                if ($thumb) {
+                    $image = $this->scaleDownThumbnail($image);
+                } else {
+                    $image = $this->scaleDownCover($image);
+                }
+                Storage::disk('public')
+                    ->put($storageFileName, $image->encode());
+            }
+        }
+
+        // no "Folder.jpg", no inline cover.
+        else {
+            return "";
         }
 
         return "/storage/".$storageFileName;
     }
+
+    /**
+     * @param $image
+     * @return mixed
+     */
+    private function scaleDownThumbnail ($image): mixed
+    {
+        return $image->scaleDown(width: config('collection.server.thumb_width'));
+    }
+
+    /**
+     * @param $image
+     * @return mixed
+     */
+    private function scaleDownCover ($image): mixed
+    {
+        return $image->scaleDown(width: config('collection.server.cover_width'));
+    }
+
 
     /**
      * @function copy mp3 file to storage if needed, get filename
@@ -277,7 +322,7 @@ class SongService
             ->limit(config('collection.stats.songs.random'))
             ->get()
             ->map(function (Song $song) {
-                return $this->formatSong($song);
+                return $this->formatSong($song, false, false, true);
             })->toArray();
     }
 

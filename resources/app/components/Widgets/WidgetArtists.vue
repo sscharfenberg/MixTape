@@ -54,24 +54,26 @@ onMounted(() => {
                     class="stats__item stats__item--link"
                     :to="{ name: 'artist', params: { id: artist.encodedName } }"
                 >
-                    <span class="stats__item-meta">
-                        <span class="highlight">
-                            <app-icon name="artist" />
-                            {{ artist.name }}
+                    <span class="stats__col">
+                        <span class="stats__item-meta">
+                            <span class="highlight">
+                                <app-icon name="artist" />
+                                {{ artist.name }}
+                            </span>
+                            <span class="subitem">
+                                <app-icon name="album" />
+                                {{ artist.albums.length }}
+                            </span>
                         </span>
-                        <span class="subitem">
-                            <app-icon name="album" />
-                            {{ artist.albums.length }}
-                        </span>
-                    </span>
-                    <span class="stats__item-row">
-                        <span class="subitem highlight">
-                            <app-icon name="time" />
-                            {{ formatSeconds(artist.songsDuration) }}
-                        </span>
-                        <span class="subitem pull-right">
-                            {{ formatDecimals(artist.numSongs) }}
-                            Songs
+                        <span class="stats__item-row">
+                            <span class="subitem highlight">
+                                <app-icon name="time" />
+                                {{ formatSeconds(artist.songsDuration) }}
+                            </span>
+                            <span class="subitem pull-right">
+                                {{ formatDecimals(artist.numSongs) }}
+                                Songs
+                            </span>
                         </span>
                     </span>
                 </router-link>

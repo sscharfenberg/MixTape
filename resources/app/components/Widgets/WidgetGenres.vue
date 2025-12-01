@@ -54,21 +54,23 @@ onMounted(() => {
                     class="stats__item stats__item--link"
                     :to="{ name: 'genre', params: { id: genre.encodedName } }"
                 >
-                    <span class="stats__item-meta">
-                        <span class="stats__item-hdl">{{ genre.name }}</span>
-                        <span class="highlight">
-                            <app-icon name="file" />
-                            {{ formatBytes(genre.size) }}
+                    <span class="stats__col">
+                        <span class="stats__item-meta">
+                            <span class="stats__item-hdl">{{ genre.name }}</span>
+                            <span class="highlight">
+                                <app-icon name="file" />
+                                {{ formatBytes(genre.size) }}
+                            </span>
                         </span>
-                    </span>
-                    <span class="stats__item-row">
-                        <span class="subitem">
-                            <app-icon name="time" />
-                            {{ formatSeconds(genre.duration) }}
-                        </span>
-                        <span class="subitem pull-right">
-                            {{ formatDecimals(genre.numSongs) }}
-                            Dateien
+                        <span class="stats__item-row">
+                            <span class="subitem">
+                                <app-icon name="time" />
+                                {{ formatSeconds(genre.duration) }}
+                            </span>
+                            <span class="subitem pull-right">
+                                {{ formatDecimals(genre.numSongs) }}
+                                Dateien
+                            </span>
                         </span>
                     </span>
                 </router-link>

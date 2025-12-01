@@ -54,24 +54,27 @@ onMounted(() => {
                     class="stats__item stats__item--link"
                     :to="{ name: 'album', params: { id: album.id } }"
                 >
-                    <span class="stats__item-meta">
-                        <span class="stats__item-hdl">
-                            <app-icon name="album" />
-                            {{ album.name }}
+                    <img v-if="album.thumbnail" class="thumbnail" :src="album.thumbnail" alt="Thumbnail" />
+                    <span class="stats__col">
+                        <span class="stats__item-meta">
+                            <span class="stats__item-hdl">
+                                <app-icon name="album" />
+                                {{ album.name }}
+                            </span>
+                            <span class="subitem">
+                                <app-icon name="time" />
+                                {{ formatSeconds(album.duration) }}
+                            </span>
                         </span>
-                        <span class="subitem">
-                            <app-icon name="time" />
-                            {{ formatSeconds(album.duration) }}
-                        </span>
-                    </span>
-                    <span class="stats__item-row">
-                        <span class="highlight">
-                            <app-icon name="artist" />
-                            {{ album.artist.name }}
-                        </span>
-                        <span class="subitem pull-right">
-                            {{ formatDecimals(album.numSongs) }}
-                            Songs
+                        <span class="stats__item-row">
+                            <span class="highlight">
+                                <app-icon name="artist" />
+                                {{ album.artist.name }}
+                            </span>
+                            <span class="subitem pull-right">
+                                {{ formatDecimals(album.numSongs) }}
+                                Songs
+                            </span>
                         </span>
                     </span>
                 </router-link>
