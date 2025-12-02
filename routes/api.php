@@ -6,21 +6,21 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('api')->group(function () {
 
     /**
-     * Stats Controllers
+     * Widget Controllers
      */
-    // Global Stats Controller
+    // Global Widget Controller
     Route::get('/widget/global',
         [\App\Http\Controllers\Api\Widget\GlobalWidgetController::class, "show"]
     );
-    // Song Stats Controller
+    // Song Widget Controller
     Route::get('/widget/song',
         [\App\Http\Controllers\Api\Widget\SongWidgetController::class, "show"]
     );
-    // Genre Stats Controller
+    // Genre Widget Controller
     Route::get('/widget/genre',
         [\App\Http\Controllers\Api\Widget\GenreWidgetController::class, "show"]
     );
-    // Album Stats Controller
+    // Album Widget Controller
     Route::get('/widget/album',
         [\App\Http\Controllers\Api\Widget\AlbumWidgetController::class, "show"]
     );
@@ -28,7 +28,6 @@ Route::prefix('api')->group(function () {
     Route::get('/widget/artist',
         [\App\Http\Controllers\Api\Widget\ArtistWidgetController::class, "show"]
     );
-
 
     /**
      * Music Controllers
@@ -86,6 +85,14 @@ Route::prefix('api')->group(function () {
     // Genre Search Controller
     Route::get('/music/search/artists/{search}',
         [\App\Http\Controllers\Api\Music\ArtistSearchController::class, "show"]
+    );
+
+    /**
+     * Audiobook Controllers
+     */
+    // Audiobooks Controller
+    Route::get('/audiobooks',
+        [\App\Http\Controllers\Api\Audiobooks\AudiobooksController::class, "show"]
     );
 
 });

@@ -33,7 +33,7 @@ const autoPlay = computed({
     display: flex;
 
     width: 60px;
-    height: 34px;
+    height: 40px;
 
     border: map.get(s.$button, "border") solid map.get(c.$button, "default", "border");
 

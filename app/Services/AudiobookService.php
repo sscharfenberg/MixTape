@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Audiobook;
+use App\Models\Author;
+use App\Models\Narrator;
+
+class AudiobookService
+{
+
+    private function formatAudiobook(Audiobook $audiobook): array
+    {
+        $arr = [
+            'id' => $audiobook->id,
+            'name' => $audiobook->name,
+            'year' => $audiobook->year,
+            'duration' => $audiobook->duration,
+            'size' => $audiobook->size,
+            'authors' => $audiobook->authors,
+            'narrators' => $audiobook->narrators
+        ];
+        return $arr;
+    }
+
+    public function getAllAudiobooks(): array
+    {
+        $allAuthors = Author::all();
+        $allNarrators = Narrator::all();
+        $books = Audiobook::with('tracks')
+            ->get()
+            ->map(function (Audiobook $audiobook) use ($allAuthors, $allNarrators) {
+                $audiobook->duration = $audiobook->tracks->sum('duration');
+                $audiobook->size = $audiobook->tracks->sum('size');
+                // get authors of the audiobook. some tracks might not have an author.
+                $authors = [];
+                $audiobook->tracks
+                    ->unique('author_id')
+                    ->pluck('author_id')
+                    ->filter( function($authorId) {
+                        return !is_null($authorId);
+                    })->each( function($authorId) use ($allAuthors, &$authors) {
+                        $author = $allAuthors->where('id', $authorId)->first();
+                        if ($author) {
+                            $authors[] = [
+                                'id' => $author->id,
+                                'name' => $author->name
+                            ];
+                        };
+                    });
+                $audiobook->authors = $authors;
+                // get narrators. some tracks might not have a narrator, some audiobooks have several narrators.
+                $narrators = [];
+                $audiobook->tracks
+                    ->unique('narrator_id')
+                    ->pluck('narrator_id')
+                    ->filter( function($narratorId) {
+                        return !is_null($narratorId);
+                    })->each( function($narratorId) use ($allNarrators, &$narrators) {
+                        $narrator = $allNarrators->where('id', $narratorId)->first();
+                        if ($narrator) {
+                            $narrators[] = [
+                                'id' => $narrator->id,
+                                'name' => $narrator->name
+                            ];
+                        };
+                    });
+                $audiobook->narrators = $narrators;
+                return $this->formatAudiobook($audiobook);
+            })->sortByDesc('year');
+
+        // TODO: add audiobooks to author collection.
+
+        return array_values($books->toArray());
+    }
+
+}

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Narrator;
+use App\Models\Author;
 
 class Track extends Model
 {
@@ -69,6 +72,22 @@ class Track extends Model
         'modified_at'
     ];
 
+    /**
+     * Get the author associated with this track
+     * @return belongsTo
+     */
+    public function author(): belongsTo
+    {
+        return $this->belongsTo(Author::class, 'author_id', 'id');
+    }
 
+    /**
+     * Get the narrator associated with this track
+     * @return belongsTo
+     */
+    public function narrator(): belongsTo
+    {
+        return $this->belongsTo(Narrator::class, 'narrator_id', 'id');
+    }
 
 }
