@@ -104,7 +104,7 @@ ul {
 }
 
 .tab-content-area {
-    padding: 1ch 2ch;
+    padding: 2ch;
     border: map.get(s.$main, "tabnav-border") solid map.get(c.$main, "tabnav-background");
     border-top-width: 0;
 
