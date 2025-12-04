@@ -174,7 +174,6 @@ export default {
                     "background-image",
                     "background-repeat",
                     "background-attachment",
-                    "background-attachment",
                     "background-position",
                     "background-position-x",
                     "background-position-y",
