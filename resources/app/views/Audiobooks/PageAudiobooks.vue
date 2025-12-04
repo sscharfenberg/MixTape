@@ -6,7 +6,7 @@ import TabbedNavigation from "Components/TabbedNavigation/TabbedNavigation.vue";
 import { push } from "notivue";
 import { onMounted, ref } from "vue";
 import AudiobookAuthors from "./AudiobookAuthors.vue";
-import Audiobooks from "./Audiobooks.vue";
+import AudiobookBooks from "./AudiobookBooks.vue";
 const isLoading = ref(false);
 const data = ref(null);
 const hasError = ref(false);
@@ -63,7 +63,7 @@ const onTabChange = val => (currentTabIndex.value = val);
                 ]"
                 @tabchange="onTabChange"
             >
-                <audiobooks v-show="currentTabIndex === 0" :authors="data.authors" :books="data.audiobooks" />
+                <audiobook-books v-show="currentTabIndex === 0" :authors="data.authors" :books="data.audiobooks" />
                 <audiobook-authors v-show="currentTabIndex === 1" :authors="data.authors" :books="data.audiobooks" />
             </tabbed-navigation>
         </div>

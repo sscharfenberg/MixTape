@@ -139,7 +139,20 @@ $main: (
     "tabnav-border-active": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
     "tabnav-surface-active": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
     "tabnav-background-hover": light-dark(#fff, #000),
-    "tabnav-surface-hover": light-dark(#000, #fff)
+    "tabnav-surface-hover": light-dark(#000, #fff),
+    "bookshelf-book-background": light-dark(
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.7),
+            color.adjust(map.get(c.$grey, "iron"), $alpha: -0.8)
+        ),
+    "bookshelf-book-background-hover": light-dark(
+            color.adjust(map.get(c.$grey, "black"), $alpha: -0.4),
+            color.adjust(map.get(c.$grey, "white"), $alpha: -0.4)
+        ),
+    "bookshelf-book-data-background": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.2),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.2)
+        ),
+    "bookshelf-book-data-surface": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white"))
 ) !default;
 
 // widget colors

@@ -11,7 +11,7 @@ export const audiobookRoutes = [
             {
                 path: ":id",
                 component: () => import("../../views/Audiobooks/Audiobook/PageAudiobook.vue"),
-                name: "artist",
+                name: "audiobook",
                 meta: { title: "Audiobook", icon: "audiobook" }
             }
         ]

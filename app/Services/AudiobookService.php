@@ -15,18 +15,22 @@ class AudiobookService
      * @param Audiobook $audiobook
      * @param bool $addCover
      * @return array
+     * @throws \Exception
      */
     private function formatAudiobook(Audiobook $audiobook, bool $addCover = false): array
     {
         $c = new CoverService();
+        $u = new UrlSafeService();
         $arr = [
             'id' => $audiobook->id,
             'name' => $audiobook->name,
+            'encodedName' => $u->encode($audiobook->name),
             'year' => $audiobook->year,
             'duration' => $audiobook->duration,
             'size' => $audiobook->size,
             'authors' => $audiobook->authors,
-            'narrators' => $audiobook->narrators
+            'narrators' => $audiobook->narrators,
+            'numTracks' => $audiobook->tracks->count()
         ];
         if ($addCover) {
             $track = $audiobook->tracks()->first();
@@ -91,12 +95,6 @@ class AudiobookService
             'authors' => array_values($allAuthors->toArray()),
             'narrators' => array_values($allNarrators->toArray())
         ];
-    }
-
-
-    private function getCoverPath(Track $track, bool $thumb = false): string
-    {
-        return "";
     }
 
 }

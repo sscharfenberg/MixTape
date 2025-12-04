@@ -130,7 +130,14 @@ $main: (
     "table-input-padding": math.round(s.$base * 0.4) math.round(s.$base * 0.8),
     "table-button-radius": map.get(s.$radius, "base"),
     "tabnav-radius": map.get(s.$radius, "featured"),
-    "tabnav-border": map.get(s.$border, "base")
+    "tabnav-border": map.get(s.$border, "base"),
+    "bookshelf-min-width": math.round(s.$base * 16),
+    "bookshelf-book-radius": map.get(s.$radius, "featured"),
+    "bookshelf-book-padding": (
+        "base": math.round(s.$base * 0.45),
+        "landscape": math.round(s.$base * 0.6)
+    ),
+    "bookshelf-book-data-padding": math.round(s.$base * 0.45) math.round(s.$base * 0.7)
 ) !default;
 
 // size tokens for widgets

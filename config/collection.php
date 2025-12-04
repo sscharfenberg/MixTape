@@ -54,7 +54,7 @@ return [
             ],
             'path' => 512
         ],
-        // Audiobooks
+        // AudiobookBooks
         'authors' => [
             'name' => 128,
         ],

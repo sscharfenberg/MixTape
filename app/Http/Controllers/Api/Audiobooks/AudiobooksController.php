@@ -22,7 +22,7 @@ class AudiobooksController extends Controller
             return response()->json($audiobooks, 200);
         } else {
             return response()
-                ->json(['message' => 'Fehler beim laden der Audiobooks. app:update durchgeführt?'], 422);
+                ->json(['message' => 'Fehler beim laden der AudiobookBooks. app:update durchgeführt?'], 422);
         }
     }
 

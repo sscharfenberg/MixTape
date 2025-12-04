@@ -90,7 +90,7 @@ Route::prefix('api')->group(function () {
     /**
      * Audiobook Controllers
      */
-    // Audiobooks Controller
+    // AudiobookBooks Controller
     Route::get('/audiobooks',
         [\App\Http\Controllers\Api\Audiobooks\AudiobooksController::class, "show"]
     );

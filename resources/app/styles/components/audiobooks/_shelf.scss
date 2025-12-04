@@ -1,0 +1,103 @@
+/******************************************************************************
+ * bookshelf
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/colors" as c;
+@use "Abstracts/mixins" as m;
+@use "Abstracts/sizes" as s;
+
+.bookshelf {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(map.get(s.$main, "bookshelf-min-width"), 100%), 1fr));
+
+    padding: 0;
+    margin: 1ch 0;
+
+    gap: 2ch;
+
+    list-style: none;
+
+    &__book {
+        display: block;
+        position: relative;
+
+        width: 100%;
+        height: 100%;
+
+        padding: map.get(s.$main, "bookshelf-book-padding", "base");
+
+        background-color: map.get(c.$main, "bookshelf-book-background");
+        border-radius: map.get(s.$main, "bookshelf-book-radius");
+
+        @include m.mq("landscape") {
+            padding: map.get(s.$main, "bookshelf-book-padding", "landscape");
+        }
+
+        &:hover {
+            background-color: map.get(c.$main, "bookshelf-book-background-hover");
+        }
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+
+        border-radius: map.get(s.$main, "bookshelf-book-radius");
+    }
+
+    &__book-data,
+    &__book-meta {
+        position: absolute;
+        right: map.get(s.$main, "bookshelf-book-padding", "base");
+        left: map.get(s.$main, "bookshelf-book-padding", "base");
+
+        padding: map.get(s.$main, "bookshelf-book-data-padding");
+
+        background-color: map.get(c.$main, "bookshelf-book-data-background");
+        color: map.get(c.$main, "bookshelf-book-data-surface");
+
+        @include m.mq("landscape") {
+            right: map.get(s.$main, "bookshelf-book-padding", "landscape");
+            left: map.get(s.$main, "bookshelf-book-padding", "landscape");
+        }
+
+        .row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+
+            gap: 1ch;
+        }
+
+        .col {
+            display: flex;
+            align-items: center;
+
+            gap: 0.5ch;
+        }
+    }
+
+    &__book-data {
+        bottom: map.get(s.$main, "bookshelf-book-padding", "base");
+
+        border-bottom-right-radius: map.get(s.$main, "bookshelf-book-radius");
+        border-bottom-left-radius: map.get(s.$main, "bookshelf-book-radius");
+
+        @include m.mq("landscape") {
+            bottom: map.get(s.$main, "bookshelf-book-padding", "landscape");
+        }
+    }
+
+    &__book-meta {
+        top: map.get(s.$main, "bookshelf-book-padding", "base");
+
+        border-top-left-radius: map.get(s.$main, "bookshelf-book-radius");
+        border-top-right-radius: map.get(s.$main, "bookshelf-book-radius");
+
+        @include m.mq("landscape") {
+            top: map.get(s.$main, "bookshelf-book-padding", "landscape");
+        }
+    }
+}
