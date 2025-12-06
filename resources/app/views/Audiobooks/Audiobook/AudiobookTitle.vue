@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import PlayerAudiobookNavigation from "Components/Player/PlayerAudiobookNavigation.vue";
-defineProps({
+import { usePlayerStore } from "@/stores/player";
+import PlayerAudiobookNavigation from "Views/Audiobooks/Audiobook/PlayerAudiobookNavigation.vue";
+const emit = defineEmits(["play"]);
+const store = usePlayerStore();
+const props = defineProps({
     title: {
         type: String,
         required: true
@@ -15,6 +18,11 @@ defineProps({
         required: true
     }
 });
+const onPlay = (value: string) => {
+    console.log("in title, play", value);
+    // store.setAudiobookBookmark(props.bookEncodedName, value, 0);
+    emit("play", value);
+};
 </script>
 
 <template>
@@ -25,7 +33,7 @@ defineProps({
                 :nav="{}"
                 :tracks="tracks"
                 :book-encoded-name="bookEncodedName"
-                @play="$emit('play', value)"
+                @play="onPlay"
             />
         </div>
         <img v-if="cover && cover.length > 48" :src="cover" :alt="title" />

@@ -39,6 +39,8 @@ const fetchData = () => {
 };
 watch(() => route.params.id, fetchData, { immediate: true });
 const onPlay = (value: string) => {
+    console.log("called play in page", value);
+    store.setAudiobookBookmark(route.params.id, value, 0);
     axios
         .get(`/api/audiobooks/play/${value}`)
         .then(response => {
@@ -71,7 +73,7 @@ const onPlay = (value: string) => {
                 :cover="data.cover"
                 :tracks="data.tracks"
                 :book-encoded-name="route.params.id"
-                @play="onPlay(value)"
+                @play="onPlay"
             />
             <audio-player
                 v-if="trackUrl && currentName"

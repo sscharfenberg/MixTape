@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { usePlayerStore } from "@/stores/player";
 import AppButton from "Components/Button/AppButton.vue";
-import AudiobookTracks from "Views/Audiobooks/Audiobook/AudiobookTracks.vue";
+import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
 import { computed } from "vue";
-import AutoplaySwitch from "./AutoplaySwitch.vue";
+import AudiobookTracks from "./AudiobookTracks.vue";
 const props = defineProps({
     nav: {
         type: Object,
@@ -22,7 +22,11 @@ const emit = defineEmits(["play"]);
 const store = usePlayerStore();
 const currentTrack = computed(() => store.getAudiobookBookmark(props.bookEncodedName));
 const playFirst = () => {
+    console.log("play first", props.tracks[0].encodedPath);
     emit("play", props.tracks[0].encodedPath);
+};
+const playAny = (value: string) => {
+    emit("play", value);
 };
 </script>
 
@@ -41,7 +45,7 @@ const playFirst = () => {
             v-tippy="{ content: `Von Beginn an abspielen` }"
             @click="playFirst"
         />
-        <audiobook-tracks v-else :book-encoded-name="bookEncodedName" :tracks="tracks" @play="$emit('play', value)" />
+        <audiobook-tracks v-else :book-encoded-name="bookEncodedName" :tracks="tracks" @play="playAny" />
         <app-button
             :disabled="nav.next?.encodedPath ? null : true"
             icon="next"

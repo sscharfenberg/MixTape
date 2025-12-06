@@ -24,8 +24,9 @@ const trackOptions = props.tracks.map(t => {
     return { label: `${discs} ${t.track} - ${t.name}`, value: t.encodedPath };
 });
 const onChange = (value: string) => {
-    store.setAudiobookBookmark(props.bookEncodedName, value, 0);
+    console.log("in tracks dropdown, change", value);
     if (value) {
+        store.setAudiobookBookmark(props.bookEncodedName, value, 0);
         emit("play", value);
     }
 };

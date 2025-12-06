@@ -22,11 +22,17 @@ export const usePlayerStore = defineStore("player", {
          * @param timestamp
          */
         setAudiobookBookmark(AudiobookEncodedName: string, TrackEncodedPath: string, timestamp: number) {
-            console.log("set audiobookBookmark", AudiobookEncodedName, TrackEncodedPath, timestamp);
+            console.log(
+                "set audiobookBookmark for book",
+                AudiobookEncodedName,
+                "to track",
+                TrackEncodedPath,
+                timestamp
+            );
             // do we already have a bookmark for this book?
             if (this.audiobooks.find(book => book.audiobookEncodedName === AudiobookEncodedName)) {
                 console.log("already exists, update bookmark");
-                this.audiobooks.map(book => {
+                this.audiobooks = this.audiobooks.map(book => {
                     if (book.audiobookEncodedName === AudiobookEncodedName) {
                         book.trackEncodedPath = TrackEncodedPath;
                         book.timestamp = timestamp;
