@@ -50,7 +50,7 @@ export const usePlayerStore = defineStore("player", {
         }
     },
     persist: {
-        key: "ac-player",
+        key: "player",
         storage: localStorage
     }
 });

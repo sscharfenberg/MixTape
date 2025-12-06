@@ -112,6 +112,9 @@ class AudiobookLibraryService {
         if (isset($audio->tags2) && array_key_exists('TPOS', $audio->tags2)) {
             $track['disc'] = $lib->getNum($audio->tags2['TPOS']);
         }
+        if (isset($audio->tags2) && array_key_exists('TPOS', $audio->tags2)) {
+            $track['disc'] = $lib->getNum($audio->tags2['TPOS']);
+        }
         if (isset($audio->codecVersion) && isset($audio->layerVersion)) {
             $track['codec'] = "MPEG $audio->codecVersion Layer $audio->layerVersion";
         }

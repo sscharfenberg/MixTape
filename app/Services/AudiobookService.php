@@ -57,6 +57,8 @@ class AudiobookService
             'id' => $track->id,
             'name' => $track->name,
             'track' => $track->track,
+            'disc' => $track->disc,
+            'discs' => $track->audiobook->tracks->unique('disc')->count(),
             'codec' => $track->codec,
             'channel' => $track->channel,
             'size' => $track->size,
@@ -160,9 +162,15 @@ class AudiobookService
         $book->size = $book->tracks->sum('size');
         $book->authors = $this->getBookAuthors($book);
         $book->narrators = $this->getBookNarrators($book);
-        $book->tracks = $book->tracks->map(function($track) {
-            return $this->formatTrack($track);
-        });
+        $book->tracks = $book->tracks
+            ->sortBy([
+                ['disc', 'asc'],
+                ['track', 'asc'],
+            ])
+            ->values()
+            ->map(function($track) {
+                return $this->formatTrack($track);
+            });
         // format audiobook json array
         return $this->formatAudiobook($book, true, true);
     }

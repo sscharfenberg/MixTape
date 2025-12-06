@@ -5,7 +5,6 @@ import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import AudioPlayer from "Components/Player/AudioPlayer.vue";
 import { push } from "notivue";
-import AudiobookTracks from "Views/Audiobooks/Audiobook/AudiobookTracks.vue";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import AudiobookMetaData from "./AudiobookMetaData.vue";
@@ -67,14 +66,19 @@ const onPlay = (value: string) => {
         </div>
         <show-error v-else-if="hasError && !isLoading" @refresh="fetchData()" />
         <div v-if="!hasError && !isLoading && data?.tracks?.length" class="audiobook">
-            <audiobook-title :title="data.name" :cover="data.cover" />
+            <audiobook-title
+                :title="data.name"
+                :cover="data.cover"
+                :tracks="data.tracks"
+                :book-encoded-name="route.params.id"
+                @play="onPlay(value)"
+            />
             <audio-player
                 v-if="trackUrl && currentName"
                 :src="trackUrl"
                 :title="currentName"
                 :autoplay="store.autoplay"
             />
-            <audiobook-tracks :tracks="data.tracks" :book-encoded-name="route.params.id" @play="onPlay" />
             <audiobook-meta-data :book="data" />
         </div>
     </section>

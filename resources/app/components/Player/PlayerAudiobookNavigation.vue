@@ -1,0 +1,64 @@
+<script setup lang="ts">
+import { usePlayerStore } from "@/stores/player";
+import AppButton from "Components/Button/AppButton.vue";
+import AudiobookTracks from "Views/Audiobooks/Audiobook/AudiobookTracks.vue";
+import { computed } from "vue";
+import AutoplaySwitch from "./AutoplaySwitch.vue";
+const props = defineProps({
+    nav: {
+        type: Object,
+        required: true
+    },
+    tracks: {
+        type: Array,
+        required: true
+    },
+    bookEncodedName: {
+        type: String,
+        required: true
+    }
+});
+const emit = defineEmits(["play"]);
+const store = usePlayerStore();
+const currentTrack = computed(() => store.getAudiobookBookmark(props.bookEncodedName));
+const playFirst = () => {
+    emit("play", props.tracks[0].encodedPath);
+};
+</script>
+
+<template>
+    <div class="audiobook-buttons">
+        <app-button
+            :disabled="nav.prev?.encodedPath ? null : true"
+            icon="prev"
+            v-tippy="{ content: `${nav.prev?.track} ${nav.prev?.name}` }"
+            class="btn default"
+        />
+        <app-button
+            v-if="!currentTrack?.trackEncodedPath"
+            icon="play"
+            class="btn primary"
+            v-tippy="{ content: `Von Beginn an abspielen` }"
+            @click="playFirst"
+        />
+        <audiobook-tracks v-else :book-encoded-name="bookEncodedName" :tracks="tracks" @play="$emit('play', value)" />
+        <app-button
+            :disabled="nav.next?.encodedPath ? null : true"
+            icon="next"
+            v-tippy="{ content: `${nav.next?.track} ${nav.next?.name}` }"
+            class="btn default"
+        />
+        <autoplay-switch />
+    </div>
+</template>
+
+<style scoped lang="scss">
+.audiobook-buttons {
+    display: flex;
+    align-items: center;
+
+    margin-top: auto;
+
+    gap: 1ch;
+}
+</style>

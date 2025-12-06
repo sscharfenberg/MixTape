@@ -57,6 +57,7 @@ class Track extends Model
     protected $fillable = [
         'name',
         'track',
+        'disc',
         'codec',
         'channel',
         'size',
@@ -88,6 +89,15 @@ class Track extends Model
     public function narrator(): belongsTo
     {
         return $this->belongsTo(Narrator::class, 'narrator_id', 'id');
+    }
+
+    /**
+     * Get the Audiobook associated with this track
+     * @return belongsTo
+     */
+    public function audiobook(): belongsTo
+    {
+        return $this->belongsTo(Audiobook::class, 'audiobook_id', 'id');
     }
 
 }

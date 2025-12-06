@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name', config('collection.db.tracks.name'));
             $table->unsignedSmallInteger('track')->nullable();
+            $table->unsignedTinyInteger('disc')->nullable();
             $table->string('codec', 14)->nullable();
             $table->enum('channel', config('collection.db.tracks.channel'))->nullable();
             $table->unsignedInteger('size')->nullable();
