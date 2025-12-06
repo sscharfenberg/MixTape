@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usePlayerStore } from "@/stores/player";
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
@@ -13,7 +14,9 @@ const isLoading = ref(false);
 const data = ref(null);
 const hasError = ref(false);
 const route = useRoute();
-const autoplay = ref(false);
+const store = usePlayerStore();
+const trackUrl = ref("");
+const currentName = ref("");
 const fetchData = () => {
     data.value = null;
     isLoading.value = true;
@@ -40,10 +43,16 @@ const onPlay = (value: string) => {
     axios
         .get(`/api/audiobooks/play/${value}`)
         .then(response => {
-            console.log(response.data);
+            trackUrl.value = response.data.path;
+            currentName.value = response.data.name;
         })
         .catch(error => {
             console.error(error);
+            push.error({
+                title: error.code,
+                message: error.response.data.message || error.message
+            });
+            hasError.value = true;
         })
         .finally(() => {
             console.log("xhr finished.");
@@ -59,9 +68,27 @@ const onPlay = (value: string) => {
         <show-error v-else-if="hasError && !isLoading" @refresh="fetchData()" />
         <div v-if="!hasError && !isLoading && data?.tracks?.length" class="audiobook">
             <audiobook-title :title="data.name" :cover="data.cover" />
-            <audio-player src="test" title="fuddel" :autoplay="autoplay" />
+            <audio-player
+                v-if="trackUrl && currentName"
+                :src="trackUrl"
+                :title="currentName"
+                :autoplay="store.autoplay"
+            />
+            <audiobook-tracks :tracks="data.tracks" :book-encoded-name="route.params.id" @play="onPlay" />
             <audiobook-meta-data :book="data" />
-            <audiobook-tracks :tracks="data.tracks" @play="onPlay" />
         </div>
     </section>
 </template>
+
+<style lang="scss" scoped>
+.audiobook {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1ch;
+}
+
+.details-metadata {
+    margin: 0;
+}
+</style>

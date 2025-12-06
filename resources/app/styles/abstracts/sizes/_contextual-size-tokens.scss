@@ -176,7 +176,13 @@ $widget: (
 $form: (
     "border": map.get(s.$border, "base"),
     "radius": map.get(s.$radius, "base"),
-    "padding": math.round(s.$base * 0.5) math.round(s.$base * 0.8)
+    "padding": math.round(s.$base * 0.5) math.round(s.$base * 0.8),
+    "select-height": math.round(s.$base * 2.375),
+    "select-border": map.get(s.$border, "base"),
+    "select-radius": map.get(s.$radius, "base"),
+    "option-padding": math.round(s.$base * 0.4) math.round(s.$base * 0.6),
+    "option-menu-radius": map.get(s.$radius, "featured"),
+    "select-caret": math.round(s.$base * 0.4)
 ) !default;
 
 // size tokens for search results

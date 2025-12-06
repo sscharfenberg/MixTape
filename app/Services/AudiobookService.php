@@ -62,7 +62,8 @@ class AudiobookService
             'size' => $track->size,
             'duration' => $track->duration,
             'sample_rate' => $track->sample_rate,
-            'path' => $u->encode($track->path)
+            'encodedPath' => $u->encode($track->path),
+            'path' => $track->path
         ];
         return $arr;
     }
@@ -167,11 +168,11 @@ class AudiobookService
     }
 
     /**
-     * @function prepare mp3 track and return storage file name.
+     * @function prepare mp3 track and return storage file name
      * @param string $path
-     * @return string
+     * @return array
      */
-    public function playTrack(string $path): string
+    public function playTrack(string $path): array
     {
         $u = new UrlSafeService();
         $track = Track::where('path', $u->decode($path))
@@ -190,7 +191,11 @@ class AudiobookService
             Log::channel('api')->info("File '$storageTrackName' already exists in public storage.");
         }
 
-        return "/storage/$storageTrackName";
+        return [
+            'id' => $track->id,
+            'path' => "/storage/$storageTrackName",
+            'name' => $track->name,
+        ];
     }
 
 }

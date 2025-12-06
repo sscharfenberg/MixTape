@@ -208,7 +208,28 @@ $form: (
     "background": light-dark(map.get(c.$grey, "astral"), map.get(c.$grey, "ebony")),
     "surface": light-dark(map.get(c.$grey, "abbey"), map.get(c.$grey, "fog")),
     "border-focus": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
-    "surface-focus": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color"))
+    "surface-focus": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
+    "select-border": light-dark(
+            color.adjust(map.get(c.$grey, "astral"), $alpha: -0.4),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.6)
+        ),
+    "select-background": light-dark(map.get(c.$grey, "astral"), map.get(c.$grey, "ebony")),
+    "select-surface": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),
+    "select-caret": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),
+    "select-clear": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
+    "option-background-odd": light-dark(map.get(c.$grey, "mystic"), map.get(c.$grey, "bunker")),
+    "option-background-even": light-dark(map.get(c.$grey, "infra"), map.get(c.$grey, "abbey")),
+    "option-surface": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),
+    "option-background-hover": light-dark(map.get(c.$grey, "white"), map.get(c.$grey, "black")),
+    "option-surface-hover": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
+    "option-surface-selected": light-dark(
+            map.get(c.$brand, "christine", "contrast"),
+            map.get(c.$brand, "viking", "contrast")
+        ),
+    "option-background-selected": light-dark(
+            map.get(c.$brand, "christine", "color"),
+            map.get(c.$brand, "viking", "color")
+        )
 ) !default;
 
 // colors for search results

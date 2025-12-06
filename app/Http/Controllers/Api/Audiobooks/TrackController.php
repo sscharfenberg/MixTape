@@ -18,7 +18,7 @@ class TrackController extends Controller
     public function play(Request $request, string $path): JsonResponse
     {
         $a = new AudiobookService();
-        $a->playTrack($path);
+        return response()->json($a->playTrack($path));
     }
 
 }

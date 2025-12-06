@@ -7,14 +7,56 @@ import { defineStore } from "pinia";
  * @function store definition
  */
 export const usePlayerStore = defineStore("player", {
-    state: () => {
+    state: (): PlayerState => {
         return {
-            autoplay: false
+            autoplay: false,
+            shuffle: false,
+            audiobooks: []
         };
     },
-    actions: {},
+    actions: {
+        /**
+         * @function set bookmark of audiobook
+         * @param AudiobookEncodedName
+         * @param TrackEncodedPath
+         * @param timestamp
+         */
+        setAudiobookBookmark(AudiobookEncodedName: string, TrackEncodedPath: string, timestamp: number) {
+            console.log("set audiobookBookmark", AudiobookEncodedName, TrackEncodedPath, timestamp);
+            // do we already have a bookmark for this book?
+            if (this.audiobooks.find(book => book.audiobookEncodedName === AudiobookEncodedName)) {
+                console.log("already exists, update bookmark");
+                this.audiobooks.map(book => {
+                    if (book.audiobookEncodedName === AudiobookEncodedName) {
+                        book.trackEncodedPath = TrackEncodedPath;
+                        book.timestamp = timestamp;
+                    }
+                    return book;
+                });
+            } else {
+                console.log("no bookmark for this book exists.");
+                this.audiobooks.push({
+                    audiobookEncodedName: AudiobookEncodedName,
+                    trackEncodedPath: TrackEncodedPath,
+                    timestamp: 0
+                });
+            }
+        }
+    },
+    getters: {
+        getAudiobookBookmark: state => {
+            return (AudiobookEncodedName: string) =>
+                state.audiobooks.find(book => book.audiobookEncodedName === AudiobookEncodedName);
+        }
+    },
     persist: {
         key: "ac-player",
         storage: localStorage
     }
 });
+
+interface PlayerState {
+    autoplay: boolean;
+    shuffle: boolean;
+    audiobooks: Array<object>;
+}
