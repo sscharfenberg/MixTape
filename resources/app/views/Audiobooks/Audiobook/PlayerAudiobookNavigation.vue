@@ -71,7 +71,7 @@ onMounted(() => {
             v-tippy="{ content: `Von Beginn an abspielen` }"
             @click="playFirst"
         />
-        <audiobook-tracks v-else :book-encoded-name="bookEncodedName" :tracks="tracks" @play="playAny" />
+        <audiobook-tracks :book-encoded-name="bookEncodedName" :tracks="tracks" @play="playAny" />
         <app-button
             :disabled="nav.next?.encodedPath ? null : true"
             icon="next"

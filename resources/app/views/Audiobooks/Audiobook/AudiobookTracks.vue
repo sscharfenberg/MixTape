@@ -72,8 +72,8 @@ const currentTrack = computed(() => store.getAudiobookBookmark(props.bookEncoded
     height: 100%;
     gap: 1ch;
 
-    background-color: map.get(c.$main, "row1-background");
-    color: map.get(c.$main, "row1-surface");
+    background-color: map.get(c.$main, "row2-background");
+    color: map.get(c.$main, "row2-surface");
 
     list-style: none;
 
