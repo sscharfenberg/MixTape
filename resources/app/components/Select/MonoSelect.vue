@@ -66,11 +66,13 @@ onUnmounted(() => {
 
 <template>
     <div class="form-select" ref="dropdown">
-        <button :class="{ open: menuOpen }" @click="toggleMenu">
+        <button :class="{ open: menuOpen }" @click.prevent="toggleMenu">
             <span v-if="selectedValue">{{ options.find(option => option.value === selectedValue).label }}</span>
             <span v-else>{{ placeholder }}</span>
             <span class="actions">
-                <button class="clear-btn" v-if="selectedValue" @click="select('')"><app-icon name="clear" /></button>
+                <button class="clear-btn" v-if="selectedValue" @click.prevent="select('')">
+                    <app-icon name="clear" />
+                </button>
                 <span class="caret" />
             </span>
         </button>
@@ -84,7 +86,7 @@ onUnmounted(() => {
                         selected: selectedValue === option.value
                     }"
                     class="form-option"
-                    @click="select(option.value)"
+                    @click.prevent="select(option.value)"
                 >
                     {{ option.label }}
                 </button>

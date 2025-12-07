@@ -53,14 +53,14 @@ onMounted(() => {
             icon="prev"
             v-tippy="{ content: `${nav.prev?.track} ${nav.prev?.name}` }"
             class="btn default"
-            @click="playAny(nav.prev?.encodedPath)"
+            @click.prevent="playAny(nav.prev?.encodedPath)"
         />
         <app-button
             v-if="!currentTrack?.trackEncodedPath"
             icon="play"
             class="btn primary"
             v-tippy="{ content: `Von Beginn an abspielen` }"
-            @click="playFirst"
+            @click.prevent="playFirst"
         />
         <audiobook-tracks :book-encoded-name="bookEncodedName" :tracks="tracks" @play="playAny" />
         <app-button
@@ -68,7 +68,7 @@ onMounted(() => {
             icon="next"
             v-tippy="{ content: `${nav.next?.track} ${nav.next?.name}` }"
             class="btn default"
-            @click="playAny(nav.next?.encodedPath)"
+            @click.prevent="playAny(nav.next?.encodedPath)"
         />
         <autoplay-switch />
     </div>

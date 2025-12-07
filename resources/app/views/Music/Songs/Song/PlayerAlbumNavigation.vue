@@ -20,7 +20,7 @@ const onNavigation = song => {
             :to="{ name: 'song', params: { id: nav.prev?.encodedPath } }"
             v-tippy="{ content: `${nav.prev?.track} ${nav.prev?.name}` }"
             class="btn default"
-            @click="onNavigation(nav.prev)"
+            @click.prevent="onNavigation(nav.prev)"
         >
             <app-icon name="prev" />
         </router-link>
@@ -29,7 +29,7 @@ const onNavigation = song => {
             :to="{ name: 'song', params: { id: nav.next?.encodedPath } }"
             v-tippy="{ content: `${nav.next?.track} ${nav.next?.name}` }"
             class="btn default"
-            @click="onNavigation(nav.next)"
+            @click.prevent="onNavigation(nav.next)"
         >
             <app-icon name="next" />
         </router-link>

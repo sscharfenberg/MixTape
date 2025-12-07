@@ -14,7 +14,7 @@ const fetchData = () => {
     axios
         .get("/api/widget/song")
         .then(response => {
-            if (response.data?.length) {
+            if (response.data?.length > 0) {
                 hasError.value = false;
                 data.value = response.data;
             }

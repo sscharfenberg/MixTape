@@ -6,7 +6,7 @@ const showBody = ref(false);
 
 <template>
     <div class="accordion">
-        <button class="accordion-head" :class="{ active: showBody }" @click="showBody = !showBody">
+        <button class="accordion-head" :class="{ active: showBody }" @click.prevent="showBody = !showBody">
             <slot name="head" />
             <span class="trenner" />
             <app-icon v-show="showBody" name="accordion-close" />

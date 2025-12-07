@@ -5,7 +5,7 @@ import AppButton from "Components/Button/AppButton.vue";
 <template>
     <div class="error">
         Oops. Da ist was schiefgelaufen.
-        <app-button text="Neu laden" icon="refresh" type="primary" @click="$emit('refresh')" />
+        <app-button text="Neu laden" icon="refresh" type="primary" @click.prevent="$emit('refresh')" />
     </div>
 </template>
 
