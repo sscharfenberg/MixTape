@@ -4,6 +4,7 @@ import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import AudioPlayer from "Components/Player/AudioPlayer.vue";
+import { nowPlaying } from "Components/Player/useNowPlaying";
 import { push } from "notivue";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -64,10 +65,7 @@ const onEnded = async () => {
     if (nav.next?.encodedPath) {
         await onPlay(nav.next.encodedPath);
         store.setAudiobookBookmark(route.params.id, nav.next.encodedPath, 0);
-        push.info({
-            title: "Wird gespielt:",
-            message: `${nav.next.discs > 1 ? "Disc " + nav.next.disc + "/" + nav.next.discs + " - " : ""}Track ${nav.next.track} - ${nav.next.name}`
-        });
+        nowPlaying(nav.next);
     }
 };
 </script>

@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
+import { nowPlaying } from "Components/Player/useNowPlaying";
 defineProps({
     nav: {
         type: Object,
         required: true
     }
 });
+const onNavigation = song => {
+    nowPlaying(song);
+};
 </script>
 
 <template>
@@ -16,6 +20,7 @@ defineProps({
             :to="{ name: 'song', params: { id: nav.prev?.encodedPath } }"
             v-tippy="{ content: `${nav.prev?.track} ${nav.prev?.name}` }"
             class="btn default"
+            @click="onNavigation(nav.prev)"
         >
             <app-icon name="prev" />
         </router-link>
@@ -24,6 +29,7 @@ defineProps({
             :to="{ name: 'song', params: { id: nav.next?.encodedPath } }"
             v-tippy="{ content: `${nav.next?.track} ${nav.next?.name}` }"
             class="btn default"
+            @click="onNavigation(nav.next)"
         >
             <app-icon name="next" />
         </router-link>

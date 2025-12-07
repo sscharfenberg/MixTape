@@ -96,7 +96,7 @@ const dataTableOptions = {
             });
         });
     },
-    order: [[1, "asc"]],
+    order: [[0, "asc"]],
     responsive: true,
     pageLength: 25
 };

@@ -119,7 +119,7 @@ $main: (
     "breadcrumb": (
         "height": math.round(map.get($app, "icons", "medium") * 1.15),
         "height-landscape": math.round(map.get($app, "icons", "large") * 1.15),
-        "padding": 0 7px 0 20px,
+        "padding": 0 7px 0 25px,
         "padding-landscape": 0 10px 0 30px,
         "radius": map.get(s.$radius, "base")
     ),

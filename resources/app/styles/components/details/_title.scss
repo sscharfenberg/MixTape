@@ -36,14 +36,10 @@
     }
 
     img {
-        max-width: 200px;
+        max-width: 320px;
         border: map.get(s.$main, "cover-border", "base") solid map.get(c.$main, "cover-border");
 
         border-radius: map.get(s.$main, "cover-radius");
-
-        @include m.mq("portrait") {
-            max-width: 320px;
-        }
 
         @include m.mq("landscape") {
             border-width: map.get(s.$main, "cover-border", "landscape");

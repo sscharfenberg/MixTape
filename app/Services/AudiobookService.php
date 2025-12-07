@@ -68,6 +68,13 @@ class AudiobookService
             'encodedPath' => $u->encode($track->path),
             'path' => $track->path
         ];
+        if ($track->disc) {
+            $currentDisc = $track->disc;
+            $arr['discTracks'] = $track->audiobook->tracks->filter( function ($disc) use ($currentDisc) {
+                return $disc->disc == $currentDisc;
+            })->count();
+        }
+
         return $arr;
     }
 

@@ -162,6 +162,10 @@ class SongService
                     'encodedPath' => $u->encode($nextTrack->path),
                     'track' => $nextTrack->track,
                     'disc' => $nextTrack->disc,
+                    'discs' => $numDiscs,
+                    'discTracks' => $nextTrack->album->songs->filter(function ($song) use ($nextDiscNumber) {
+                        return $song->disc == $nextDiscNumber;
+                    })->count(),
                     'name' => $nextTrack->name,
                 ];
             }
@@ -175,6 +179,10 @@ class SongService
                     'encodedPath' => $u->encode($prevTrack->path),
                     'track' => $prevTrack->track,
                     'disc' => $prevTrack->disc,
+                    'discs' => $numDiscs,
+                    'discTracks' => $prevTrack->album->songs->filter(function ($song) use ($nextDiscNumber) {
+                        return $song->disc == $nextDiscNumber;
+                    })->count(),
                     'name' => $prevTrack->name,
                 ];
             }

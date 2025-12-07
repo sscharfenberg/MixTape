@@ -5,6 +5,7 @@ import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import AudioPlayer from "Components/Player/AudioPlayer.vue";
+import { nowPlaying } from "Components/Player/useNowPlaying";
 import { push } from "notivue";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -38,10 +39,7 @@ const fetchData = () => {
 };
 const onEnded = async () => {
     if (data.value.nav.next && store.autoplay) {
-        push.success({
-            title: "Nächster Song",
-            message: `${data.value.nav.next.name}`
-        });
+        nowPlaying(data.value.nav.next);
         await router.push({
             to: "song",
             params: {

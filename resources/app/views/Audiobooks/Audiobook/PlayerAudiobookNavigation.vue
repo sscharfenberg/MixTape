@@ -2,7 +2,7 @@
 import { usePlayerStore } from "@/stores/player";
 import AppButton from "Components/Button/AppButton.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
-import { push } from "notivue";
+import { nowPlaying } from "Components/Player/useNowPlaying";
 import { getNavigation } from "Views/Audiobooks/Audiobook/useNavigation";
 import { computed, onMounted } from "vue";
 import AudiobookTracks from "./AudiobookTracks.vue";
@@ -28,23 +28,14 @@ const store = usePlayerStore();
 const currentTrack = computed(() => store.getAudiobookBookmark(props.bookEncodedName));
 const playFirst = () => {
     emit("play", props.tracks[0].encodedPath);
-    push.info({
-        title: "Wird gespielt:",
-        message:
-            props.tracks[0].discs > 1
-                ? props.tracks[0].disc + "/" + props.tracks[0].discs + " - "
-                : "" + props.tracks[0].track + " - " + props.tracks[0].name
-    });
+    nowPlaying(props.tracks[0]);
 };
 const playAny = (value: string) => {
     if (value) {
         store.setAudiobookBookmark(props.bookEncodedName, value, 0);
         emit("play", value);
         const t = props.tracks.find(t => t.encodedPath === value);
-        push.info({
-            title: "Wird gespielt:",
-            message: `${t.discs > 1 ? "Disc " + t.disc + "/" + t.discs + " - " : ""}Track ${t.track} - ${t.name}`
-        });
+        nowPlaying(t);
     }
 };
 const nav = computed(() => getNavigation(props.tracks, currentTrack.value?.trackEncodedPath));
@@ -84,12 +75,23 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+@use "Abstracts/mixins" as m;
+
 .audiobook-buttons {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     margin-top: auto;
 
     gap: 1ch;
+
+    .bookmark {
+        order: 5;
+
+        @include m.mq("portrait") {
+            order: initial;
+        }
+    }
 }
 </style>

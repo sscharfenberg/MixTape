@@ -9,7 +9,6 @@ const route = useRoute();
         <h2>
             <app-icon :name="route.meta.icon" />
             {{ route.meta.title }}
-            <span id="specificTitle" />
         </h2>
     </section>
 </template>
