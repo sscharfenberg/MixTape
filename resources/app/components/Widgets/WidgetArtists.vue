@@ -45,7 +45,7 @@ onMounted(() => {
         :refresh-button="true"
         ajax-url="/api/music/search/artists"
     >
-        <template #title>Künstler</template>
+        <template #title>Künstler<app-icon name="shuffle" /></template>
         <template #body>
             <nav class="stats" v-if="data?.length && !hasError">
                 <router-link

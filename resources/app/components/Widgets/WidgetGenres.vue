@@ -45,7 +45,7 @@ onMounted(() => {
         :refresh-button="true"
         ajax-url="/api/music/search/genres"
     >
-        <template #title>Top Genres</template>
+        <template #title>Genres</template>
         <template #body>
             <nav class="stats" v-if="data?.length">
                 <router-link

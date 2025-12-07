@@ -283,13 +283,13 @@ class AlbumService
             ->map(function ($album) {
                 $album->duration = $album->songs->sum('duration');
                 return $album;
-            })->sortByDesc('duration')
+            })->sortBy('name')
             ->each(function ($album) use (&$json, $l, $f) {
                 $json[] = $l->formatSearchItem(
                     'album',
                     'album',
                     $album->id,
-                    $album->name,
+                    $album->artist->name." - ".$album->name,
                     $f->formatDuration($album->duration),
                     "time"
                 );

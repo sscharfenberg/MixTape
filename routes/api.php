@@ -106,6 +106,10 @@ Route::prefix('api')->group(function () {
     Route::get('/audiobooks/play/{path}',
         [\App\Http\Controllers\Api\Audiobooks\TrackController::class, "play"]
     );
+    // Audiobook Search Controller
+    Route::get('/audiobooks/search/{search}',
+        [\App\Http\Controllers\Api\Audiobooks\AudiobookSearchController::class, "show"]
+    );
 
 });
 

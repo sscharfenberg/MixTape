@@ -45,7 +45,7 @@ onMounted(() => {
         :refresh-button="true"
         ajax-url="/api/audiobooks/search"
     >
-        <template #title>Audiobooks</template>
+        <template #title>Audiobooks<app-icon name="shuffle" /></template>
         <template #body>
             <nav class="stats" v-if="data?.length">
                 <router-link

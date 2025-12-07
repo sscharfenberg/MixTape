@@ -14,7 +14,9 @@ defineProps({
             <h3>{{ song.name }}</h3>
             <player-album-navigation :nav="song.nav" />
         </div>
-        <img v-if="song.cover && song.cover.length > 48" :src="song.cover" :alt="song.album.name" />
+        <div v-if="song.cover && song.cover.length > 48" class="cover">
+            <img :src="song.cover" :alt="song.album.name" />
+        </div>
         <img v-else src="./missing-cover.jpg" alt="Cover fehlt!" v-tippy="{ content: 'Cover fehlt!' }" />
     </header>
 </template>

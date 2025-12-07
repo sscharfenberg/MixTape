@@ -80,6 +80,10 @@ $main: (
             color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.7),
             color.adjust(map.get(c.$grey, "iron"), $alpha: -0.8)
         ),
+    "cover-border-hover": light-dark(
+            color.adjust(map.get(c.$grey, "black"), $alpha: -0.6),
+            color.adjust(map.get(c.$grey, "white"), $alpha: -0.6)
+        ),
     "player-background": light-dark(
             color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.6),
             color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.6)

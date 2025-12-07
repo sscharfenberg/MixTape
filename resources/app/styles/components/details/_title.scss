@@ -4,6 +4,7 @@
 @use "Abstracts/sizes" as s;
 @use "Abstracts/typography" as t;
 @use "Abstracts/shadows" as sh;
+@use "Abstracts/timings" as ti;
 
 .details-title {
     display: flex;
@@ -36,13 +37,36 @@
     }
 
     img {
+        width: 100%;
+        height: auto;
+
+        vertical-align: middle;
+
+        transition: transform map.get(ti.$timings, "medium") ease-in-out;
+    }
+
+    .cover {
+        display: inline-block;
+
+        overflow: hidden;
         max-width: 320px;
+
         border: map.get(s.$main, "cover-border", "base") solid map.get(c.$main, "cover-border");
 
         border-radius: map.get(s.$main, "cover-radius");
 
+        transition: border-color map.get(ti.$timings, "medium") ease-in-out;
+
         @include m.mq("landscape") {
             border-width: map.get(s.$main, "cover-border", "landscape");
+        }
+
+        &:hover {
+            border-color: map.get(c.$main, "cover-border-hover");
+
+            > img {
+                transform: scale(1.5);
+            }
         }
     }
 

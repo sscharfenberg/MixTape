@@ -9,11 +9,11 @@ import WidgetSongs from "Components/Widgets/WidgetSongs.vue";
 
 <template>
     <div class="widget-grid">
-        <widget-global />
-        <widget-genres />
-        <widget-artists />
-        <widget-albums />
         <widget-songs />
+        <widget-albums />
         <widget-audiobooks />
+        <widget-artists />
+        <widget-genres />
+        <widget-global />
     </div>
 </template>

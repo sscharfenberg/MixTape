@@ -25,7 +25,7 @@ return [
         ],
         'download_album_threshold' => 1024 * 1024 * 200, // 200MiB
         'thumb_width' => 60,
-        'cover_width' => 300
+        'cover_width' => 450
     ],
 
     /*
@@ -103,6 +103,7 @@ return [
         'artists' => 10,
         'albums' => 10,
         'songs' => 10,
+        'audiobooks' => 5,
     ]
 
 ];

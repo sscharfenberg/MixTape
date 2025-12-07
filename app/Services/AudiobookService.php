@@ -241,5 +241,35 @@ class AudiobookService
         return array_values($books->toArray());
     }
 
+    /**
+     * @function find audiobooks by provided name
+     * @return array
+     */
+    public function searchAudiobookByName(string $search): array
+    {
+        $json = [];
+        $l = new LibraryService;
+        $f = new FormatService;
+        $u = new UrlSafeService;
+        Audiobook::whereAny(['name', 'year'], 'like', "%$search%")
+            ->with('tracks')
+            ->take(config('collection.search_max.audiobooks'))
+            ->get()
+            ->map(function ($book) {
+                $book->duration = $book->tracks->sum('duration');
+                return $book;
+            })->sortBy('name')
+            ->each(function ($book) use (&$json, $l, $f, $u) {
+                $json[] = $l->formatSearchItem(
+                    'audiobook',
+                    'audiobook',
+                    $u->encode($book->name),
+                    $book->name,
+                    $f->formatDuration($book->duration),
+                    "time"
+                );
+            })->toArray();
+        return array_values($json);
+    }
 
 }
