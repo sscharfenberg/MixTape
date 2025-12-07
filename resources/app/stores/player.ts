@@ -31,6 +31,7 @@ export const usePlayerStore = defineStore("player", {
             );
             // do we already have a bookmark for this book?
             if (this.audiobooks.find(book => book.audiobookEncodedName === AudiobookEncodedName)) {
+                console.log("update audiobookBookmark to", TrackEncodedPath, timestamp);
                 this.audiobooks = this.audiobooks.map(book => {
                     if (book.audiobookEncodedName === AudiobookEncodedName) {
                         book.trackEncodedPath = TrackEncodedPath;
@@ -39,6 +40,7 @@ export const usePlayerStore = defineStore("player", {
                     return book;
                 });
             } else {
+                console.log("set audiobookBookmark to", TrackEncodedPath, timestamp);
                 this.audiobooks.push({
                     audiobookEncodedName: AudiobookEncodedName,
                     trackEncodedPath: TrackEncodedPath,

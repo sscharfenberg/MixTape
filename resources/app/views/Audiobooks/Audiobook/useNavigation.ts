@@ -1,10 +1,3 @@
-interface TrackProps {
-    encodedPath: string;
-    track: number;
-    disc: number;
-    name: string;
-}
-
 /**
  * @function format a property of the nav element
  * @param track
@@ -15,6 +8,7 @@ const getNavElement = (track: TrackProps): object => {
         encodedPath: track.encodedPath,
         track: track.track,
         disc: track.disc,
+        discs: track.discs,
         name: track.name
     };
 };
@@ -32,7 +26,7 @@ const getNavElement = (track: TrackProps): object => {
  * @return object
  */
 export const getNavigation = (tracks: Array<TrackProps>, currentTrackPath: string | undefined): object => {
-    const nav = {
+    const nav: NavigationProps = {
         prev: {},
         next: {}
     };
@@ -58,3 +52,16 @@ export const getNavigation = (tracks: Array<TrackProps>, currentTrackPath: strin
         return nav;
     }
 };
+
+interface TrackProps {
+    encodedPath: string;
+    track: number;
+    disc: number;
+    discs: number;
+    name: string;
+}
+
+interface NavigationProps {
+    prev: object;
+    next: object;
+}

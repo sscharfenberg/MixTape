@@ -9,6 +9,7 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import AudiobookMetaData from "./AudiobookMetaData.vue";
 import AudiobookTitle from "./AudiobookTitle.vue";
+import { getNavigation } from "./useNavigation";
 const isLoading = ref(false);
 const data = ref(null);
 const hasError = ref(false);
@@ -38,8 +39,7 @@ const fetchData = () => {
         });
 };
 watch(() => route.params.id, fetchData, { immediate: true });
-const onPlay = (value: string) => {
-    console.log("called play in page", value);
+const onPlay = async (value: string) => {
     store.setAudiobookBookmark(route.params.id, value, 0);
     axios
         .get(`/api/audiobooks/play/${value}`)
@@ -58,6 +58,17 @@ const onPlay = (value: string) => {
         .finally(() => {
             console.log("xhr finished.");
         });
+};
+const onEnded = async () => {
+    const nav = getNavigation(data.value.tracks, store.getAudiobookBookmark(data.value.encodedName)?.trackEncodedPath);
+    if (nav.next?.encodedPath) {
+        await onPlay(nav.next.encodedPath);
+        store.setAudiobookBookmark(route.params.id, nav.next.encodedPath, 0);
+        push.info({
+            title: "Wird gespielt:",
+            message: `${nav.next.discs > 1 ? "Disc " + nav.next.disc + "/" + nav.next.discs + " - " : ""}Track ${nav.next.track} - ${nav.next.name}`
+        });
+    }
 };
 </script>
 
@@ -80,6 +91,7 @@ const onPlay = (value: string) => {
                 :src="trackUrl"
                 :title="currentName"
                 :autoplay="store.autoplay"
+                @player-ended="onEnded"
             />
             <audiobook-meta-data :book="data" />
         </div>

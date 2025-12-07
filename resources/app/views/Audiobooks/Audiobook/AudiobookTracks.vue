@@ -5,7 +5,7 @@ import { computed } from "vue";
 const store = usePlayerStore();
 const props = defineProps({
     tracks: {
-        type: Array,
+        type: Array<Track>,
         required: true
     },
     bookEncodedName: {
@@ -13,15 +13,26 @@ const props = defineProps({
         required: true
     }
 });
+interface Track {
+    disc: number;
+    discs: number;
+    track: number;
+    name: string;
+    encodedPath: string;
+}
 const emit = defineEmits<{
     (e: "play", value: string): void;
 }>();
-const trackOptions = props.tracks.map(t => {
+const trackOptions = props.tracks.map((t: Track) => {
     let discs = "";
+    let track = "";
     if (t.discs > 1) {
         discs = "Disc " + t.disc + "/" + t.discs + " - ";
     }
-    return { label: `${discs} ${t.track} - ${t.name}`, value: t.encodedPath };
+    if (props.tracks.length > 1) {
+        track = "Track " + t.track + " - ";
+    }
+    return { label: discs + track + t.name, value: t.encodedPath };
 });
 const onChange = (value: string) => {
     if (value) {

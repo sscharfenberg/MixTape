@@ -20,7 +20,7 @@ const notivue = createNotivue({
     teleportTo: "body",
     notifications: {
         global: {
-            duration: 7500
+            duration: 5000
         }
     }
 });
