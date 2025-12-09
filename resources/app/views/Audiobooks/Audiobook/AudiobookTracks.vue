@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePlayerStore } from "@/stores/player";
-import MonoSelect from "Components/Select/MonoSelect.vue";
+import MonoSelect from "Components/Form/Select/MonoSelect.vue";
 import { computed } from "vue";
 const store = usePlayerStore();
 const props = defineProps({

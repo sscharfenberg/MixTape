@@ -9,6 +9,7 @@
 
 .form-input {
     width: 100%;
+    max-width: 480px;
     padding: map.get(s.$form, "padding");
     border: map.get(s.$form, "border") solid map.get(c.$form, "border");
 

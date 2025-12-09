@@ -1,0 +1,40 @@
+/******************************************************************************
+ * basic form row
+ * @type {Sass}
+ *****************************************************************************/
+@use "Abstracts/mixins" as m;
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1ch;
+
+    label {
+        display: flex;
+
+        gap: 1ch;
+
+        span:last-of-type {
+            margin-left: -0.5ch;
+        }
+    }
+
+    @include m.mq("landscape") {
+        flex-direction: row;
+
+        gap: 2ch;
+
+        label {
+            justify-content: flex-end;
+
+            flex: 0 0 calc(35% - 1ch);
+            padding-top: 0.4lh;
+        }
+
+        .form-input,
+        .form-select {
+            flex: 0 0 calc(65% - 1ch);
+        }
+    }
+}

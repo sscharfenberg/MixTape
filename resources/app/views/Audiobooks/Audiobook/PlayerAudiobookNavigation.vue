@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePlayerStore } from "@/stores/player";
-import AppButton from "Components/Button/AppButton.vue";
+import AppButton from "Components/Form/Button/AppButton.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
 import { nowPlaying } from "Components/Player/useNowPlaying";
 import { getNavigation } from "Views/Audiobooks/Audiobook/useNavigation";

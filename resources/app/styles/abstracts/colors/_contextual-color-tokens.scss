@@ -18,7 +18,11 @@ $app: (
     url("Assets/images/bg-light.jpg")},
     "surface": light-dark(map.get(c.$grey, "abbey"), map.get(c.$grey, "fog")),
     "spinner-1": light-dark(map.get(c.$brand, "viking", color), map.get(c.$brand, "viking", color)),
-    "spinner-2": light-dark(map.get(c.$brand, "christine", color), map.get(c.$brand, "christine", color))
+    "spinner-2": light-dark(map.get(c.$brand, "christine", color), map.get(c.$brand, "christine", color)),
+    "icon-required": light-dark(
+            color.adjust(map.get(c.$state, "warning"), $lightness: -20%),
+            map.get(c.$state, "warning")
+        )
 ) !default;
 
 // header colors

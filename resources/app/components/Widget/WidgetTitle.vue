@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppIcon from "Components/AppIcon/AppIcon.vue";
-import AppButton from "Components/Button/AppButton.vue";
+import AppButton from "Components/Form/Button/AppButton.vue";
 defineProps({
     icon: {
         type: String

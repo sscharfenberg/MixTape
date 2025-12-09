@@ -4,6 +4,7 @@
  *****************************************************************************/
 @use "sass:map"; // https://sass-lang.com/documentation/modules/map
 @use "sass:meta"; // https://sass-lang.com/documentation/modules/meta/
+@use "Abstracts/colors" as c;
 @use "Abstracts/sizes" as s;
 @use "Abstracts/timings" as ti;
 
@@ -47,6 +48,10 @@
         @media (prefers-reduced-motion: no-preference) {
             animation: icon-rotate map.get(ti.$timings, "slowish") linear infinite;
         }
+    }
+
+    &.required {
+        fill: map.get(c.$app, "icon-required");
     }
 
     &.pull-left {

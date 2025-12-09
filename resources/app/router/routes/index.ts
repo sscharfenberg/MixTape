@@ -1,6 +1,7 @@
 import PageDashboard from "../../views/Dashboard/PageDashboard.vue";
 import { audiobookRoutes } from "./audiobooks";
 import { musicRoutes } from "./music";
+import { playlistRoutes } from "./playlists";
 
 export const routes = [
     {
@@ -11,10 +12,5 @@ export const routes = [
     },
     ...musicRoutes,
     ...audiobookRoutes,
-    {
-        path: "/playlists",
-        component: () => import("../../views/Playlists/PagePlaylists.vue"),
-        name: "playlists",
-        meta: { title: "Playlists", icon: "playlist" }
-    }
+    ...playlistRoutes
 ];

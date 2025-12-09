@@ -54,7 +54,7 @@ return [
             ],
             'path' => 512
         ],
-        // AudiobookBooks
+        // Audiobooks
         'authors' => [
             'name' => 128,
         ],
@@ -73,6 +73,10 @@ return [
                 'mono'
             ],
             'path' => 512
+        ],
+        // playlists
+        'playlists' => [
+            'name' => 128,
         ]
     ],
 
