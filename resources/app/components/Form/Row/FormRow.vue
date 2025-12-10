@@ -21,6 +21,8 @@ defineProps({
             <app-icon name="required" v-if="required" v-tippy="{ content: 'Dieses Feld muss ausgefüllt werden.' }" />
             <span v-if="label?.length">:</span>
         </label>
-        <slot name="input" />
+        <div class="form-row__input">
+            <slot name="input" />
+        </div>
     </div>
 </template>

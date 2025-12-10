@@ -16,7 +16,7 @@ return new class extends Migration
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_unicode_ci';
             $table->uuid('id')->primary();
-            $table->string('name', config('collection.db.playlists.name'));
+            $table->string('name', config('collection.db.playlists.name'))->unique();
             $table->unsignedSmallInteger('sort');
             $table->timestamps();
         });

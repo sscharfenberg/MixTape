@@ -36,5 +36,9 @@
         .form-select {
             flex: 0 0 calc(65% - 1ch);
         }
+
+        &__input {
+            flex-grow: 1;
+        }
     }
 }

@@ -11,7 +11,9 @@ class AudiobookController extends Controller
 {
     /**
      * @param Request $request
+     * @param string $path
      * @return JsonResponse
+     * @throws \Exception
      */
     public function show(Request $request,  string $path): JsonResponse
     {

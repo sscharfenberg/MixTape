@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppIcon from "Components/AppIcon/AppIcon.vue";
+import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 const props = defineProps({
     disabled: {
         type: Boolean,
@@ -24,6 +25,10 @@ const props = defineProps({
     short: {
         type: Boolean,
         default: false
+    },
+    loading: {
+        type: Boolean,
+        default: false
     }
 });
 const cssClasses = () => {
@@ -35,9 +40,14 @@ const cssClasses = () => {
 </script>
 
 <template>
-    <button :class="cssClasses()" :disabled="disabled ?? null" :aria-disabled="disabled ? 'true' : null">
+    <button
+        :class="cssClasses()"
+        :disabled="disabled || loading ? 'true' : null"
+        :aria-disabled="disabled || loading ? 'true' : null"
+    >
         <app-icon v-if="icon && icon.length && iconPosition === 'left'" :name="icon" />
         <span v-if="text && text.length">{{ text }}</span>
         <app-icon v-if="icon && icon.length && iconPosition === 'right'" :name="icon" />
+        <loading-spinner v-if="loading" :size="2" />
     </button>
 </template>

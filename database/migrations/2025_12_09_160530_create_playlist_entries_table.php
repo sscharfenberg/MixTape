@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('song', config('collection.db.songs.name'));
             $table->string('artist', config('collection.db.artists.name'));
             $table->string('album', config('collection.db.albums.name'));
+            $table->float('duration', precision: 53)->nullable();
             $table->unsignedSmallInteger('sort');
             $table->foreignUuid('playlist_id')
                 ->nullable()

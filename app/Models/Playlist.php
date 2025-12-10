@@ -40,13 +40,6 @@ class Playlist extends Model
     protected $primaryKey = 'id';
 
     /**
-     * Disable use of timestamps. Since we do a full DB insert, we do not need timestamps
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array

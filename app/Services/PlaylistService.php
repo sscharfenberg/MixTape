@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Playlist;
+use Illuminate\Support\Facades\Log;
+
+class PlaylistService
+{
+
+    /**
+     * @function json format for a playlist
+     * @param Playlist $playlist
+     * @return array
+     */
+    private function formatPlaylist (Playlist $playlist):array
+    {
+        return [
+            'id' => $playlist->id,
+            'name' => $playlist->name,
+            'sort' => $playlist->sort,
+            'entries' => $playlist->entries,
+            'duration' => $playlist->duration
+        ];
+    }
+
+    /**
+     * @function create a new playlist
+     * @param $request
+     * @return array
+     */
+    public function createNewPlaylist($request): array
+    {
+        // create playlist
+        $playlist = Playlist::create([
+            'name' => $request->get('name'),
+            'sort' => 0
+        ]);
+        Log::channel('api')->info("New playlist with sort=0 created. ".json_encode($playlist, JSON_PRETTY_PRINT));
+
+        // increment sort by 1 so the new playlist has sort = 1
+        $affectedRows = Playlist::increment('sort');
+        Log::channel('api')->info("Incremented sort of $affectedRows playlists by 1.");
+
+        // fetch new row from DB
+        $newRow = Playlist::orderBy('sort')->first();
+        $newRow->entries = 0;
+        $newRow->duration = 0;
+        // and return formatted array
+        return $this->formatPlaylist($newRow);
+    }
+
+    /**
+     * @function get all playlists from database
+     * @return array
+     */
+    public function getAllPlaylists(): array
+    {
+        $playlists = Playlist::all()
+            ->map(function (Playlist $playlist) {
+                $playlist->entries = $playlist->entries()->count();
+                $playlist->duration = $playlist->entries()->sum('duration');
+                return $this->formatPlaylist($playlist);
+            })->sortBy('sort')
+            ->toArray();
+        return array_values($playlists);
+    }
+
+}
