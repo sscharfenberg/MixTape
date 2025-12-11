@@ -46,8 +46,8 @@ class PlaylistService
         $newRow = Playlist::orderBy('sort')->first();
         $newRow->entries = 0;
         $newRow->duration = 0;
-        // and return formatted array
-        return $this->formatPlaylist($newRow);
+        // and return all playlists
+        return $this->getAllPlaylists();
     }
 
     /**
@@ -64,6 +64,23 @@ class PlaylistService
             })->sortBy('sort')
             ->toArray();
         return array_values($playlists);
+    }
+
+    /**
+     * @function change sort order of playlists
+     * @param array $changes
+     * @return array
+     */
+    public function sortPlaylists(array $changes): array
+    {
+        Log::channel('api')->info("Sorting ".count($changes)." playlists:");
+        foreach($changes as $change) {
+            $playlist = Playlist::where('id', $change['id'])->first();
+            $playlist->sort = $change['sort'];
+            $playlist->save();
+            Log::channel('api')->debug("Changing Playlist ".$change['id']." to sort=".$change['sort']);
+        }
+        return $this->getAllPlaylists();
     }
 
 }

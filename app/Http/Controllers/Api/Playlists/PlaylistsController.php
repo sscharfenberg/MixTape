@@ -17,8 +17,22 @@ class PlaylistsController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
+        sleep(2);
         $p = new PlaylistService();
         $playlists = $p->getAllPlaylists();
+        return response()->json($playlists);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function sort(Request $request): JsonResponse
+    {
+        sleep(2);
+        $p = new PlaylistService();
+        $playlists = $p->sortPlaylists($request->get('changes'));
         return response()->json($playlists);
     }
 }

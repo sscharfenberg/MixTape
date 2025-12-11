@@ -26,14 +26,14 @@ class NewPlaylistController extends Controller
         ]);
         // create new
         $p = new PlaylistService();
-        $playlist = $p->createNewPlaylist($request);
+        $playlists = $p->createNewPlaylist($request);
         // response
-        if ($playlist) {
+        if (count($playlists) > 0) {
             return response()
                 ->json([
                     'status' => 'success',
-                    'message' => "Playlist '".$playlist['name']."' erstellt.",
-                    'newPlaylist' => $playlist
+                    'message' => "Playlist '".$request->name."' erstellt.",
+                    'playlists' => $playlists
                 ], 200);
         } else {
             return response()

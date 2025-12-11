@@ -166,7 +166,25 @@ $main: (
             color.adjust(map.get(c.$grey, "infra"), $alpha: -0.2),
             color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.2)
         ),
-    "accordion-open": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "gorse", "color"))
+    "accordion-open": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "gorse", "color")),
+    "playlist-background-row1": light-dark(
+            color.adjust(map.get(c.$grey, "infra"), $alpha: -0.7),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.8)
+        ),
+    "playlist-background-row1-hover": light-dark(
+            color.adjust(map.get(c.$grey, "infra"), $alpha: -0.5),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.6)
+        ),
+    "playlist-surface-row1": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),
+    "playlist-background-row2": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.5),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.4)
+        ),
+    "playlist-background-row2-hover": light-dark(
+            color.adjust(map.get(c.$grey, "mystic"), $alpha: -0.3),
+            color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.2)
+        ),
+    "playlist-surface-row2": light-dark(map.get(c.$grey, "bunker"), map.get(c.$grey, "mystic"))
 ) !default;
 
 // widget colors

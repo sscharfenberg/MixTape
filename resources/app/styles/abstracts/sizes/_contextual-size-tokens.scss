@@ -150,7 +150,9 @@ $main: (
         "landscape": 4px,
         "desktop": 6px
     ),
-    "subheadline-line-radius": map.get(s.$radius, "base")
+    "subheadline-line-radius": map.get(s.$radius, "base"),
+    "playlist-padding": math.round(s.$base * 0.7) math.round(s.$base * 1),
+    "playlist-radius": map.get(s.$radius, "featured")
 ) !default;
 
 // size tokens for widgets

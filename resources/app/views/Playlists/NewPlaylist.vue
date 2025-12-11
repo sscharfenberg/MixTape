@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAppStore } from "@/stores/app";
 import axios from "axios";
 import AppButton from "Components/Form/Button/AppButton.vue";
 import FormRow from "Components/Form/Row/FormRow.vue";
@@ -7,9 +8,9 @@ import { push } from "notivue";
 import { ref } from "vue";
 const showForm = ref(false);
 const newPlayListName = ref("");
-const loading = ref(false);
+const app = useAppStore();
 const onSubmit = () => {
-    loading.value = true;
+    app.loading = true;
     axios
         .post(`/api/playlists/new`, { name: newPlayListName.value })
         .then(response => {
@@ -19,7 +20,8 @@ const onSubmit = () => {
                 });
                 showForm.value = false;
                 newPlayListName.value = "";
-                emit("new", response.data.newPlaylist);
+                console.log("emitting new");
+                emit("new", response.data.playlists);
             }
         })
         .catch(error => {
@@ -30,7 +32,7 @@ const onSubmit = () => {
             });
         })
         .finally(() => {
-            loading.value = false;
+            app.loading = false;
         });
 };
 const emit = defineEmits(["new"]);
@@ -44,7 +46,13 @@ const emit = defineEmits(["new"]);
             :type="showForm ? 'primary' : 'default'"
             @click="showForm = !showForm"
         />
-        <app-widget v-if="showForm" :loading="false" icon="playlist_add" :error="false" :refresh-button="false">
+        <app-widget
+            v-if="showForm"
+            :loading="app.loading"
+            icon="playlist_add"
+            :error="app.error.length > 0"
+            :refresh-button="false"
+        >
             <template #body>
                 <form class="form-col">
                     <form-row ref-id="newPlayListName" label="Name" :required="true">
@@ -56,7 +64,7 @@ const emit = defineEmits(["new"]);
                                 id="newPlayListName"
                                 v-model="newPlayListName"
                                 maxlength="128"
-                                :readonly="loading ? true : null"
+                                :readonly="app.loading ? true : null"
                             />
                         </template>
                     </form-row>
@@ -68,8 +76,8 @@ const emit = defineEmits(["new"]);
                                 text="Erstellen"
                                 type="primary"
                                 @click.prevent="onSubmit"
-                                :disabled="newPlayListName.length === 0 || loading"
-                                :loading="loading"
+                                :disabled="newPlayListName.length === 0 || app.loading"
+                                :loading="app.loading"
                             />
                         </template>
                     </form-row>

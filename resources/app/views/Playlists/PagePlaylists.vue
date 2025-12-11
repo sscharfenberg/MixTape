@@ -1,21 +1,30 @@
 <script setup lang="ts">
+import { useAppStore } from "@/stores/app";
+import { usePlaylistStore } from "@/stores/playlists";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import ListPlaylists from "Views/Playlists/ListPlaylists.vue";
 import NewPlaylist from "Views/Playlists/NewPlaylist.vue";
 import axios from "axios";
 import { push } from "notivue";
-import { onMounted, ref } from "vue";
-const isLoading = ref(false);
-const hasError = ref(false);
-const playlists = ref([]);
+import { computed, onMounted } from "vue";
+const app = useAppStore();
+const pStore = usePlaylistStore();
+const playlists = computed({
+    get: () => pStore.playlists,
+    set: value => {
+        pStore.playlists = value;
+    }
+});
 const fetchData = () => {
-    isLoading.value = true;
-    hasError.value = false;
+    console.log("calling fetch");
+    app.loading = true;
+    app.error = "";
     axios
         .get(`/api/playlists`)
         .then(response => {
             if (response.status === 200) {
+                console.log(response.data);
                 playlists.value = response.data;
             }
         })
@@ -25,30 +34,35 @@ const fetchData = () => {
                 title: error.code,
                 message: error.response.data.message || error.message
             });
-            hasError.value = true;
+            app.error = error.response.data.message || error.message;
         })
         .finally(() => {
-            isLoading.value = false;
+            app.loading = false;
         });
 };
 onMounted(() => {
     fetchData();
 });
+const onNew = val => {
+    console.log("calling onNew", val);
+    playlists.value = val;
+};
 </script>
 
 <template>
-    <new-playlist @new="fetchData" />
+    <new-playlist @new="onNew" />
     <div class="widget playlists">
-        <div class="loading-spinner__outer" v-if="isLoading">
+        <div class="loading-spinner__outer" v-if="app.loading">
             <loading-spinner :size="8" />
         </div>
-        <show-error v-else-if="hasError && !isLoading" @refresh="fetchData()" />
-        <list-playlists v-if="!isLoading && playlists.length > 0" :playlists="playlists" />
+        <show-error v-else-if="app.error && !app.loading" @refresh="fetchData()" />
+        <list-playlists v-if="!app.loading" />
     </div>
 </template>
 
 <style lang="scss" scoped>
 .widget.playlists {
+    min-height: 1lh;
     margin-top: 1lh;
 }
 </style>

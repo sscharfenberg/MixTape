@@ -5,7 +5,7 @@ import { defineStore } from "pinia";
 import { actions } from "./actions";
 
 /**
- * @function store definition
+ * define playerStore
  */
 export const usePlayerStore = defineStore("player", {
     state: (): PlayerState => {

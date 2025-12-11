@@ -122,6 +122,10 @@ Route::prefix('api')->group(function () {
     Route::get('/playlists',
         [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'show']
     );
+    // Sort Playlists Controller
+    Route::post('/playlists/sort',
+        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'sort']
+    );
 
 });
 
