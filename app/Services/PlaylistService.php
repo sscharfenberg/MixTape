@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Playlist;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class PlaylistService
@@ -73,6 +74,8 @@ class PlaylistService
      */
     public function sortPlaylists(array $changes): array
     {
+        $fd = new FormatService();
+        $start = now();
         Log::channel('api')->info("Sorting ".count($changes)." playlists:");
         foreach($changes as $change) {
             $playlist = Playlist::where('id', $change['id'])->first();
@@ -80,6 +83,36 @@ class PlaylistService
             $playlist->save();
             Log::channel('api')->debug("Changing Playlist ".$change['id']." to sort=".$change['sort']);
         }
+        $ms = $start->diffInMilliseconds(now());
+        Log::channel('api')->info("Playlist sort finished in ".$fd->formatMs($ms).".");
+        return $this->getAllPlaylists();
+    }
+
+    /**
+     * @function edit a playlist by changing the name.
+     * @param Request $request
+     * @return array
+     */
+    public function editPlaylist(Request $request): array
+    {
+        $playlist = Playlist::findOrFail($request->get('id'))->first();
+        $playlist->name = $request->get('name');
+        $playlist->save();
+        $updatedPlaylist = Playlist::findOrFail($request->get('id'))->first();
+        Log::channel('api')->debug("Edited Playlist to ".json_encode($playlist, JSON_PRETTY_PRINT));
+        return $this->formatPlaylist($updatedPlaylist);
+    }
+
+    /**
+     * @function delete a playlist by primary key
+     * @param Request $request
+     * @return array
+     */
+    public function deletePlaylist(Request $request): array
+    {
+        $playlist = Playlist::findOrFail($request->get('id'));
+        $playlist->delete();
+        Log::channel('api')->debug("Deleted Playlist: ".json_encode($playlist, JSON_PRETTY_PRINT));
         return $this->getAllPlaylists();
     }
 

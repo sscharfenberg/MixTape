@@ -1,0 +1,86 @@
+@use "sass:map";
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/mixins" as m;
+
+.playlists {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.5lh;
+
+    .playlist {
+        display: flex;
+        align-items: center;
+
+        padding-right: 1ch;
+
+        background-color: map.get(c.$main, "playlist-background-row1");
+        color: map.get(c.$main, "playlist-surface-row1");
+
+        text-decoration: none;
+
+        &:first-of-type {
+            border-top-left-radius: map.get(s.$main, "playlist-radius");
+            border-top-right-radius: map.get(s.$main, "playlist-radius");
+        }
+
+        &:last-of-type {
+            border-bottom-right-radius: map.get(s.$main, "playlist-radius");
+            border-bottom-left-radius: map.get(s.$main, "playlist-radius");
+        }
+
+        &:hover {
+            background-color: map.get(c.$main, "playlist-background-row1-hover");
+        }
+
+        .drag-handle {
+            padding: map.get(s.$main, "playlist-padding");
+
+            cursor: move;
+        }
+
+        > a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+
+            padding: map.get(s.$main, "playlist-padding");
+            padding-left: 0;
+
+            color: map.get(c.$main, "playlist-surface-row1");
+
+            text-decoration: none;
+        }
+
+        &:nth-of-type(even) {
+            background-color: map.get(c.$main, "playlist-background-row2");
+            color: map.get(c.$main, "playlist-surface-row2");
+
+            > a {
+                color: map.get(c.$main, "playlist-surface-row2");
+            }
+
+            &:hover {
+                background-color: map.get(c.$main, "playlist-background-row2-hover");
+            }
+        }
+
+        .title,
+        .meta {
+            display: flex;
+            align-items: center;
+
+            gap: 1ch;
+        }
+
+        .meta {
+            display: none;
+
+            @include m.mq("portrait") {
+                display: flex;
+            }
+        }
+    }
+}

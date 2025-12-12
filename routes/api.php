@@ -114,17 +114,25 @@ Route::prefix('api')->group(function () {
     /**
      * Playlist Controllers
      */
-    // new Playlist Controller
+    // new Playlist
     Route::post('/playlists/new',
         [\App\Http\Controllers\Api\Playlists\NewPlaylistController::class, 'create']
     );
-    // Playlists Controller
+    // Show Playlists
     Route::get('/playlists',
         [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'show']
     );
-    // Sort Playlists Controller
+    // Sort Playlists
     Route::post('/playlists/sort',
         [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'sort']
+    );
+    // Edit Playlist
+    Route::post('/playlists/edit',
+        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'edit']
+    );
+    // Delete Playlist
+    Route::post('/playlists/delete',
+        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'delete']
     );
 
 });

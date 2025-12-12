@@ -152,7 +152,10 @@ $main: (
     ),
     "subheadline-line-radius": map.get(s.$radius, "base"),
     "playlist-padding": math.round(s.$base * 0.7) math.round(s.$base * 1),
-    "playlist-radius": map.get(s.$radius, "featured")
+    "playlist-radius": map.get(s.$radius, "featured"),
+    "modal-backdrop-blur": math.round(s.$base * 0.3),
+    "modal-margin": s.$base,
+    "modal-max-width": math.round(s.$base * 30)
 ) !default;
 
 // size tokens for widgets

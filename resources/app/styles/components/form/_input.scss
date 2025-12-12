@@ -24,8 +24,8 @@
         color map.get(ti.$timings, "fast") linear,
         border-color map.get(ti.$timings, "fast") linear;
 
-    &:focus,
-    &:active {
+    &:not([readonly]):focus,
+    &:not([readonly]):active {
         color: map.get(c.$form, "surface-focus");
         border-color: map.get(c.$form, "border-focus");
     }

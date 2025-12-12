@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Playlists;
 
 use App\Http\Controllers\Controller;
-use App\Models\Playlist;
 use App\Services\PlaylistService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +16,6 @@ class PlaylistsController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
-        sleep(2);
         $p = new PlaylistService();
         $playlists = $p->getAllPlaylists();
         return response()->json($playlists);
@@ -30,9 +28,32 @@ class PlaylistsController extends Controller
      */
     public function sort(Request $request): JsonResponse
     {
-        sleep(2);
         $p = new PlaylistService();
         $playlists = $p->sortPlaylists($request->get('changes'));
+        return response()->json($playlists);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function edit(Request $request): JsonResponse
+    {
+        $p = new PlaylistService();
+        $playlist = $p->editPlaylist($request);
+        return response()->json($playlist);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function delete(Request $request): JsonResponse
+    {
+        $p = new PlaylistService();
+        $playlists = $p->deletePlaylist($request);
         return response()->json($playlists);
     }
 }

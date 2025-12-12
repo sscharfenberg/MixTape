@@ -9,8 +9,21 @@ export const usePlaylistStore = defineStore("playlistStore", {
             playlists: []
         };
     },
-    actions: {},
-    getters: {}
+    actions: {
+        setPlaylistName(playlistId: string, list: Array<Playlist>) {
+            this.playlists = this.playlists.map(pList => {
+                if (pList.id === playlistId) {
+                    pList.name = list.name;
+                }
+                return pList;
+            });
+        }
+    },
+    getters: {
+        getPlaylist: state => {
+            return (playlistId: string) => state.playlists.find(playlist => playlist.id === playlistId);
+        }
+    }
 });
 
 interface PlaylistState {

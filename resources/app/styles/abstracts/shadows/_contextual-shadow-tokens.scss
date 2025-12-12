@@ -16,6 +16,7 @@ $header: (
 $main: (
     "song-name": map.get(shg.$text, "4dp"),
     "song-meta-highlight": map.get(shg.$text, "1dp"),
-    "breadcrumb": map.get(shg.$box, "0dp")
+    "breadcrumb": map.get(shg.$box, "0dp"),
+    "modal": map.get(shg.$box, "2dp")
 ) !default;
 $footer: () !default;
