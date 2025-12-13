@@ -1,6 +1,6 @@
 # MixTape
 
-This is web application organizes your mp3 catalogue and lets you play music and audiobooks in your browser. The application is supposed to run in your home LAN without being accessible from the internet.
+This web application organizes your mp3s and lets you play music and audiobooks in your browser. The application is supposed to run in your home LAN without being accessible from the internet.
 
 ## Requirements
 
