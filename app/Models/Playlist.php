@@ -50,9 +50,9 @@ class Playlist extends Model
     ];
 
     /**
-     * Get the entries for the playlist
+     * Get the songs for the playlist
      */
-    public function entries(): HasMany
+    public function songs(): HasMany
     {
         return $this->hasMany(PlaylistEntry::class, 'playlist_id', 'id');
     }

@@ -7,9 +7,9 @@ import WidgetSongs from "Components/Widgets/WidgetSongs.vue";
 
 <template>
     <div class="widget-grid">
-        <widget-genres />
-        <widget-artists />
-        <widget-albums />
         <widget-songs />
+        <widget-albums />
+        <widget-artists />
+        <widget-genres />
     </div>
 </template>

@@ -42,12 +42,10 @@ $inset: (
 
 // box-shadows accept four size params: offset-x | offset-y | blur-radius | spread-radius
 $box: (
-    "0dp": 0 2px 3px 2px light-dark(color.adjust(#000, $alpha: -0.93), color.adjust(#fff, $alpha: -0.83)),
-    "1dp": 3px 3px 5px 3px light-dark(color.adjust(#000, $alpha: -0.83), color.adjust(#fff, $alpha: -0.73)),
-    "2dp": 5px 5px 8px 2px
-        light-dark(color.adjust(#000, $alpha: -0.73), color.adjust(color.invert(#000), $alpha: -0.63)),
-    "4dp": 5px 5px 10px 3px
-        light-dark(color.adjust(#000, $alpha: -0.63), color.adjust(color.invert(#000), $alpha: -0.53))
+    "0dp": 1px 1px 3px 2px light-dark(color.adjust(#000, $alpha: -0.93), color.adjust(#aaa, $alpha: -0.83)),
+    "1dp": 3px 3px 5px 3px light-dark(color.adjust(#000, $alpha: -0.83), color.adjust(#aaa, $alpha: -0.73)),
+    "2dp": 5px 5px 8px 2px light-dark(color.adjust(#000, $alpha: -0.73), color.adjust(#aaa, $alpha: -0.63)),
+    "4dp": 5px 5px 10px 3px light-dark(color.adjust(#000, $alpha: -0.63), color.adjust(#aaa, $alpha: -0.53))
 );
 
 // text-shadows accept three size params: offset-x | offset-y | blur-radius

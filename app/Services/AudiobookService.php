@@ -6,6 +6,7 @@ use App\Models\Audiobook;
 use App\Models\Author;
 use App\Models\Narrator;
 use App\Models\Track;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -54,9 +55,10 @@ class AudiobookService
      * @function json format for single track
      * @param Track $track
      * @param int $discs
+     * @param Collection $tracks
      * @return array
      */
-    private function formatTrack(Track $track, int $discs): array
+    private function formatTrack(Track $track, int $discs, Collection $tracks): array
     {
         $u = new UrlSafeService();
         $arr = [
@@ -75,11 +77,10 @@ class AudiobookService
         ];
         if ($track->disc) {
             $currentDisc = $track->disc;
-            $arr['discTracks'] = $track->audiobook->tracks->filter( function ($disc) use ($currentDisc) {
-                return $disc->disc == $currentDisc;
+            $arr['discTracks'] = $tracks->filter( function ($track) use ($currentDisc) {
+                return $track->disc == $currentDisc;
             })->count();
         }
-
         return $arr;
     }
 
@@ -171,19 +172,20 @@ class AudiobookService
         $book = Audiobook::where('name', $u->decode($name))
             ->with('tracks')
             ->first();
-        $book->duration = $book->tracks->sum('duration');
-        $book->size = $book->tracks->sum('size');
+        $tracks = $book->tracks;
+        $book->duration = $tracks->sum('duration');
+        $book->size = $tracks->sum('size');
         $book->authors = $this->getBookAuthors($book);
         $book->narrators = $this->getBookNarrators($book);
-        $book->discs = $book->tracks->unique('disc')->count();
-        $book->tracks = $book->tracks
+        $book->discs = $tracks->unique('disc')->count();
+        $book->tracks = $tracks
             ->sortBy([
                 ['disc', 'asc'],
                 ['track', 'asc'],
             ])
             ->values()
-            ->map(function($track) use ($book) {
-                return $this->formatTrack($track, $book->discs);
+            ->map(function($track) use ($book, $tracks) {
+                return $this->formatTrack($track, $book->discs, $tracks);
             });
         // format audiobook json array
         return $this->formatAudiobook($book, true, true);

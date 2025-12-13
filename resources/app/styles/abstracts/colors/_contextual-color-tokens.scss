@@ -237,8 +237,8 @@ $form: (
     "border-focus": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
     "surface-focus": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
     "select-border": light-dark(
-            color.adjust(map.get(c.$grey, "astral"), $alpha: -0.4),
-            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.6)
+            color.adjust(map.get(c.$grey, "slate"), $alpha: -0.4),
+            color.adjust(map.get(c.$grey, "abbey"), $alpha: -0.4)
         ),
     "select-background": light-dark(map.get(c.$grey, "astral"), map.get(c.$grey, "ebony")),
     "select-surface": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral")),

@@ -15,7 +15,7 @@
     grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
 
     padding: 0;
-    margin: 1ch 0;
+    margin: 0;
 
     gap: 1ch;
 
@@ -53,11 +53,6 @@
             #{map.get(s.$main, "row-padding", "desktop")}
         );
 
-        &:nth-child(even) {
-            background: map.get(c.$main, "row2-background");
-            color: map.get(c.$main, "row2-surface");
-        }
-
         &.highlight {
             font-weight: bold;
             text-shadow: map.get(sh.$main, "song-meta-highlight");
@@ -73,6 +68,12 @@
         &.full {
             grid-column: 1/-1;
         }
+    }
+
+    > li:not(.details-link):nth-child(even),
+    > li.details-link:nth-child(even) a {
+        background: map.get(c.$main, "row2-background");
+        color: map.get(c.$main, "row2-surface");
     }
 
     > li.details-link a:hover {

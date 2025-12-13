@@ -1,0 +1,32 @@
+/******************************************************************************
+ * Add to playlist function
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/mixins" as m;
+@use "Abstracts/shadows" as sh;
+
+.playlist {
+    &__add {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        border: map.get(s.$main, "player-border") solid map.get(c.$main, "player-border");
+        gap: 2ch;
+
+        background-color: map.get(c.$main, "row1-background");
+        border-radius: map.get(s.$main, "player-radius");
+        box-shadow: map.get(sh.$main, "playlist-add");
+
+        @include m.mqset(
+            "padding",
+            #{map.get(s.$main, "row-padding", "base")},
+            #{map.get(s.$main, "row-padding", "portrait")},
+            #{map.get(s.$main, "row-padding", "landscape")},
+            #{map.get(s.$main, "row-padding", "desktop")}
+        );
+    }
+}

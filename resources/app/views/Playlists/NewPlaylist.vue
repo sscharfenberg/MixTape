@@ -20,7 +20,6 @@ const onSubmit = () => {
                 });
                 showForm.value = false;
                 newPlayListName.value = "";
-                console.log("emitting new");
                 emit("new", response.data.playlists);
             }
         })

@@ -5,6 +5,7 @@
 @use "sass:map";
 @use "Abstracts/colors" as c;
 @use "Abstracts/sizes" as s;
+@use "Abstracts/shadows" as sh;
 
 // hide boost,
 .vds-accessibility-menu,
@@ -19,6 +20,8 @@
     background-color: map.get(c.$main, "player-background") !important;
     color: map.get(c.$main, "player-surface") !important;
     border-radius: map.get(s.$main, "player-radius") !important;
+
+    box-shadow: map.get(sh.$main, "player");
 
     .vds-button {
         background-color: map.get(c.$main, "player-btn-background") !important;

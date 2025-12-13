@@ -50,14 +50,16 @@ class PlaylistEntry extends Model
         'artist',
         'album',
         'sort',
-        'duration'
+        'duration',
+        'size',
+        'playlist_id'
     ];
 
     /**
      * Get the playlist associated with this entry.
      * @return belongsTo
      */
-    public function artist(): belongsTo
+    public function playlist(): belongsTo
     {
         return $this->belongsTo(Playlist::class, 'playlist_id', 'id');
     }

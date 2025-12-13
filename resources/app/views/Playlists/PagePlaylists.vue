@@ -17,7 +17,6 @@ const playlists = computed({
     }
 });
 const fetchData = () => {
-    console.log("calling fetch");
     app.loading = true;
     app.error = "";
     axios
@@ -43,10 +42,7 @@ const fetchData = () => {
 onMounted(() => {
     fetchData();
 });
-const onNew = val => {
-    console.log("calling onNew", val);
-    playlists.value = val;
-};
+const onNew = val => (playlists.value = val);
 </script>
 
 <template>

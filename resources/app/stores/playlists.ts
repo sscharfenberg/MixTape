@@ -10,6 +10,11 @@ export const usePlaylistStore = defineStore("playlistStore", {
         };
     },
     actions: {
+        /**
+         * @function set the name of a playlist
+         * @param playlistId
+         * @param list
+         */
         setPlaylistName(playlistId: string, list: Array<Playlist>) {
             this.playlists = this.playlists.map(pList => {
                 if (pList.id === playlistId) {

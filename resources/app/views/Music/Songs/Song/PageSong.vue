@@ -6,6 +6,7 @@ import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import AudioPlayer from "Components/Player/AudioPlayer.vue";
 import { nowPlaying } from "Components/Player/useNowPlaying";
+import AddToPlaylist from "Components/Playlist/AddToPlaylist.vue";
 import { push } from "notivue";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -65,6 +66,7 @@ watch(() => route.params.id, fetchData, { immediate: true });
                 :autoplay="store.autoplay"
                 @player-ended="onEnded"
             />
+            <add-to-playlist v-if="data.playlists.length > 0" :playlists="data.playlists" />
             <song-meta-data :song="data" />
         </div>
     </section>

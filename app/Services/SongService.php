@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services;
+use App\Models\Playlist;
+use App\Models\PlaylistEntry;
 use App\Models\Song;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -276,6 +278,32 @@ class SongService
                 );
             })->toArray();
         return array_values($json);
+    }
+
+    /**
+     * @function get specific song
+     * @param string $path
+     * @return array
+     * @throws \Exception
+     */
+    public function getSongByPath(string $path): array
+    {
+        $u = new UrlSafeService();
+        $p = new PlaylistService();
+        $song = Song::where('path', $u->decode($path))
+            ->with('artist')
+            ->with('album')
+            ->with('genre')
+            ->first();
+        if ($song) {
+            $json = $this->formatSong($song, true, true);
+            $json['nav'] = $this->getNavigation($song);
+            // get the available playlists, excluding lists that already contain the song
+            $json['playlists'] = $p->getAvailablePlaylistsForSong($song);
+            return $json;
+        }
+        return [];
+
     }
 
 }

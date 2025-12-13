@@ -114,13 +114,13 @@ Route::prefix('api')->group(function () {
     /**
      * Playlist Controllers
      */
-    // new Playlist
-    Route::post('/playlists/new',
-        [\App\Http\Controllers\Api\Playlists\NewPlaylistController::class, 'create']
-    );
     // Show Playlists
     Route::get('/playlists',
-        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'show']
+        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'list']
+    );
+    // new Playlist
+    Route::post('/playlists/new',
+        [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'create']
     );
     // Sort Playlists
     Route::post('/playlists/sort',
@@ -133,6 +133,10 @@ Route::prefix('api')->group(function () {
     // Delete Playlist
     Route::post('/playlists/delete',
         [\App\Http\Controllers\Api\Playlists\PlaylistsController::class, 'delete']
+    );
+    // Add Song to Playlist
+    Route::post('/playlists/add-song',
+        [\App\Http\Controllers\Api\Playlists\PlaylistEntryController::class, 'addSong']
     );
 
 });

@@ -26,6 +26,7 @@ const onListChange = () => {
     let count = 1;
     // identify changes and prepare for server
     const changes = playlists.value
+        .reverse() // highest sort value is the first item, so we need to reverse
         .map(item => {
             item.newSort = count;
             count++;
@@ -35,7 +36,7 @@ const onListChange = () => {
         .map(item => {
             return { id: item.id, sort: item.newSort };
         });
-    // app.loading = true;
+    app.loading = true;
     axios
         .post(`/api/playlists/sort`, { changes: changes })
         .then(response => {
@@ -51,8 +52,8 @@ const onListChange = () => {
             });
         })
         .finally(() => {
-            console.log("done");
-            // app.loading = false;
+            console.log("sort done");
+            app.loading = false;
         });
 };
 </script>
