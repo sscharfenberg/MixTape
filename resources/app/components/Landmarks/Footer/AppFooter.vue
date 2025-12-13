@@ -6,7 +6,7 @@ import ThemeSwitch from "./ThemeSwitch.vue";
     <footer>
         <theme-switch />
         <address>Handcrafted with ❤ by Sven Scharfenberg</address>
-        <a href="https://github.com/sscharfenberg/AudioCatalogue"><img src="./github.svg" alt="Github Repository" /></a>
+        <a href="https://github.com/sscharfenberg/MixTape"><img src="./github.svg" alt="Github Repository" /></a>
     </footer>
 </template>
 

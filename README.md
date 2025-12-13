@@ -1,4 +1,4 @@
-# AudioCatalogue
+# MixTape
 
 This is web application organizes your mp3 catalogue and lets you play music and audiobooks in your browser. The application is supposed to run in your home LAN without being accessible from the internet.
 
@@ -21,7 +21,7 @@ This is web application organizes your mp3 catalogue and lets you play music and
 
 * This is a hobby project for myself and not production-ready.
 * Only make this accessible from the internet if you really know what you are doing. I haven't done any hardening, there is no auth and not many security precautions have been taken. Use at your own risk. 
-* There is no `docker-compose`, if you want to dockerize this, you will need to cook it yourself. 
+* There is no `docker-compose`, if you want to dockerize this, you will need to throw it together yourself. 
 * Most of the texts are in german with a mix of english thrown in. Feel free to translate, there is currently no i18n planned.
 
 ## Installation

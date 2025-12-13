@@ -1,6 +1,6 @@
 <template>
-    <a href="http://music.local">
-        <img src="./logo.svg" alt="Audio.Catalogue logo" />
+    <a href="http://mixtape.local">
+        <img src="./logo.svg" alt="MixTape logo" />
     </a>
 </template>
 

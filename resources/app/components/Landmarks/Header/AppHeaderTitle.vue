@@ -1,7 +1,7 @@
 <template>
     <h1>
-        <span>Audio.Catalogue</span>
-        <span>Audio.Catalogue</span>
+        <span>MixTape</span>
+        <span>MixTape</span>
     </h1>
 </template>
 
