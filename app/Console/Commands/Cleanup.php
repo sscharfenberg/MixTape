@@ -48,11 +48,11 @@ class Cleanup extends Command
     private function cleanArea(string $path): void
     {
         foreach(config('collection.server.to_delete') as $mask) {
-            $this->info("deleting $mask in $path");
+            $this->line("deleting $mask in $path");
             Log::channel('lib')->info("deleting $mask in $path");
             $result = Process::run('find '.$path.' -follow -type f -iname '.$mask.' -print -delete');
             if (strlen($result->output()) > 0) {
-                $this->info("found and deleted $mask files:");
+                $this->debug("found and deleted $mask files:");
                 $this->line($result->output());
                 Log::channel('lib')->debug("deleted files:\n\n".$result->output());
             }
