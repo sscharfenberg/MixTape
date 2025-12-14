@@ -159,6 +159,14 @@ Route::prefix('api')->group(function () {
     Route::get('/playlists/{path}',
         [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'show']
     );
+    // sort the entries of a specific playlist
+    Route::post('/playlists/{playlistId}/sort',
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'sortEntries']
+    );
+    // delete a playlist entry
+    Route::post('/playlists/{playlistId}/delete/{entryId}',
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'deleteEntry']
+    );
 
 });
 

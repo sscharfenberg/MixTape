@@ -70,6 +70,7 @@ class PlaylistService
     {
         $u = new UrlSafeService();
         return [
+            'id' => $playlistEntry->id,
             'encodedPath' => $u->encode($playlistEntry->path),
             'song' => $playlistEntry->song,
             'artist' => $playlistEntry->artist,
@@ -229,7 +230,7 @@ class PlaylistService
     }
 
     /**
-     * @get playlist by id
+     * @function get playlist by id
      * @param string $playlistId
      * @return array
      */
@@ -245,6 +246,50 @@ class PlaylistService
         $playlist->duration = $playlist->songs()->sum('duration');
         $playlist->size = $playlist->songs()->sum('size');
         return $this->formatPlaylist($playlist, true, true);
+    }
+
+    /**
+     * @function sort songs of a playlist
+     * @param array $changes
+     * @param string $playlistId
+     * @return array
+     */
+    public function sortPlaylistEntries(string $playlistId, array $changes): array
+    {
+        $fd = new FormatService();
+        $playlist = Playlist::find($playlistId);
+        $start = now();
+        Log::channel('api')->info("Sorting PlaylistEntries of playlist '$playlist->name':");
+        foreach($changes as $change) {
+            $entry = PlaylistEntry::where('id', $change['id'])->first();
+            $entry->sort = $change['sort'];
+            $entry->save();
+            Log::channel('api')->debug("Changing PlaylistEntry '".$change['id']."' to sort=".$change['sort']);
+        }
+        $ms = $start->diffInMilliseconds(now());
+        Log::channel('api')->info("PlaylistEntry sort finished in ".$fd->formatMs($ms).".");
+        return $this->getPlaylistById($playlistId);
+    }
+
+    /**
+     * @function delete a playlist entry
+     * @param string $playlistId
+     * @param string $entryId
+     * @return array
+     */
+    public function deletePlaylistEntry(string $playlistId, string $entryId): array
+    {
+        $entry = PlaylistEntry::find($entryId);
+        $playlist = Playlist::find($playlistId);
+        $deleted = PlaylistEntry::where('id', $entryId)
+            ->where('playlist_id', $playlistId)
+            ->delete();
+        if ($deleted) {
+            Log::channel('api')->info("PlaylistEntry '$entry->song' deleted from playlist '$playlist->name'.");
+        } else {
+            Log::channel('api')->info("Could not delete PlaylistEntry '$entry->song' from playlist '$playlist->name'.");
+        }
+        return $this->getPlaylistById($playlistId);
     }
 
 }

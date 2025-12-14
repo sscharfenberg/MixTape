@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useAppStore } from "@/stores/app";
+import { useAppStore } from "@/stores/appStore";
+import { usePlaylistStore } from "@/stores/playlistStore";
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
@@ -7,11 +8,11 @@ import { push } from "notivue";
 import ListPlaylistSongs from "Views/Playlists/Playlist/ListPlaylistSongs.vue";
 import PlaylistMetaData from "Views/Playlists/Playlist/PlaylistMetaData.vue";
 import PlaylistTitle from "Views/Playlists/Playlist/PlaylistTitle.vue";
-import { ref, watch } from "vue";
+import { onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 const app = useAppStore();
+const pStore = usePlaylistStore();
 const route = useRoute();
-const playlist = ref(null);
 const hasError = ref(false);
 const fetchData = () => {
     app.loading = true;
@@ -19,7 +20,7 @@ const fetchData = () => {
         .get(`/api/playlists/${route.params.id}`)
         .then(response => {
             if (response.status === 200) {
-                playlist.value = response.data;
+                pStore.detailedPlaylist = response.data;
             }
         })
         .catch(error => {
@@ -34,6 +35,9 @@ const fetchData = () => {
         });
 };
 watch(() => route.params.id, fetchData, { immediate: true });
+onUnmounted(() => {
+    pStore.detailedPlaylist = {};
+});
 </script>
 
 <template>
@@ -43,9 +47,9 @@ watch(() => route.params.id, fetchData, { immediate: true });
         </div>
         <show-error v-else-if="hasError && !app.loading" @refresh="fetchData()" />
         <div v-else class="playlist">
-            <playlist-title :title="playlist.name" :cover="playlist?.cover" />
-            <playlist-meta-data :playlist="playlist" />
-            <list-playlist-songs :songs="playlist.songs" />
+            <playlist-title :title="pStore.detailedPlaylist.name" :cover="pStore.detailedPlaylist.cover" />
+            <playlist-meta-data :playlist="pStore.detailedPlaylist" />
+            <list-playlist-songs :songs="pStore.detailedPlaylist.songs" />
         </div>
     </section>
 </template>

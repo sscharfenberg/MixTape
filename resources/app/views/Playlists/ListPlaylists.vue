@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useAppStore } from "@/stores/app";
-import { usePlaylistStore } from "@/stores/playlists";
+import { useAppStore } from "@/stores/appStore";
+import { usePlaylistStore } from "@/stores/playlistStore";
 import ListPlaylistsItem from "Views/Playlists/ListPlaylistsItem.vue";
 import axios from "axios";
 import { push } from "notivue";

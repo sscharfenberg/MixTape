@@ -6,7 +6,8 @@ import { defineStore } from "pinia";
 export const usePlaylistStore = defineStore("playlistStore", {
     state: (): PlaylistState => {
         return {
-            playlists: []
+            playlists: [],
+            detailedPlaylist: null
         };
     },
     actions: {
@@ -15,7 +16,7 @@ export const usePlaylistStore = defineStore("playlistStore", {
          * @param playlistId
          * @param list
          */
-        setPlaylistName(playlistId: string, list: Array<Playlist>) {
+        setPlaylistName(playlistId: string, list: Playlist) {
             this.playlists = this.playlists.map(pList => {
                 if (pList.id === playlistId) {
                     pList.name = list.name;
@@ -27,12 +28,17 @@ export const usePlaylistStore = defineStore("playlistStore", {
     getters: {
         getPlaylist: state => {
             return (playlistId: string) => state.playlists.find(playlist => playlist.id === playlistId);
+        },
+
+        getSong: state => {
+            return (songId: string) => state.detailedPlaylist.songs.find(song => song.id === songId);
         }
     }
 });
 
 interface PlaylistState {
     playlists: Array<Playlist>;
+    detailedPlaylist: Playlist | null;
 }
 
 interface Playlist {
@@ -41,4 +47,20 @@ interface Playlist {
     sort: number;
     entries: number;
     duration: number;
+    songs: Array<Song>;
+    cover: string;
+    createdAt: Date;
+}
+
+interface Song {
+    id: string;
+    album: string;
+    artist: string;
+    song: string;
+    duration: number;
+    size: number;
+    sort: number;
+    createdAt: Date;
+    updatedAt: Date;
+    encodedPath: string;
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatDecimals, formatSeconds } from "@/formatters/numbers";
-import { usePlaylistStore } from "@/stores/playlists";
+import { usePlaylistStore } from "@/stores/playlistStore";
 import axios from "axios";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppButton from "Components/Form/Button/AppButton.vue";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePlayerStore } from "@/stores/player";
+import { usePlayerStore } from "@/stores/playerStore";
 import AppButton from "Components/Form/Button/AppButton.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
 import { nowPlaying } from "Components/Player/useNowPlaying";

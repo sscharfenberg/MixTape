@@ -1,0 +1,96 @@
+/******************************************************************************
+ * single playlist song
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/mixins" as m;
+
+.playlist-song {
+    display: flex;
+    align-items: center;
+
+    padding: 0.4ch 0;
+    gap: 1ch;
+
+    background-color: map.get(c.$main, "playlist-background-row1");
+    color: map.get(c.$main, "playlist-surface-row1");
+
+    &:first-of-type {
+        border-top-left-radius: map.get(s.$main, "playlist-radius");
+        border-top-right-radius: map.get(s.$main, "playlist-radius");
+    }
+
+    &:last-of-type {
+        border-bottom-right-radius: map.get(s.$main, "playlist-radius");
+        border-bottom-left-radius: map.get(s.$main, "playlist-radius");
+    }
+
+    &:nth-of-type(even) {
+        background-color: map.get(c.$main, "playlist-background-row2");
+        color: map.get(c.$main, "playlist-surface-row2");
+    }
+
+    &__drag-handle {
+        display: flex;
+        align-items: center;
+
+        padding: map.get(s.$main, "playlist-padding");
+        gap: 0.5ch;
+
+        cursor: move;
+    }
+
+    &__data {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        margin-left: -1ch;
+
+        gap: 1ch;
+    }
+
+    &__name {
+        display: flex;
+        align-items: center;
+
+        gap: 0.5ch;
+
+        .icon {
+            display: none;
+
+            @include m.mq("landscape") {
+                display: block;
+            }
+        }
+    }
+
+    &__artist,
+    &__album,
+    &__duration {
+        display: none;
+
+        @include m.mq("landscape") {
+            display: flex;
+            align-items: center;
+
+            gap: 0.5ch;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+
+        padding: map.get(s.$main, "playlist-actions-padding");
+        margin-left: auto;
+
+        gap: 0.5ch;
+
+        @include m.mq("landscape") {
+            gap: 1ch;
+        }
+    }
+}

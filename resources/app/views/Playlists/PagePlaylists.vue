@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useAppStore } from "@/stores/app";
-import { usePlaylistStore } from "@/stores/playlists";
+import { useAppStore } from "@/stores/appStore";
+import { usePlaylistStore } from "@/stores/playlistStore";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import ListPlaylists from "Views/Playlists/ListPlaylists.vue";

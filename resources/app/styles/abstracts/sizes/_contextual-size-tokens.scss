@@ -155,7 +155,8 @@ $main: (
     "playlist-radius": map.get(s.$radius, "featured"),
     "modal-backdrop-blur": math.round(s.$base * 0.3),
     "modal-margin": s.$base,
-    "modal-max-width": math.round(s.$base * 30)
+    "modal-max-width": math.round(s.$base * 30),
+    "playlist-actions-padding": math.round(s.$base * 0.5) math.round(s.$base * 0.5) math.round(s.$base * 0.5) 0
 ) !default;
 
 // size tokens for widgets

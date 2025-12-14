@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { router } from "@/router";
-import { usePlayerStore } from "@/stores/player";
+import { usePlayerStore } from "@/stores/playerStore";
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";

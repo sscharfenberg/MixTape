@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAppStore } from "@/stores/app";
+import { useAppStore } from "@/stores/appStore";
 import axios from "axios";
 import AppButton from "Components/Form/Button/AppButton.vue";
 import FormRow from "Components/Form/Row/FormRow.vue";

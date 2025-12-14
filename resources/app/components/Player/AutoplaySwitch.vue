@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePlayerStore } from "@/stores/player";
+import { usePlayerStore } from "@/stores/playerStore";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import { computed } from "vue";
 const store = usePlayerStore();
