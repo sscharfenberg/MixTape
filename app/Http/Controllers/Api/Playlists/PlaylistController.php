@@ -96,4 +96,19 @@ class PlaylistController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param string $path
+     * @return JsonResponse
+     */
+    public function show(Request $request, string $path): JsonResponse
+    {
+        $p = new PlaylistService();
+        $res = $p->getPlaylistById($path);
+        if (count($res) > 0) {
+            return response()->json($res);
+        } else {
+            return response()->json(['message' => 'Playlist nicht gefunden.'], 422);
+        }
+    }
 }

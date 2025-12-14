@@ -13,10 +13,6 @@ Route::prefix('api')->group(function () {
     Route::get('/widget/global',
         [\App\Http\Controllers\Api\Widget\GlobalWidgetController::class, 'show']
     );
-    // Audiobook Widget Controller
-    Route::get('/widget/audiobook',
-        [\App\Http\Controllers\Api\Widget\AudiobookWidgetController::class, 'show']
-    );
 
     /**************************************************************************
      * Music Controllers
@@ -135,7 +131,7 @@ Route::prefix('api')->group(function () {
      * Playlist Controllers
      *************************************************************************/
 
-    // Show Playlists
+    // list playlists
     Route::get('/playlists',
         [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'list']
     );
@@ -158,6 +154,10 @@ Route::prefix('api')->group(function () {
     // Add Song to Playlist
     Route::post('/playlists/add-song',
         [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'addSong']
+    );
+    // show a specific playlist
+    Route::get('/playlists/{path}',
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'show']
     );
 
 });

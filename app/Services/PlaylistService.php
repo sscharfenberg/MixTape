@@ -7,6 +7,7 @@ use App\Models\PlaylistEntry;
 use App\Models\Song;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use function PHPSTORM_META\map;
 
 class PlaylistService
 {
@@ -14,18 +15,50 @@ class PlaylistService
     /**
      * @function json format for a playlist
      * @param Playlist $playlist
+     * @param bool $addSongs
+     * @param bool $addCover
      * @return array
      */
-    private function formatPlaylist (Playlist $playlist):array
+    private function formatPlaylist (Playlist $playlist, bool $addSongs = false, bool $addCover = false):array
     {
-        return [
+        $c = new CoverService();
+        $json = [
             'id' => $playlist->id,
             'name' => $playlist->name,
             'sort' => $playlist->sort,
             'entries' => $playlist->entries,
             'duration' => $playlist->duration,
-            'size' => $playlist->size
+            'size' => $playlist->size,
+            'createdAt' => $playlist->created_at
         ];
+        $entries = PlaylistEntry::where('playlist_id', $playlist->id)
+            ->orderByDesc('sort')
+            ->get();
+        // should we add all playlist entries for the detail view?
+        if ($addSongs) {
+            $json['songs'] = $entries->map( function ($entry) {
+                return $this->formatPlaylistEntry($entry);
+            });
+        }
+        // should we create a cover collage of random songs?
+        if ($addCover && count($entries) >= 4) {
+            $randomSongs = $entries->take(4)->map(function ($entry) {
+                return $this->matchEntryToSong($entry);
+            });
+            $json['cover'] = $c->getCoverCollage($playlist->id, $randomSongs);
+        }
+
+        return $json;
+    }
+
+    /**
+     * @function get the song that corresponds to a playlist entry.
+     * @param PlaylistEntry $entry
+     * @return Song
+     */
+    private function matchEntryToSong (PlaylistEntry $entry): Song
+    {
+        return Song::where('path', $entry->path)->first();
     }
 
     /**
@@ -35,14 +68,17 @@ class PlaylistService
      */
     private function formatPlaylistEntry (PlaylistEntry $playlistEntry):array
     {
+        $u = new UrlSafeService();
         return [
-            'path' => $playlistEntry->path,
+            'encodedPath' => $u->encode($playlistEntry->path),
             'song' => $playlistEntry->song,
             'artist' => $playlistEntry->artist,
             'album' => $playlistEntry->album,
             'sort' => $playlistEntry->sort,
             'duration' => $playlistEntry->duration,
-            'size' => $playlistEntry->size
+            'size' => $playlistEntry->size,
+            'createdAt' => $playlistEntry->created_at,
+            'updatedAt' => $playlistEntry->updated_at
         ];
     }
 
@@ -190,6 +226,25 @@ class PlaylistService
             'newEntry' => $this->formatPlaylistEntry($entry),
             'playlists' => $this->getAvailablePlaylistsForSong($song)
         ];
+    }
+
+    /**
+     * @get playlist by id
+     * @param string $playlistId
+     * @return array
+     */
+    public function getPlaylistById(string $playlistId): array
+    {
+        $playlist = Playlist::where('id', $playlistId)
+            ->with('songs')
+            ->first();
+        if (!$playlist) {
+            return [];
+        }
+        $playlist->entries = $playlist->songs()->count();
+        $playlist->duration = $playlist->songs()->sum('duration');
+        $playlist->size = $playlist->songs()->sum('size');
+        return $this->formatPlaylist($playlist, true, true);
     }
 
 }
