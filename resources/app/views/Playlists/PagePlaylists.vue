@@ -9,11 +9,11 @@ import axios from "axios";
 import { push } from "notivue";
 import { computed, onMounted } from "vue";
 const app = useAppStore();
-const pStore = usePlaylistStore();
+const playlistStore = usePlaylistStore();
 const playlists = computed({
-    get: () => pStore.playlists,
+    get: () => playlistStore.playlists,
     set: value => {
-        pStore.playlists = value;
+        playlistStore.playlists = value;
     }
 });
 const fetchData = () => {

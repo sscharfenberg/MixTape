@@ -1,0 +1,14 @@
+/******************************************************************************
+ * external player navigation buttons (non-vidstack)
+ * @type {Sass}
+ *****************************************************************************/
+
+.player-navigation {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    margin-top: auto;
+
+    gap: 1ch;
+}

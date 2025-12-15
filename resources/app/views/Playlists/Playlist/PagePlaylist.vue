@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useAppStore } from "@/stores/appStore";
+import { usePlayerStore } from "@/stores/playerStore";
 import { usePlaylistStore } from "@/stores/playlistStore";
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
+import { shuffleQueue } from "Components/Player/useSongQueue";
 import { push } from "notivue";
 import ListPlaylistSongs from "Views/Playlists/Playlist/ListPlaylistSongs.vue";
 import PlaylistMetaData from "Views/Playlists/Playlist/PlaylistMetaData.vue";
@@ -11,7 +13,8 @@ import PlaylistTitle from "Views/Playlists/Playlist/PlaylistTitle.vue";
 import { onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 const app = useAppStore();
-const pStore = usePlaylistStore();
+const playlistStore = usePlaylistStore();
+const playerStore = usePlayerStore();
 const route = useRoute();
 const hasError = ref(false);
 const fetchData = () => {
@@ -20,7 +23,10 @@ const fetchData = () => {
         .get(`/api/playlists/${route.params.id}`)
         .then(response => {
             if (response.status === 200) {
-                pStore.detailedPlaylist = response.data;
+                playlistStore.detailedPlaylist = response.data;
+                const serverQueue = response.data.songs.map(song => song.encodedPath);
+                playerStore.sortedQueue = serverQueue;
+                playerStore.shuffledQueue = shuffleQueue(serverQueue);
             }
         })
         .catch(error => {
@@ -36,7 +42,7 @@ const fetchData = () => {
 };
 watch(() => route.params.id, fetchData, { immediate: true });
 onUnmounted(() => {
-    pStore.detailedPlaylist = {};
+    playlistStore.detailedPlaylist = {};
 });
 </script>
 
@@ -47,9 +53,12 @@ onUnmounted(() => {
         </div>
         <show-error v-else-if="hasError && !app.loading" @refresh="fetchData()" />
         <div v-else class="playlist">
-            <playlist-title :title="pStore.detailedPlaylist.name" :cover="pStore.detailedPlaylist.cover" />
-            <playlist-meta-data :playlist="pStore.detailedPlaylist" />
-            <list-playlist-songs :songs="pStore.detailedPlaylist.songs" />
+            <playlist-title
+                :title="playlistStore.detailedPlaylist.name"
+                :cover="playlistStore.detailedPlaylist.cover"
+            />
+            <playlist-meta-data :playlist="playlistStore.detailedPlaylist" />
+            <list-playlist-songs :songs="playlistStore.detailedPlaylist.songs" />
         </div>
     </section>
 </template>

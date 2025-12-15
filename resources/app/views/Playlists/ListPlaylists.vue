@@ -7,11 +7,11 @@ import { push } from "notivue";
 import { computed } from "vue";
 import { VueDraggableNext as draggable } from "vue-draggable-next";
 const app = useAppStore();
-const pStore = usePlaylistStore();
+const playlistStore = usePlaylistStore();
 const playlists = computed<Array<Playlist>>({
-    get: () => pStore.playlists,
+    get: () => playlistStore.playlists,
     set: value => {
-        pStore.playlists = value;
+        playlistStore.playlists = value;
     }
 });
 interface Playlist {

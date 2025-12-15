@@ -14,7 +14,7 @@ const onNavigation = song => {
 </script>
 
 <template>
-    <div class="song-buttons">
+    <div class="player-navigation">
         <router-link
             :disabled="nav.prev?.encodedPath ? null : true"
             :to="{ name: 'song', params: { id: nav.prev?.encodedPath } }"
@@ -36,14 +36,3 @@ const onNavigation = song => {
         <autoplay-switch />
     </div>
 </template>
-
-<style scoped lang="scss">
-.song-buttons {
-    display: flex;
-    align-items: center;
-
-    margin-top: auto;
-
-    gap: 1ch;
-}
-</style>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAudiobookStore } from "@/stores/audiobookStore";
 import { usePlayerStore } from "@/stores/playerStore";
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
@@ -15,7 +16,8 @@ const isLoading = ref(false);
 const data = ref(null);
 const hasError = ref(false);
 const route = useRoute();
-const store = usePlayerStore();
+const store = useAudiobookStore();
+const playerStore = usePlayerStore();
 const trackUrl = ref("");
 const currentName = ref("");
 const fetchData = () => {
@@ -88,7 +90,7 @@ const onEnded = async () => {
                 v-if="trackUrl && currentName"
                 :src="trackUrl"
                 :title="currentName"
-                :autoplay="store.autoplay"
+                :autoplay="playerStore.autoplay"
                 @player-ended="onEnded"
             />
             <audiobook-meta-data :book="data" />

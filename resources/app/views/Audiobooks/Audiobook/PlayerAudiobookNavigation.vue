@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePlayerStore } from "@/stores/playerStore";
+import { useAudiobookStore } from "@/stores/audiobookStore";
 import AppButton from "Components/Form/Button/AppButton.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
 import { nowPlaying } from "Components/Player/useNowPlaying";
@@ -24,7 +24,7 @@ interface Track {
     track: number;
 }
 const emit = defineEmits(["play"]);
-const store = usePlayerStore();
+const store = useAudiobookStore();
 const currentTrack = computed(() => store.getAudiobookBookmark(props.bookEncodedName));
 const playFirst = () => {
     emit("play", props.tracks[0].encodedPath);

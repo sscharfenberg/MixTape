@@ -7,7 +7,8 @@ export const usePlaylistStore = defineStore("playlistStore", {
     state: (): PlaylistState => {
         return {
             playlists: [],
-            detailedPlaylist: null
+            detailedPlaylist: null,
+            nowPlaying: ""
         };
     },
     actions: {
@@ -39,6 +40,7 @@ export const usePlaylistStore = defineStore("playlistStore", {
 interface PlaylistState {
     playlists: Array<Playlist>;
     detailedPlaylist: Playlist | null;
+    nowPlaying: string;
 }
 
 interface Playlist {

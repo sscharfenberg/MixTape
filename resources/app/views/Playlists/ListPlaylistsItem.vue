@@ -8,7 +8,7 @@ import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import ModalWindow from "Components/Modal/ModalWindow.vue";
 import { push } from "notivue";
 import { computed, nextTick, ref, useTemplateRef } from "vue";
-const pStore = usePlaylistStore();
+const playlistStore = usePlaylistStore();
 const props = defineProps({
     pId: {
         type: String,
@@ -16,9 +16,9 @@ const props = defineProps({
     }
 });
 const list = computed({
-    get: () => pStore.getPlaylist(props.pId),
+    get: () => playlistStore.getPlaylist(props.pId),
     set: value => {
-        pStore.setPlaylistName(props.pId, value);
+        playlistStore.setPlaylistName(props.pId, value);
     }
 });
 const name = ref(list.value.name);
@@ -63,7 +63,7 @@ const onDelete = () => {
         .post("/api/playlists/delete", { id: list.value.id })
         .then(response => {
             editing.value = false;
-            pStore.playlists = response.data;
+            playlistStore.playlists = response.data;
         })
         .catch(error => {
             console.error(error);
@@ -100,7 +100,6 @@ const onDelete = () => {
             <input class="form-input" type="text" v-model="name" ref="nameRef" :readonly="loading ? 'true' : null" />
             <app-button v-if="!loading" icon="save" :short="true" @click.prevent="onSave" />
             <app-button v-if="!loading" icon="edit_off" :short="true" @click.prevent="onEdit(false)" />
-            <loading-spinner v-if="loading" :size="2" />
         </form>
         <app-button v-if="!editing && !loading" icon="edit" :short="true" @click="onEdit(true)" />
         <modal-window v-if="showModal" @close="showModal = false" :title="`Playlist ${list.name} löschen?`">
@@ -119,6 +118,7 @@ const onDelete = () => {
             @click="onDeleteDialogue"
             class="delete-btn"
         />
+        <loading-spinner v-if="loading" :size="2" />
     </div>
 </template>
 

@@ -18,8 +18,8 @@ const props = defineProps({
         required: true
     }
 });
-const pStore = usePlaylistStore();
-const s = computed(() => pStore.getSong(props.id));
+const playlistStore = usePlaylistStore();
+const s = computed(() => playlistStore.getSong(props.id));
 const onDelete = () => {
     console.log("delete " + props.id);
     loading.value = true;
@@ -27,7 +27,7 @@ const onDelete = () => {
     axios
         .post(`/api/playlists/${route.params.id}/delete/${props.id}`)
         .then(response => {
-            pStore.detailedPlaylist = response.data;
+            playlistStore.detailedPlaylist = response.data;
         })
         .catch(error => {
             console.error(error);

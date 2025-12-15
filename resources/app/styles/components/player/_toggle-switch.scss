@@ -1,0 +1,88 @@
+/******************************************************************************
+ * autoplay switch
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/timings" as ti;
+
+.toggle-switch {
+    display: flex;
+
+    width: 60px;
+    height: 40px;
+
+    border: map.get(s.$button, "border") solid map.get(c.$button, "default", "border");
+
+    background-color: map.get(c.$button, "default", "background");
+    color: map.get(c.$button, "default", "surface");
+    border-radius: map.get(s.$main, "switch-pit");
+
+    &:hover {
+        background-color: map.get(c.$button, "default", "background-hover");
+        color: map.get(c.$button, "default", "surface-hover");
+    }
+
+    &__label {
+        display: flex;
+        position: relative;
+
+        flex-grow: 1;
+
+        cursor: pointer;
+    }
+
+    &__knob {
+        display: flex;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 2px;
+        align-items: center;
+
+        transition:
+            left map.get(ti.$timings, "fast") linear,
+            background-color map.get(ti.$timings, "fast") linear,
+            color map.get(ti.$timings, "fast") linear;
+
+        .icon {
+            box-sizing: content-box;
+            padding: 2px;
+
+            background: map.get(c.$main, "autoplay-knob-background");
+            border-radius: 50%;
+        }
+    }
+
+    &__input {
+        display: none;
+
+        /* stylelint-disable selector-class-pattern */
+        + label .icon.toggle-switch--on {
+            display: none;
+        }
+
+        + label .icon.toggle-switch--off {
+            display: block;
+        }
+
+        &:checked + label .icon.toggle-switch--on {
+            display: block;
+        }
+
+        &:checked + label .icon.toggle-switch--off {
+            display: none;
+        }
+
+        &:checked + label .toggle-switch__knob {
+            left: 26px;
+
+            .icon {
+                background-color: map.get(c.$button, "primary", "background");
+                color: map.get(c.$button, "primary", "surface");
+            }
+        }
+        /* stylelint-enable selector-class-pattern */
+    }
+}

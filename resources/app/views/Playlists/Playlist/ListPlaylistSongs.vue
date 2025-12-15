@@ -6,12 +6,12 @@ import { push } from "notivue";
 import PlaylistSong from "Views/Playlists/Playlist/PlaylistSong.vue";
 import { computed } from "vue";
 import { VueDraggableNext as draggable } from "vue-draggable-next";
-const pStore = usePlaylistStore();
+const playlistStore = usePlaylistStore();
 const appStore = useAppStore();
 const playlist = computed<Array<Playlist>>({
-    get: () => pStore.detailedPlaylist,
+    get: () => playlistStore.detailedPlaylist,
     set: value => {
-        pStore.detailedPlaylist = value;
+        playlistStore.detailedPlaylist = value;
     }
 });
 interface Playlist {
@@ -54,7 +54,7 @@ const onListChange = () => {
         .post(`/api/playlists/${playlist.value.id}/sort`, { changes: changes })
         .then(response => {
             if (response.status === 200) {
-                pStore.detailedPlaylist = response.data;
+                playlistStore.detailedPlaylist = response.data;
             }
         })
         .catch(error => {

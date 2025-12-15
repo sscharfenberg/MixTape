@@ -1,7 +1,7 @@
 <template>
-    <a href="http://mixtape.local">
+    <router-link :to="{ name: 'dashboard' }">
         <img src="./logo.svg" alt="MixTape logo" />
-    </a>
+    </router-link>
 </template>
 
 <style scoped lang="scss">

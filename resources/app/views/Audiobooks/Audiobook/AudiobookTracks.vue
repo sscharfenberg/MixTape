@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { usePlayerStore } from "@/stores/playerStore";
+import { useAudiobookStore } from "@/stores/audiobookStore";
 import MonoSelect from "Components/Form/Select/MonoSelect.vue";
 import { computed } from "vue";
-const store = usePlayerStore();
+const store = useAudiobookStore();
 const props = defineProps({
     tracks: {
         type: Array<Track>,

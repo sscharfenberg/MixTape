@@ -22,6 +22,7 @@
         justify-content: space-between;
 
         height: map.get(s.$form, "select-height");
+        padding: map.get(s.$form, "select-padding");
         border: map.get(s.$form, "select-border") solid map.get(c.$form, "select-border");
 
         background-color: map.get(c.$form, "select-background");
