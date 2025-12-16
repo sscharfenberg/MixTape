@@ -185,6 +185,14 @@ $main: (
             color.adjust(map.get(c.$grey, "bunker"), $alpha: -0.2)
         ),
     "playlist-surface-row2": light-dark(map.get(c.$grey, "bunker"), map.get(c.$grey, "mystic")),
+    "playlist-song-background-active": light-dark(
+            map.get(c.$brand, "christine", "color"),
+            map.get(c.$brand, "viking", "color")
+        ),
+    "playlist-song-surface-active": light-dark(
+            map.get(c.$brand, "christine", "contrast"),
+            map.get(c.$brand, "viking", "contrast")
+        ),
     "modal-background": hsl(from light-dark(map.get(c.$grey, "mystic"), map.get(c.$grey, "ebony")) h s l / 50%)
 ) !default;
 

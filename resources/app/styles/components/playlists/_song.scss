@@ -17,6 +17,11 @@
     background-color: map.get(c.$main, "playlist-background-row1");
     color: map.get(c.$main, "playlist-surface-row1");
 
+    &.active {
+        background-color: map.get(c.$main, "playlist-song-background-active");
+        color: map.get(c.$main, "playlist-song-surface-active");
+    }
+
     &:first-of-type {
         border-top-left-radius: map.get(s.$main, "playlist-radius");
         border-top-right-radius: map.get(s.$main, "playlist-radius");

@@ -7,6 +7,7 @@ use App\Models\PlaylistEntry;
 use App\Models\Song;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use function PHPSTORM_META\map;
 
 class PlaylistService
@@ -290,6 +291,32 @@ class PlaylistService
             Log::channel('api')->info("Could not delete PlaylistEntry '$entry->song' from playlist '$playlist->name'.");
         }
         return $this->getPlaylistById($playlistId);
+    }
+
+
+    public function playSong(string $path): array
+    {
+        $u = new UrlSafeService();
+        $song = Song::where('path', $u->decode($path))
+            ->with('artist')
+            ->first();
+        $storageSongName = "$song->id.mp3";
+        $serverPathName = config('collection.server.music.path').$song->path;
+        if (Storage::disk('public')->missing($storageSongName)) {
+            Log::channel('api')->info("File '$storageSongName' for song '$song->name' missing in public storage.");
+            if (file_exists($serverPathName)) {
+                Storage::disk('public')->put($storageSongName, file_get_contents($serverPathName));
+                Log::channel('api')->error("File '$storageSongName' for song '$song->name' copied to public storage.");
+            } else {
+                Log::channel('api')->error("File '$serverPathName' does not exist.");
+            }
+        } else {
+            Log::channel('api')->info("File '$storageSongName' already exists in public storage.");
+        }
+        return [
+            'path' => "/storage/$storageSongName",
+            'name' => $song->artist->name." - ".$song->name,
+        ];
     }
 
 }

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { formatSeconds } from "@/formatters/numbers";
+import { usePlayerStore } from "@/stores/playerStore";
 import { usePlaylistStore } from "@/stores/playlistStore";
+import { useQueueStore } from "@/stores/queueStore";
 import axios from "axios";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppButton from "Components/Form/Button/AppButton.vue";
@@ -20,6 +22,16 @@ const props = defineProps({
 });
 const playlistStore = usePlaylistStore();
 const s = computed(() => playlistStore.getSong(props.id));
+const queueStore = useQueueStore();
+const playerStore = usePlayerStore();
+const currentSongPath = computed(() => {
+    const idx = queueStore.currentQueueIndex;
+    if (playerStore.shuffle) return queueStore.shuffledQueue[idx];
+    return queueStore.sortedQueue[idx];
+});
+const currentSongData = computed(() => {
+    return playlistStore.detailedPlaylist.songs.find(song => song.encodedPath === currentSongPath.value);
+});
 const onDelete = () => {
     console.log("delete " + props.id);
     loading.value = true;
@@ -43,7 +55,7 @@ const onDelete = () => {
 </script>
 
 <template>
-    <div class="playlist-song">
+    <div class="playlist-song" :class="{ active: s.id === currentSongData.id }">
         <div class="playlist-song__drag-handle"><app-icon name="drag" /></div>
         <div class="playlist-song__data">
             <div class="playlist-song__name">

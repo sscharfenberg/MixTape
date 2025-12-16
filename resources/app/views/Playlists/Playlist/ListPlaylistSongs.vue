@@ -8,6 +8,8 @@ import { computed } from "vue";
 import { VueDraggableNext as draggable } from "vue-draggable-next";
 const playlistStore = usePlaylistStore();
 const appStore = useAppStore();
+// const queueStore = useQueueStore();
+// const playerStore = usePlayerStore();
 const playlist = computed<Array<Playlist>>({
     get: () => playlistStore.detailedPlaylist,
     set: value => {
@@ -55,6 +57,16 @@ const onListChange = () => {
         .then(response => {
             if (response.status === 200) {
                 playlistStore.detailedPlaylist = response.data;
+                // const serverQueue = response.data.songs.map(song => song.encodedPath);
+                // const oldIndex = queueStore.currentQueueIndex;
+                // const oldPath = playerStore.shuffle
+                //     ? queueStore.shuffledQueue[oldIndex]
+                //     : queueStore.sortedQueue[oldIndex];
+                // const newIndex = playlistStore.detailedPlaylist.songs.find(song => song.encodedPath === oldPath);
+                // // only update sorted queue, keep shuffled queue for now
+                // queueStore.sortedQueue = serverQueue;
+                // // update current index so the same song gets marked as playing.
+                // queueStore.currentQueueIndex = newIndex;
             }
         })
         .catch(error => {

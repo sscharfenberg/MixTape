@@ -167,6 +167,10 @@ Route::prefix('api')->group(function () {
     Route::post('/playlists/{playlistId}/delete/{entryId}',
         [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'deleteEntry']
     );
+    // play a playlist entry
+    Route::get('/playlists/play/{path}',
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'play']
+    );
 
 });
 

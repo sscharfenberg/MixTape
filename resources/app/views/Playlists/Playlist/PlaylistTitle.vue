@@ -8,13 +8,17 @@ defineProps({
     },
     cover: String
 });
+const emit = defineEmits(["play"]);
+const onPlay = (value: string) => {
+    emit("play", value);
+};
 </script>
 
 <template>
     <header class="details-title">
         <div class="details-title__title">
             <h3>{{ title }}</h3>
-            <playlist-player-navigation />
+            <playlist-player-navigation @play="onPlay" />
         </div>
         <div v-if="cover && cover.length > 48" class="cover">
             <img :src="cover" :alt="title" />

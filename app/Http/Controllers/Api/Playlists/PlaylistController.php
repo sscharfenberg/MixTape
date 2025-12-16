@@ -139,4 +139,15 @@ class PlaylistController extends Controller
         $playlist = $p->deletePlaylistEntry($playlistId, $entryId);
         return response()->json($playlist);
     }
+
+    /**
+     * @param Request $request
+     * @param string $path
+     * @return JsonResponse
+     */
+    public function play(Request $request, string $path): JsonResponse
+    {
+        $p = new PlaylistService();
+        return response()->json($p->playSong($path));
+    }
 }

@@ -1,32 +1,33 @@
 /******************************************************************************
- * store for audio player
+ * store for player queues
  *****************************************************************************/
 import { defineStore } from "pinia";
 
 /**
  * define playerStore
  */
-export const usePlayerStore = defineStore("playerStore", {
-    state: (): PlayerState => {
+export const useQueueStore = defineStore("queueStore", {
+    state: (): QueueState => {
         return {
-            autoplay: false,
-            shuffle: false,
             sortedQueue: [],
             shuffledQueue: [],
             currentQueueIndex: 0
         };
     },
-    actions: {},
-    getters: {},
-    persist: {
-        key: "player",
-        storage: localStorage
-    }
+    actions: {
+        /**
+         * @function reset store to defaults
+         */
+        reset() {
+            this.sortedQueue = [];
+            this.shuffledQueue = [];
+            this.currentQueueIndex = 0;
+        }
+    },
+    getters: {}
 });
 
-interface PlayerState {
-    autoplay: boolean;
-    shuffle: boolean;
+interface QueueState {
     sortedQueue: Array<string>;
     shuffledQueue: Array<string>;
     currentQueueIndex: 0;
