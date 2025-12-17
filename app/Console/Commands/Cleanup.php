@@ -52,7 +52,7 @@ class Cleanup extends Command
             Log::channel('lib')->info("deleting $mask in $path");
             $result = Process::run('find '.$path.' -follow -type f -iname '.$mask.' -print -delete');
             if (strlen($result->output()) > 0) {
-                $this->debug("found and deleted $mask files:");
+                $this->info("found and deleted $mask files:");
                 $this->line($result->output());
                 Log::channel('lib')->debug("deleted files:\n\n".$result->output());
             }
