@@ -6,14 +6,13 @@ import { useQueueStore } from "@/stores/queueStore";
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
-import AudioPlayer from "Components/Player/AudioPlayer.vue";
 import { shuffleQueue } from "Components/Player/useSongQueue";
 import { push } from "notivue";
 import ListPlaylistSongs from "Views/Playlists/Playlist/ListPlaylistSongs.vue";
 import PlaylistMetaData from "Views/Playlists/Playlist/PlaylistMetaData.vue";
-import PlaylistNowPlaying from "Views/Playlists/Playlist/PlaylistNowPlaying.vue";
+import PlaylistPlaySection from "Views/Playlists/Playlist/PlaylistPlaySection.vue";
 import PlaylistTitle from "Views/Playlists/Playlist/PlaylistTitle.vue";
-import { onUnmounted, ref, watch } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 const app = useAppStore();
 const playerStore = usePlayerStore();
@@ -23,6 +22,7 @@ const route = useRoute();
 const hasError = ref(false);
 const currentTrackUrl = ref("");
 const currentTrackName = ref("");
+const loadingSong = ref(false);
 const fetchData = () => {
     app.loading = true;
     hasError.value = false;
@@ -34,6 +34,8 @@ const fetchData = () => {
                 const serverQueue = response.data.songs.map(song => song.encodedPath);
                 queueStore.sortedQueue = serverQueue;
                 queueStore.shuffledQueue = shuffleQueue(serverQueue);
+                // start playing if autoplay is active
+                if (playerStore.autoplay) onPlay(queueStore.getCurrentSongPath);
             }
         })
         .catch(error => {
@@ -46,14 +48,20 @@ const fetchData = () => {
         })
         .finally(() => {
             app.loading = false;
+            console.log("fetchData xhr finished.");
         });
 };
 const onPlay = value => {
+    loadingSong.value = true;
+    console.log("got play emitted", value);
     axios
         .get(`/api/playlists/play/${value}`)
         .then(response => {
             currentTrackUrl.value = response.data.path;
             currentTrackName.value = response.data.name;
+            queueStore.updateCurrentPath();
+            queueStore.updateQueueIndex();
+            playlistStore.setNowPlaying(value);
         })
         .catch(error => {
             console.error(error);
@@ -64,14 +72,15 @@ const onPlay = value => {
             hasError.value = true;
         })
         .finally(() => {
-            console.log("xhr finished.");
+            loadingSong.value = false;
+            console.log("play xhr finished.");
         });
 };
 const onEnded = () => {
     console.log("ended");
 };
 watch(() => route.params.id, fetchData, { immediate: true });
-onUnmounted(() => {
+onBeforeMount(() => {
     playlistStore.detailedPlaylist = {};
     queueStore.reset();
 });
@@ -89,16 +98,15 @@ onUnmounted(() => {
                 :cover="playlistStore.detailedPlaylist.cover"
                 @play="onPlay"
             />
-            <audio-player
-                v-if="currentTrackUrl && currentTrackName"
-                :src="currentTrackUrl"
-                :title="currentTrackName"
-                :autoplay="playerStore.autoplay"
-                @player-ended="onEnded"
+            <playlist-play-section
+                v-if="playlistStore.detailedPlaylist.songs.filter(s => s.nowPlaying).length > 0"
+                :current-track-url="currentTrackUrl"
+                :current-track-name="currentTrackName"
+                :loading="loadingSong"
+                @ended="onEnded"
             />
-            <playlist-now-playing v-if="currentTrackUrl && currentTrackName" />
             <playlist-meta-data :playlist="playlistStore.detailedPlaylist" />
-            <list-playlist-songs :songs="playlistStore.detailedPlaylist.songs" />
+            <list-playlist-songs :songs="playlistStore.detailedPlaylist.songs" @play="onPlay" />
         </div>
     </section>
 </template>

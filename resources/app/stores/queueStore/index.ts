@@ -2,7 +2,8 @@
  * store for player queues
  *****************************************************************************/
 import { defineStore } from "pinia";
-
+import { usePlayerStore } from "../playerStore";
+import { usePlaylistStore } from "../playlistStore";
 /**
  * define playerStore
  */
@@ -11,7 +12,8 @@ export const useQueueStore = defineStore("queueStore", {
         return {
             sortedQueue: [],
             shuffledQueue: [],
-            currentQueueIndex: 0
+            currentQueueIndex: 0,
+            currentQueuePath: ""
         };
     },
     actions: {
@@ -22,13 +24,49 @@ export const useQueueStore = defineStore("queueStore", {
             this.sortedQueue = [];
             this.shuffledQueue = [];
             this.currentQueueIndex = 0;
+        },
+
+        /**
+         * @function set currentQueuePath to the currently playing path
+         */
+        updateCurrentPath() {
+            const playerStore = usePlayerStore();
+            const currentPath = playerStore.shuffle
+                ? this.shuffledQueue[this.currentQueueIndex]
+                : this.sortedQueue[this.currentQueueIndex];
+            console.log("current path is ", currentPath);
+            this.currentQueuePath = currentPath;
+        },
+
+        /**
+         * @function update currentQueueIndex to the new index (sorted/shuffledQueue will have changed)
+         */
+        updateQueueIndex() {
+            const playerStore = usePlayerStore();
+            const playlistStore = usePlaylistStore();
+            const newIndex = playerStore.shuffle
+                ? this.shuffledQueue.indexOf(this.currentQueuePath)
+                : this.sortedQueue.indexOf(this.currentQueuePath);
+            console.log("finding path " + this.oldQueueIndex + ", found on position " + newIndex);
+            this.currentQueueIndex = newIndex;
+            playlistStore.setNowPlaying(this.currentQueuePath);
         }
     },
-    getters: {}
+    getters: {
+        /**
+         * @function get the current song path.
+         */
+        getCurrentSongPath(state): string {
+            const playerStore = usePlayerStore();
+            if (playerStore.shuffle) return state.shuffledQueue[state.currentQueueIndex];
+            return state.sortedQueue[state.currentQueueIndex];
+        }
+    }
 });
 
 interface QueueState {
     sortedQueue: Array<string>;
     shuffledQueue: Array<string>;
-    currentQueueIndex: 0;
+    currentQueueIndex: number;
+    currentQueuePath: string;
 }

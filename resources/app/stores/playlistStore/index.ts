@@ -7,8 +7,7 @@ export const usePlaylistStore = defineStore("playlistStore", {
     state: (): PlaylistState => {
         return {
             playlists: [],
-            detailedPlaylist: null,
-            nowPlaying: ""
+            detailedPlaylist: null
         };
     },
     actions: {
@@ -23,6 +22,17 @@ export const usePlaylistStore = defineStore("playlistStore", {
                     pList.name = list.name;
                 }
                 return pList;
+            });
+        },
+
+        /**
+         * set the "nowPlaying" flag in playlists to a specific song
+         * @param songEncodedPath
+         */
+        setNowPlaying(songEncodedPath: string) {
+            this.detailedPlaylist.songs = this.detailedPlaylist.songs.map(s => {
+                s.nowPlaying = s.encodedPath === songEncodedPath;
+                return s;
             });
         }
     },
@@ -40,7 +50,6 @@ export const usePlaylistStore = defineStore("playlistStore", {
 interface PlaylistState {
     playlists: Array<Playlist>;
     detailedPlaylist: Playlist | null;
-    nowPlaying: string;
 }
 
 interface Playlist {
@@ -65,4 +74,5 @@ interface Song {
     createdAt: Date;
     updatedAt: Date;
     encodedPath: string;
+    nowPlaying: boolean;
 }

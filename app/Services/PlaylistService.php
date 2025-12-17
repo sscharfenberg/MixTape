@@ -80,7 +80,8 @@ class PlaylistService
             'duration' => $playlistEntry->duration,
             'size' => $playlistEntry->size,
             'createdAt' => $playlistEntry->created_at,
-            'updatedAt' => $playlistEntry->updated_at
+            'updatedAt' => $playlistEntry->updated_at,
+            'nowPlaying' => false
         ];
     }
 

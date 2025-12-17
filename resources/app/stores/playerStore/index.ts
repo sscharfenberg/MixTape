@@ -10,10 +10,7 @@ export const usePlayerStore = defineStore("playerStore", {
     state: (): PlayerState => {
         return {
             autoplay: false,
-            shuffle: false,
-            sortedQueue: [],
-            shuffledQueue: [],
-            currentQueueIndex: 0
+            shuffle: false
         };
     },
     actions: {},
@@ -27,7 +24,4 @@ export const usePlayerStore = defineStore("playerStore", {
 interface PlayerState {
     autoplay: boolean;
     shuffle: boolean;
-    sortedQueue: Array<string>;
-    shuffledQueue: Array<string>;
-    currentQueueIndex: 0;
 }

@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useAppStore } from "@/stores/appStore";
+import { usePlayerStore } from "@/stores/playerStore";
 import { usePlaylistStore } from "@/stores/playlistStore";
+import { useQueueStore } from "@/stores/queueStore";
 import axios from "axios";
+import { shuffleQueue } from "Components/Player/useSongQueue";
 import { push } from "notivue";
 import PlaylistSong from "Views/Playlists/Playlist/PlaylistSong.vue";
 import { computed } from "vue";
 import { VueDraggableNext as draggable } from "vue-draggable-next";
 const playlistStore = usePlaylistStore();
 const appStore = useAppStore();
-// const queueStore = useQueueStore();
-// const playerStore = usePlayerStore();
+const queueStore = useQueueStore();
+const playerStore = usePlayerStore();
 const playlist = computed<Array<Playlist>>({
     get: () => playlistStore.detailedPlaylist,
     set: value => {
@@ -37,6 +40,11 @@ interface PlaylistSong {
     updatedAt: Date;
     newSort: number;
 }
+const emit = defineEmits(["play"]);
+const onPlay = (value: string) => {
+    emit("play", value);
+    console.log("play emitted", value);
+};
 const onListChange = () => {
     let count = 1;
     // identify changes and prepare for server
@@ -52,21 +60,19 @@ const onListChange = () => {
             return { id: item.id, sort: item.newSort };
         });
     appStore.loading = true;
+    queueStore.updateCurrentPath();
     axios
         .post(`/api/playlists/${playlist.value.id}/sort`, { changes: changes })
         .then(response => {
             if (response.status === 200) {
                 playlistStore.detailedPlaylist = response.data;
-                // const serverQueue = response.data.songs.map(song => song.encodedPath);
-                // const oldIndex = queueStore.currentQueueIndex;
-                // const oldPath = playerStore.shuffle
-                //     ? queueStore.shuffledQueue[oldIndex]
-                //     : queueStore.sortedQueue[oldIndex];
-                // const newIndex = playlistStore.detailedPlaylist.songs.find(song => song.encodedPath === oldPath);
-                // // only update sorted queue, keep shuffled queue for now
-                // queueStore.sortedQueue = serverQueue;
-                // // update current index so the same song gets marked as playing.
-                // queueStore.currentQueueIndex = newIndex;
+                const serverQueue = response.data.songs.map(song => song.encodedPath);
+                queueStore.sortedQueue = serverQueue;
+                queueStore.shuffledQueue = shuffleQueue(serverQueue);
+                queueStore.updateQueueIndex();
+                // start playing if autoplay is active
+                queueStore.updateCurrentPath();
+                if (playerStore.autoplay) onPlay(queueStore.getCurrentSongPath);
             }
         })
         .catch(error => {
@@ -77,7 +83,7 @@ const onListChange = () => {
             });
         })
         .finally(() => {
-            console.log("sort done");
+            console.log("sort xhr finished");
             appStore.loading = false;
         });
 };
@@ -93,7 +99,7 @@ const onListChange = () => {
             class="playlists"
             handle=".playlist-song__drag-handle"
         >
-            <playlist-song v-for="song in playlist.songs" :key="song.id" :id="song.id" />
+            <playlist-song v-for="song in playlist.songs" :key="song.id" :id="song.id" @play="onPlay" />
         </draggable>
     </div>
 </template>

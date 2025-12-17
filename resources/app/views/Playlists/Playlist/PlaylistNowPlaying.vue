@@ -1,24 +1,16 @@
 <script setup lang="ts">
-import { usePlayerStore } from "@/stores/playerStore";
 import { usePlaylistStore } from "@/stores/playlistStore";
-import { useQueueStore } from "@/stores/queueStore";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import { computed } from "vue";
-const queueStore = useQueueStore();
-const playerStore = usePlayerStore();
 const playlistStore = usePlaylistStore();
-const currentSongPath = computed(() => {
-    const idx = queueStore.currentQueueIndex;
-    if (playerStore.shuffle) return queueStore.shuffledQueue[idx];
-    return queueStore.sortedQueue[idx];
-});
 const currentSongData = computed(() => {
-    return playlistStore.detailedPlaylist.songs.find(song => song.encodedPath === currentSongPath.value);
+    return playlistStore.detailedPlaylist.songs.find(song => song.nowPlaying);
 });
 </script>
 
 <template>
     <ul class="now-playing">
+        <li>Wird gespielt:</li>
         <li>
             <app-icon name="music" />
             <strong>{{ currentSongData.song }}</strong>
