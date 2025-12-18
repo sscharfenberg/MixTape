@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { formatSeconds } from "@/formatters/numbers";
+import { usePlayerStore } from "@/stores/playerStore";
 import { usePlaylistStore } from "@/stores/playlistStore";
+import { useQueueStore } from "@/stores/queueStore";
 import axios from "axios";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppButton from "Components/Form/Button/AppButton.vue";
@@ -12,6 +14,8 @@ import { useRoute } from "vue-router";
 const showModal = ref(false);
 const loading = ref(false);
 const route = useRoute();
+const playerStore = usePlayerStore();
+const queueStore = useQueueStore();
 const props = defineProps({
     id: {
         type: String,
@@ -42,6 +46,10 @@ const onDelete = () => {
         });
 };
 const onPlay = () => {
+    queueStore.currentQueueIndex = playerStore.shuffle
+        ? queueStore.shuffledQueue.indexOf(s.value.encodedPath)
+        : queueStore.sortedQueue.indexOf(s.value.encodedPath);
+    queueStore.currentQueuePath = s.value.encodedPath;
     emit("play", s.value.encodedPath);
 };
 </script>

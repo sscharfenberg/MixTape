@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { usePlayerStore } from "@/stores/playerStore";
+import { useQueueStore } from "@/stores/queueStore";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import { shuffleQueue } from "Components/Player/useSongQueue";
 import { computed } from "vue";
 const playerStore = usePlayerStore();
+const queueStore = useQueueStore();
 const shuffle = computed({
     get: () => playerStore.shuffle,
     set: isShuffle => {
         playerStore.shuffle = isShuffle;
-        if (isShuffle) {
-            playerStore.shuffledQueue = shuffleQueue(playerStore.sortedQueue); // this might cause problems.
+        if (playerStore.shuffle) {
+            queueStore.shuffledQueue = shuffleQueue(queueStore.sortedQueue); // this might cause problems.
         }
     }
 });

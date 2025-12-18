@@ -43,7 +43,6 @@ interface PlaylistSong {
 const emit = defineEmits(["play"]);
 const onPlay = (value: string) => {
     emit("play", value);
-    console.log("play emitted", value);
 };
 const onListChange = () => {
     let count = 1;

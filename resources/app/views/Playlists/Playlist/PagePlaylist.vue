@@ -53,7 +53,6 @@ const fetchData = () => {
 };
 const onPlay = value => {
     loadingSong.value = true;
-    console.log("got play emitted", value);
     axios
         .get(`/api/playlists/play/${value}`)
         .then(response => {

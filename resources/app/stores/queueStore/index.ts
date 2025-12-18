@@ -31,11 +31,9 @@ export const useQueueStore = defineStore("queueStore", {
          */
         updateCurrentPath() {
             const playerStore = usePlayerStore();
-            const currentPath = playerStore.shuffle
+            this.currentQueuePath = playerStore.shuffle
                 ? this.shuffledQueue[this.currentQueueIndex]
                 : this.sortedQueue[this.currentQueueIndex];
-            console.log("current path is ", currentPath);
-            this.currentQueuePath = currentPath;
         },
 
         /**
@@ -44,11 +42,9 @@ export const useQueueStore = defineStore("queueStore", {
         updateQueueIndex() {
             const playerStore = usePlayerStore();
             const playlistStore = usePlaylistStore();
-            const newIndex = playerStore.shuffle
+            this.currentQueueIndex = playerStore.shuffle
                 ? this.shuffledQueue.indexOf(this.currentQueuePath)
                 : this.sortedQueue.indexOf(this.currentQueuePath);
-            console.log("finding path " + this.oldQueueIndex + ", found on position " + newIndex);
-            this.currentQueueIndex = newIndex;
             playlistStore.setNowPlaying(this.currentQueuePath);
         }
     },
