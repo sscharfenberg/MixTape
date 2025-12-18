@@ -129,6 +129,19 @@ class PlaylistController extends Controller
     /**
      * @param Request $request
      * @param string $playlistId
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function autosortEntries(Request $request, string $playlistId): JsonResponse
+    {
+        $p = new PlaylistService();
+        $playlist = $p->autosortPlaylistEntries($playlistId);
+        return response()->json($playlist);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $playlistId
      * @param string $entryId
      * @return JsonResponse
      * @throws \Exception

@@ -273,6 +273,12 @@ class PlaylistService
         return $this->getPlaylistById($playlistId);
     }
 
+
+    public function autosortPlaylistEntries(string $playlistId): array
+    {
+        dd($playlistId);
+    }
+
     /**
      * @function delete a playlist entry
      * @param string $playlistId

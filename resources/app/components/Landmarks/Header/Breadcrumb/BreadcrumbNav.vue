@@ -77,8 +77,8 @@ const route = useRoute();
             border-radius: 0 5px 0 50px;
 
             box-shadow:
-                2px -2px 0 2px rgb(0 0 0 / 80%),
-                3px -3px 0 2px rgb(255 255 255 / 20%);
+                2px -2px 0 2px rgb(255 255 255 / 80%),
+                3px -3px 0 2px rgb(0 0 0 / 20%);
 
             content: "";
 
@@ -138,5 +138,11 @@ const route = useRoute();
             line-height: map.get(s.$main, "breadcrumb", "height-landscape");
         }
     }
+}
+
+@include m.theme-dark(".breadcrumb a:not(:last-child)::after") {
+    box-shadow:
+        2px -2px 0 2px rgb(0 0 0 / 70%),
+        3px -3px 0 2px rgb(255 255 255 / 30%);
 }
 </style>

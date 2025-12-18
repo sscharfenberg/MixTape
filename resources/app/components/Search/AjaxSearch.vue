@@ -51,7 +51,7 @@ const debouncedFetch = debounce(
             results.value = [];
         }
     },
-    500,
+    1000,
     { maxWait: 5000 }
 );
 const onClickOutSide = ev => {
@@ -97,7 +97,7 @@ onUnmounted(() => {
     position: relative;
 }
 
-.loading-spinner {
+.loading-wrapper {
     position: absolute;
     top: 6px;
     right: 7px;

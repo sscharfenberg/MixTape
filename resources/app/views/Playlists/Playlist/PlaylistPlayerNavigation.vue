@@ -2,10 +2,14 @@
 import { usePlayerStore } from "@/stores/playerStore";
 import { usePlaylistStore } from "@/stores/playlistStore";
 import { useQueueStore } from "@/stores/queueStore";
+import axios from "axios";
 import AppButton from "Components/Form/Button/AppButton.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
 import ShuffleSwitch from "Components/Player/ShuffleSwitch.vue";
-import { computed } from "vue";
+import { shuffleQueue } from "Components/Player/useSongQueue";
+import { push } from "notivue";
+import { computed, ref } from "vue";
+const sortProcessing = ref(false);
 const queueStore = useQueueStore();
 const playerStore = usePlayerStore();
 const playlistStore = usePlaylistStore();
@@ -15,7 +19,6 @@ const songQueue = computed(() => {
 });
 const emit = defineEmits(["play"]);
 const getSongPath = (value: number) => {
-    // TODO: index out of bounds
     return songQueue.value[value];
 };
 const onPlay = (value: number) => {
@@ -44,6 +47,30 @@ const onPrev = () => {
     }
     onPlay(queueStore.currentQueueIndex);
 };
+const onSort = () => {
+    sortProcessing.value = true;
+    axios
+        .post(`/api/playlists/${playlistStore.detailedPlaylist.id}/autosort`)
+        .then(response => {
+            const serverQueue = response.data.map(song => song.encodedPath);
+            queueStore.sortedQueue = serverQueue;
+            queueStore.shuffledQueue = shuffleQueue(serverQueue);
+            queueStore.updateCurrentPath();
+            queueStore.updateQueueIndex();
+            playlistStore.setNowPlaying("");
+        })
+        .catch(error => {
+            console.error(error);
+            push.error({
+                title: error.code,
+                message: error.response.data.message || error.message
+            });
+        })
+        .finally(() => {
+            sortProcessing.value = true;
+            console.log("sort xhr finished.");
+        });
+};
 </script>
 
 <template>
@@ -54,5 +81,7 @@ const onPrev = () => {
         <app-button icon="next" @click="onNext" />
         <autoplay-switch />
         <shuffle-switch />
+        <app-button icon="sort" text="Sort Playlist" @click="onSort" :loading="sortProcessing" />
+        <app-button icon="download" text="Export" />
     </div>
 </template>

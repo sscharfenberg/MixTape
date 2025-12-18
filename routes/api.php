@@ -163,6 +163,10 @@ Route::prefix('api')->group(function () {
     Route::post('/playlists/{playlistId}/sort',
         [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'sortEntries']
     );
+    // sort the entries of a specific playlist
+    Route::post('/playlists/{playlistId}/autosort',
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'autosortEntries']
+    );
     // delete a playlist entry
     Route::post('/playlists/{playlistId}/delete/{entryId}',
         [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'deleteEntry']
