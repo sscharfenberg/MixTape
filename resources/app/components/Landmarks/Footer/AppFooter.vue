@@ -5,7 +5,6 @@ import ThemeSwitch from "./ThemeSwitch.vue";
 <template>
     <footer>
         <theme-switch />
-        <address>Handcrafted with ❤ by Sven Scharfenberg</address>
         <a href="https://github.com/sscharfenberg/MixTape"><img src="./github.svg" alt="Github Repository" /></a>
     </footer>
 </template>
@@ -25,7 +24,7 @@ footer {
         align-items: center;
         flex-direction: row;
 
-        address {
+        a {
             margin-left: auto;
         }
     }
