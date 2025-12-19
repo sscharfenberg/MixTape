@@ -277,7 +277,11 @@ class PlaylistService
         return $this->getPlaylistById($playlistId);
     }
 
-
+    /**
+     * @function auto sort playlist entries by path
+     * @param string $playlistId
+     * @return array
+     */
     public function autosortPlaylistEntries(string $playlistId): array
     {
         $start = now();
