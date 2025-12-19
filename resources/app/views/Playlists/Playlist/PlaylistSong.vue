@@ -82,8 +82,15 @@ const onPlay = () => {
                 type="primary"
                 v-tippy="{ content: `Playlist ab dem Song ${s.song} abspielen` }"
                 @click="onPlay"
+                :aria-label="`Playlist ab dem Song ${s.song} abspielen`"
             />
-            <app-button icon="delete" :short="true" @click="showModal = true" />
+            <app-button
+                icon="delete"
+                :short="true"
+                @click="showModal = true"
+                aria-label="Löschen"
+                v-tippy="{ content: 'Löschen' }"
+            />
             <modal-window v-if="showModal" @close="showModal = false" :title="`Song von der Playlist entfernen?`">
                 Sind Sie sicher das Sie den Song
                 <strong>"{{ s.song }}"</strong>

@@ -16,7 +16,13 @@ defineProps({
     <header class="widget-title">
         <app-icon v-if="icon" :name="icon" :size="2" />
         <slot />
-        <app-button v-if="refreshButton" icon="refresh" type="default" @click.prevent="$emit('refresh')" />
+        <app-button
+            v-if="refreshButton"
+            icon="refresh"
+            type="default"
+            @click.prevent="$emit('refresh')"
+            aria-label="Kachel neu laden"
+        />
     </header>
 </template>
 

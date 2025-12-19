@@ -47,7 +47,7 @@ onMounted(() => {
     >
         <template #title>Alben<app-icon name="shuffle" /></template>
         <template #body>
-            <nav class="stats" v-if="data?.length">
+            <nav class="stats" v-if="data?.length" aria-label="Links zu zufälligen Alben">
                 <router-link
                     v-for="album in data"
                     :key="album.id"

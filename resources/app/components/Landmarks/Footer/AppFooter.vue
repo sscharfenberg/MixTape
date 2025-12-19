@@ -5,7 +5,9 @@ import ThemeSwitch from "./ThemeSwitch.vue";
 <template>
     <footer>
         <theme-switch />
-        <a href="https://github.com/sscharfenberg/MixTape"><img src="./github.svg" alt="Github Repository" /></a>
+        <a href="https://github.com/sscharfenberg/MixTape" v-tippy="{ content: 'Github Repository' }"
+            ><img src="./github.svg" alt="Github Repository"
+        /></a>
     </footer>
 </template>
 

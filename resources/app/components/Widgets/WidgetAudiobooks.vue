@@ -47,7 +47,7 @@ onMounted(() => {
     >
         <template #title>Audiobooks<app-icon name="shuffle" /></template>
         <template #body>
-            <nav class="stats" v-if="data?.length">
+            <nav class="stats" v-if="data?.length" aria-label="Links zu zufälligen Audiobooks">
                 <router-link
                     v-for="book in data"
                     :key="book.id"

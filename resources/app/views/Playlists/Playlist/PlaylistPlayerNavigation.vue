@@ -76,10 +76,15 @@ const onSort = () => {
 
 <template>
     <div class="player-navigation">
-        <app-button icon="prev" @click="onPrev" />
-        <app-button v-if="!isPlaying" icon="play" @click="onPlay(queueStore.currentQueueIndex)" />
-        <app-button v-if="isPlaying" icon="stop" @click="onStop" />
-        <app-button icon="next" @click="onNext" />
+        <app-button icon="prev" @click="onPrev" aria-label="Voriger Song" />
+        <app-button
+            v-if="!isPlaying"
+            icon="play"
+            @click="onPlay(queueStore.currentQueueIndex)"
+            aria-label="Abspielen"
+        />
+        <app-button v-if="isPlaying" icon="stop" @click="onStop" aria-label="Stoppen" />
+        <app-button icon="next" @click="onNext" aria-label="Nächster Song" />
         <autoplay-switch />
         <shuffle-switch />
         <app-button icon="sort" text="Sort Playlist" @click="onSort" :loading="sortProcessing" />

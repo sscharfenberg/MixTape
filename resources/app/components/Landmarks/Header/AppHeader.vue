@@ -8,12 +8,14 @@ import PageTitle from "./PageTitle/PageTitle.vue";
 
 <template>
     <header>
-        <app-header-logo />
-        <app-header-title />
-        <app-header-navigation />
+        <div class="app-header">
+            <app-header-logo />
+            <app-header-title />
+            <app-header-navigation />
+        </div>
+        <page-title />
+        <breadcrumb-nav />
     </header>
-    <page-title />
-    <breadcrumb-nav />
 </template>
 
 <style scoped lang="scss">
@@ -21,7 +23,7 @@ import PageTitle from "./PageTitle/PageTitle.vue";
 @use "Abstracts/mixins" as m;
 @use "Abstracts/sizes" as s;
 
-header {
+.app-header {
     display: flex;
     align-items: center;
     justify-content: flex-start;

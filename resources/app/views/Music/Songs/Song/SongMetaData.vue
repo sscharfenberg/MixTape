@@ -64,6 +64,8 @@ defineProps({
                 class="btn default short"
                 style="margin-left: auto"
                 :download="`${song.artist.name} - ${song.name}.mp3`"
+                :aria-label="`Song '${song.name}' downloaden`"
+                v-tippy="{ content: `Song '${song.name}' downloaden` }"
             >
                 <app-icon name="download" />
             </a>

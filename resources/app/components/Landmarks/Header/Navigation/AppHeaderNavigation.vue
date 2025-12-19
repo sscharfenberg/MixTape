@@ -9,7 +9,7 @@ const items = [
 </script>
 
 <template>
-    <nav>
+    <nav aria-label="Bereichs-Navigation">
         <app-header-navigation-item
             v-for="item in items"
             :key="item.name"

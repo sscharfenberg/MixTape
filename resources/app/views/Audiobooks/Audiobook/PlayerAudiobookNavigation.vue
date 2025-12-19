@@ -52,6 +52,7 @@ onMounted(() => {
             :disabled="nav.prev?.encodedPath ? null : true"
             icon="prev"
             v-tippy="{ content: `${nav.prev?.track} ${nav.prev?.name}` }"
+            :aria-label="`${nav.prev?.track} ${nav.prev?.name}`"
             class="btn default"
             @click.prevent="playAny(nav.prev?.encodedPath)"
         />
@@ -60,6 +61,7 @@ onMounted(() => {
             icon="play"
             class="btn primary"
             v-tippy="{ content: `Von Beginn an abspielen` }"
+            :aria-label="`Von Beginn an abspielen`"
             @click.prevent="playFirst"
         />
         <audiobook-tracks :book-encoded-name="bookEncodedName" :tracks="tracks" @play="playAny" />
@@ -67,6 +69,7 @@ onMounted(() => {
             :disabled="nav.next?.encodedPath ? null : true"
             icon="next"
             v-tippy="{ content: `${nav.next?.track} ${nav.next?.name}` }"
+            :aria-label="`${nav.next?.track} ${nav.next?.name}`"
             class="btn default"
             @click.prevent="playAny(nav.next?.encodedPath)"
         />

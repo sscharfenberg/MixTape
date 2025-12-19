@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AppIcon from "Components/AppIcon/AppIcon.vue";
 import { nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch } from "vue";
 const props = defineProps({
     options: {
@@ -70,9 +69,15 @@ onUnmounted(() => {
             <span v-if="selectedValue">{{ options.find(option => option.value === selectedValue).label }}</span>
             <span v-else>{{ placeholder }}</span>
             <span class="actions">
-                <button class="clear-btn" v-if="selectedValue" @click.prevent="select('')">
-                    <app-icon name="clear" />
-                </button>
+                <!--                <button-->
+                <!--                    class="clear-btn"-->
+                <!--                    v-if="selectedValue"-->
+                <!--                    @click.prevent="select('')"-->
+                <!--                    aria-label="Auswahl löschen"-->
+                <!--                    v-tippy="{ content: 'Auswahl löschen' }"-->
+                <!--                >-->
+                <!--                    <app-icon name="clear" />-->
+                <!--                </button>-->
                 <span class="caret" />
             </span>
         </button>

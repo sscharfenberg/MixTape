@@ -47,7 +47,7 @@ onMounted(() => {
     >
         <template #title>Genres</template>
         <template #body>
-            <nav class="stats" v-if="data?.length">
+            <nav class="stats" v-if="data?.length" aria-label="Links zu zufälligen Genres">
                 <router-link
                     v-for="genre in data"
                     :key="genre.id"

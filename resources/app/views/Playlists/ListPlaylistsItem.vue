@@ -97,11 +97,30 @@ const onDelete = () => {
             </span>
         </router-link>
         <form v-if="editing" @submit.prevent="onSave">
-            <input class="form-input" type="text" v-model="name" ref="nameRef" :readonly="loading ? 'true' : null" />
-            <app-button v-if="!loading" icon="save" :short="true" @click.prevent="onSave" />
-            <app-button v-if="!loading" icon="edit_off" :short="true" @click.prevent="onEdit(false)" />
+            <input
+                class="form-input"
+                type="text"
+                v-model="name"
+                ref="nameRef"
+                :readonly="loading ? 'true' : null"
+                aria-label="Name der Playlist"
+            />
+            <app-button v-if="!loading" icon="save" :short="true" @click.prevent="onSave" aria-label="Speichern" />
+            <app-button
+                v-if="!loading"
+                icon="edit_off"
+                :short="true"
+                @click.prevent="onEdit(false)"
+                aria-label="Editieren beenden"
+            />
         </form>
-        <app-button v-if="!editing && !loading" icon="edit" :short="true" @click="onEdit(true)" />
+        <app-button
+            v-if="!editing && !loading"
+            icon="edit"
+            :short="true"
+            @click="onEdit(true)"
+            aria-label="Editieren"
+        />
         <modal-window v-if="showModal" @close="showModal = false" :title="`Playlist ${list.name} löschen?`">
             Sind Sie sicher das Sie die Playlist
             <strong>{{ list.name }}</strong>
@@ -117,6 +136,7 @@ const onDelete = () => {
             :short="true"
             @click="onDeleteDialogue"
             class="delete-btn"
+            aria-label="Löschen"
         />
         <loading-spinner v-if="loading" :size="2" />
     </div>

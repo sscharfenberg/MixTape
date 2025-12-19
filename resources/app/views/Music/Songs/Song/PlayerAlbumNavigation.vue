@@ -21,6 +21,7 @@ const onNavigation = song => {
             v-tippy="{ content: `${nav.prev?.track} ${nav.prev?.name}` }"
             class="btn default"
             @click.prevent="onNavigation(nav.prev)"
+            aria-label="Voriger Song"
         >
             <app-icon name="prev" />
         </router-link>
@@ -30,6 +31,7 @@ const onNavigation = song => {
             v-tippy="{ content: `${nav.next?.track} ${nav.next?.name}` }"
             class="btn default"
             @click.prevent="onNavigation(nav.next)"
+            aria-label="Nächster Song"
         >
             <app-icon name="next" />
         </router-link>

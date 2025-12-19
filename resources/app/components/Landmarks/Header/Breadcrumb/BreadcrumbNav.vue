@@ -8,7 +8,7 @@ const route = useRoute();
 
 <template>
     <nav class="breadcrumb" v-if="route.name !== 'dashboard'">
-        <router-link :to="{ name: 'dashboard' }" v-tippy="{ content: `Dashboard` }">
+        <router-link :to="{ name: 'dashboard' }" v-tippy="{ content: `Dashboard` }" aria-label="Startseite">
             <app-icon name="home" />
         </router-link>
         <router-link
