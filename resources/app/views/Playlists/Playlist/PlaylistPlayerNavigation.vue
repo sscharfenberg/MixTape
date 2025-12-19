@@ -52,7 +52,8 @@ const onSort = () => {
     axios
         .post(`/api/playlists/${playlistStore.detailedPlaylist.id}/autosort`)
         .then(response => {
-            const serverQueue = response.data.map(song => song.encodedPath);
+            const serverQueue = response.data.songs.map(song => song.encodedPath);
+            playlistStore.detailedPlaylist = response.data;
             queueStore.sortedQueue = serverQueue;
             queueStore.shuffledQueue = shuffleQueue(serverQueue);
             queueStore.updateCurrentPath();
@@ -67,7 +68,7 @@ const onSort = () => {
             });
         })
         .finally(() => {
-            sortProcessing.value = true;
+            sortProcessing.value = false;
             console.log("sort xhr finished.");
         });
 };

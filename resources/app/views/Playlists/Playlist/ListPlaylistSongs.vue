@@ -46,6 +46,7 @@ const onPlay = (value: string) => {
 };
 const onListChange = () => {
     let count = 1;
+    console.log(playlist.value.songs);
     // identify changes and prepare for server
     const changes = playlist.value.songs
         .reverse() // highest sort value is the first item, so we need to reverse

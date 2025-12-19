@@ -37,9 +37,13 @@ class PlaylistService
             ->get();
         // should we add all playlist entries for the detail view?
         if ($addSongs) {
-            $json['songs'] = $entries->map( function ($entry) {
-                return $this->formatPlaylistEntry($entry);
-            });
+            $json['songs'] = array_values(
+                $entries
+                ->sortByDesc('sort')
+                ->map( function ($entry) {
+                    return $this->formatPlaylistEntry($entry);
+                })->toArray()
+            );
         }
         // should we create a cover collage of random songs?
         if ($addCover && count($entries) >= 4) {
@@ -276,7 +280,25 @@ class PlaylistService
 
     public function autosortPlaylistEntries(string $playlistId): array
     {
-        dd($playlistId);
+        $start = now();
+        $fd = new FormatService();
+        $playlist = Playlist::find($playlistId);
+        Log::channel('api')->info("Auto-Sorting PlaylistEntries of playlist '$playlist->name':");
+        $entries = PlaylistEntry::where('playlist_id', $playlistId)
+            ->orderBy('path')
+            ->get();
+        $counter = $entries->count();
+        foreach($entries as $entry) {
+            if ($entry->sort !== $counter) {
+                $entry->sort = $counter;
+            }
+            $entry->save();
+            $counter--;
+            Log::channel('api')->debug("Changed PlaylistEntry '".$entry->song."' to sort=".$entry->sort);
+        }
+        $ms = $start->diffInMilliseconds(now());
+        Log::channel('api')->info("PlaylistEntry auto-sort finished in ".$fd->formatMs($ms).".");
+        return $this->getPlaylistById($playlistId);
     }
 
     /**
