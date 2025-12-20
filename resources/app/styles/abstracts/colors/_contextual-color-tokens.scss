@@ -187,7 +187,14 @@ $main: (
     "playlist-surface-row2": light-dark(map.get(c.$grey, "bunker"), map.get(c.$grey, "mystic")),
     "playlist-song-background-active": light-dark(map.get(c.$grey, "white"), map.get(c.$grey, "black")),
     "playlist-song-surface-active": light-dark(map.get(c.$grey, "black"), map.get(c.$grey, "white")),
-    "modal-background": hsl(from light-dark(map.get(c.$grey, "mystic"), map.get(c.$grey, "ebony")) h s l / 50%)
+    "modal-backdrop-background": hsl(from light-dark(map.get(c.$grey, "mystic"), map.get(c.$grey, "ebony")) h s l / 50%),
+    "modal-background": hsl(from light-dark(map.get(c.$grey, "astral"), map.get(c.$grey, "ebony")) h s l / 75%),
+    "popover-border-from": light-dark(map.get(c.$grey, "iron"), map.get(c.$grey, "asher")),
+    "popover-border-to": light-dark(map.get(c.$grey, "fog"), map.get(c.$grey, "abbey")),
+    "popover-background": hsl(from light-dark(map.get(c.$grey, "infra"), map.get(c.$grey, "ebony")) h s l / 25%),
+    "popover-item-background": light-dark(map.get(c.$grey, "mystic"), map.get(c.$grey, "bunker")),
+    "popover-item-background-hover": light-dark(map.get(c.$grey, "white"), map.get(c.$grey, "black")),
+    "popover-item-surface": light-dark(map.get(c.$grey, "ebony"), map.get(c.$grey, "astral"))
 ) !default;
 
 // widget colors

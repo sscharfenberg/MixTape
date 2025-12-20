@@ -7,6 +7,8 @@ use App\Models\Playlist;
 use App\Services\PlaylistService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PlaylistController extends Controller
 {
@@ -162,5 +164,26 @@ class PlaylistController extends Controller
     {
         $p = new PlaylistService();
         return response()->json($p->playSong($path));
+    }
+
+    /**
+     * @param Request $request
+     * @param string $playlistId
+     * @return StreamedResponse
+     */
+    public function exportM3u(Request $request, string $playlistId): StreamedResponse
+    {
+        $p = new PlaylistService();
+        $download = $p->exportM3u(
+            $playlistId,
+            $request->get('encoding'),
+            $request->get('type'),
+            $request->get('prefixPath')
+        );
+        return Storage::disk('downloads')->download(
+            $download['storageName'],
+            $download['downloadName'],
+            [ 'Content-Type' => 'application/vnd' ]
+        );
     }
 }

@@ -1,0 +1,47 @@
+/******************************************************************************
+ * popover list
+ * @type {Sass}
+ *****************************************************************************/
+@use "sass:map";
+@use "Abstracts/colors" as c;
+@use "Abstracts/sizes" as s;
+@use "Abstracts/timings" as ti;
+
+.popover-list {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+    margin: 0;
+    gap: 0.5lh;
+
+    list-style: none;
+
+    > li:not(:last-child) {
+        padding-bottom: 0.5lh;
+        border-bottom: map.get(s.$main, "popover-border") solid map.get(c.$main, "popover-border-from");
+    }
+
+    button,
+    a {
+        display: block;
+
+        width: 100%;
+
+        padding: 0.4lh 1ch;
+        border: 0;
+
+        background-color: map.get(c.$main, "popover-item-background");
+        color: map.get(c.$main, "popover-item-surface");
+
+        text-align: left;
+
+        cursor: pointer;
+
+        transition: background-color map.get(ti.$timings, "fast") linear;
+
+        &:hover {
+            background-color: map.get(c.$main, "popover-item-background-hover");
+        }
+    }
+}

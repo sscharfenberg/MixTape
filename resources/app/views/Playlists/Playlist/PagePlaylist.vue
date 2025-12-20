@@ -52,6 +52,7 @@ const fetchData = () => {
         });
 };
 const onPlay = value => {
+    console.log("onPlay");
     loadingSong.value = true;
     axios
         .get(`/api/playlists/play/${value}`)
@@ -72,11 +73,23 @@ const onPlay = value => {
         })
         .finally(() => {
             loadingSong.value = false;
-            console.log("play xhr finished.");
+            console.log("play xhr done.");
         });
 };
 const onEnded = () => {
     console.log("ended");
+    const queueLength = queueStore.sortedQueue.length;
+    queueStore.currentQueueIndex += 1;
+    if (queueStore.currentQueueIndex >= queueLength) {
+        queueStore.currentQueueIndex = 0;
+    }
+    const newPath = playerStore.shuffle
+        ? queueStore.shuffledQueue[queueStore.currentQueueIndex]
+        : queueStore.sortedQueue[queueStore.currentQueueIndex];
+    onPlay(newPath);
+    queueStore.updateCurrentPath();
+    queueStore.updateQueueIndex();
+    playlistStore.setNowPlaying(newPath);
 };
 watch(() => route.params.id, fetchData, { immediate: true });
 onBeforeMount(() => {

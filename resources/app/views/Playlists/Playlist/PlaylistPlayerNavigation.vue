@@ -7,8 +7,10 @@ import AppButton from "Components/Form/Button/AppButton.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
 import ShuffleSwitch from "Components/Player/ShuffleSwitch.vue";
 import { shuffleQueue } from "Components/Player/useSongQueue";
+import PopOver from "Components/Popover/PopOver.vue";
 import { push } from "notivue";
 import { computed, ref } from "vue";
+import PlaylistExportM3U from "./PlaylistExportM3U.vue";
 const sortProcessing = ref(false);
 const queueStore = useQueueStore();
 const playerStore = usePlayerStore();
@@ -72,6 +74,9 @@ const onSort = () => {
             console.log("sort xhr finished.");
         });
 };
+const onClosePopover = () => {
+    document.getElementById("exportPlaylist").hidePopover();
+};
 </script>
 
 <template>
@@ -88,6 +93,23 @@ const onSort = () => {
         <autoplay-switch />
         <shuffle-switch />
         <app-button icon="sort" text="Sort Playlist" @click="onSort" :loading="sortProcessing" />
-        <app-button icon="download" text="Export" />
+        <pop-over icon="download" reference="exportPlaylist">
+            <ul class="popover-list">
+                <li>
+                    <playlist-export-m3-u
+                        :name="playlistStore.detailedPlaylist.name"
+                        @closepopover="onClosePopover"
+                        export-type="simple"
+                    />
+                </li>
+                <li>
+                    <playlist-export-m3-u
+                        :name="playlistStore.detailedPlaylist.name"
+                        @closepopover="onClosePopover"
+                        export-type="extended"
+                    />
+                </li>
+            </ul>
+        </pop-over>
     </div>
 </template>

@@ -326,7 +326,11 @@ class PlaylistService
         return $this->getPlaylistById($playlistId);
     }
 
-
+    /**
+     * @function play xhr endpoint - copy the correct file to storage.
+     * @param string $path
+     * @return string[]
+     */
     public function playSong(string $path): array
     {
         $u = new UrlSafeService();
@@ -351,5 +355,51 @@ class PlaylistService
             'name' => $song->artist->name." - ".$song->name,
         ];
     }
+
+    /**
+     * @function create .m3u file and stream it to client
+     * @param string $playlistId
+     * @param string $toEncoding
+     * @param string $type
+     * @param string $prefixPath
+     * @return array
+     */
+    public function exportM3u(string $playlistId, string $toEncoding, string $type, string $prefixPath):array
+    {
+        $playlist = Playlist::findOrFail($playlistId);
+        Log::channel('api')->info("Creating playlist M3U download for '$playlist->name' in $type format.");
+        $entries = PlaylistEntry::where('playlist_id', $playlistId)
+            ->orderByDesc('sort')
+            ->get()
+            ->map(function ($entry) use ($prefixPath) {
+                $entry->path = $prefixPath.$entry->path;
+                return $entry;
+            });
+        $fileContents = "";
+        $cr = "\r\n";
+        // Extended M3U need a different format
+        if ($type == "extended") {
+            $fileContents .= "#EXTM3U".$cr;
+            foreach($entries as $entry) {
+                $fileContents .= "#EXTINF:".floor($entry->duration).",".$entry->artist." - ".$entry->song.$cr;
+                $fileContents .= $entry->path.$cr;
+            }
+        } else {
+            foreach($entries as $entry) {
+                $fileContents .= $entry->path.$cr;
+            }
+        }
+        $fromEncoding = mb_detect_encoding($fileContents); // should be UTF-8
+        $fileContents = mb_convert_encoding($fileContents, $toEncoding, $fromEncoding);
+        $storageFileName = $playlistId.".m3u";
+        Storage::disk('downloads')->put($storageFileName, $fileContents);
+        Log::channel('api')->debug(".m3u playlist created:\r\n".$fileContents);
+        return [
+            'storageName' => $storageFileName,
+            'downloadName' => $playlist->name.".m3u"
+        ];
+    }
+
+
 
 }

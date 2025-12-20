@@ -175,6 +175,10 @@ Route::prefix('api')->group(function () {
     Route::get('/playlists/play/{path}',
         [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'play']
     );
+    // export a playlist to m3u
+    Route::post('/playlists/{path}/export-m3u',
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'exportM3u']
+    );
 
 });
 

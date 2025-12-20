@@ -58,7 +58,7 @@ onUnmounted(() => {
         align-items: center;
         justify-content: center;
 
-        background-color: map.get(c.$main, "modal-background");
+        background-color: map.get(c.$main, "modal-backdrop-background");
         backdrop-filter: blur(map.get(s.$main, "modal-backdrop-blur"));
     }
 
@@ -66,6 +66,7 @@ onUnmounted(() => {
         width: 100%;
         margin: map.get(s.$main, "modal-margin");
 
+        background-color: map.get(c.$main, "modal-background");
         box-shadow: map.get(sh.$main, "modal");
 
         @include m.mq("portrait") {

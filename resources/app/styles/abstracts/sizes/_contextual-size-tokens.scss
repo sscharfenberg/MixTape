@@ -158,7 +158,10 @@ $main: (
     "modal-max-width": math.round(s.$base * 30),
     "playlist-actions-padding": math.round(s.$base * 0.5) math.round(s.$base * 0.5) math.round(s.$base * 0.5) 0,
     "playlist-now-playing-padding": 0 math.round(s.$base * 1),
-    "playlist-now-playing-item-padding": math.round(s.$base * 0.5) 0
+    "playlist-now-playing-item-padding": math.round(s.$base * 0.5) 0,
+    "popover-radius": map.get(s.$radius, "base"),
+    "popover-padding": math.round(s.$base * 0.8),
+    "popover-border": map.get(s.$border, "base")
 ) !default;
 
 // size tokens for widgets
