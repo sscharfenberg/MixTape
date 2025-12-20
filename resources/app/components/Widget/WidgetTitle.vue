@@ -13,7 +13,7 @@ defineProps({
 </script>
 
 <template>
-    <header class="widget-title">
+    <div class="widget-title">
         <app-icon v-if="icon" :name="icon" :size="2" />
         <slot />
         <app-button
@@ -23,7 +23,7 @@ defineProps({
             @click.prevent="$emit('refresh')"
             aria-label="Kachel neu laden"
         />
-    </header>
+    </div>
 </template>
 
 <style lang="scss" scoped>

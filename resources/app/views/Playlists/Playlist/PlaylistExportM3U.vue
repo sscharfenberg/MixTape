@@ -65,9 +65,9 @@ const onExport = () => {
                     <input type="hidden" name="encoding" v-model="encoding" />
                 </template>
             </form-row>
-            <form-row label="Pfad Präfix" ref-id="rootpath" :required="true">
+            <form-row label="Pfad Präfix" ref-id="prefixPath" :required="true">
                 <template #input>
-                    <input class="form-input" name="prefixPath" type="text" v-model="pathPrefix" />
+                    <input class="form-input" name="prefixPath" id="prefixPath" type="text" v-model="pathPrefix" />
                     (Wird vor den eigentlichen Dateipfad gestellt)
                 </template>
             </form-row>

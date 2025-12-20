@@ -17,7 +17,13 @@ const reference = ref("--" + props.reference);
 
 <template>
     <div class="popover">
-        <app-button :icon="icon" :text="label" :popovertarget="props.reference" aria-label="" class="popover-button" />
+        <app-button
+            :icon="icon"
+            :text="label"
+            :popovertarget="props.reference"
+            aria-label="Menu öffnen"
+            class="popover-button"
+        />
         <dialog :id="props.reference" popover class="popover-content">
             <slot />
         </dialog>

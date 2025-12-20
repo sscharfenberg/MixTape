@@ -24,11 +24,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <Teleport to="body">
+    <Teleport to="#app main">
         <div class="modal__backdrop">
             <app-widget class="modal__window">
                 <template #title
-                    >{{ title }} <app-button icon="close" :short="true" class="close-btn" @click="onClose"
+                    >{{ title }}
+                    <app-button icon="close" :short="true" class="close-btn" @click="onClose" aria-label="Schließen"
                 /></template>
                 <template #body>
                     <slot />
