@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Services;
-use App\Models\Playlist;
-use App\Models\PlaylistEntry;
 use App\Models\Song;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;

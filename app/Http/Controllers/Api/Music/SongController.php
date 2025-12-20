@@ -55,7 +55,6 @@ class SongController extends Controller
     {
         $a = new SongService;
         $artists = $a->searchSongByName($search);
-        sleep(10);
         return response()->json([
             'searchTerm' => $search,
             'results' => $artists
