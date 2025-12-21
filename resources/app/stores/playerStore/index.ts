@@ -2,6 +2,7 @@
  * store for audio player
  *****************************************************************************/
 import { defineStore } from "pinia";
+import { PersistenceOptions } from "pinia-plugin-persistedstate";
 
 /**
  * define playerStore
@@ -15,7 +16,7 @@ export const usePlayerStore = defineStore("playerStore", {
     },
     actions: {},
     getters: {},
-    persist: {
+    persist: <PersistenceOptions>{
         key: "player",
         storage: localStorage
     }

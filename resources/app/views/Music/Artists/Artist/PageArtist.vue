@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useArtistStore } from "@/stores/artistStore";
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
@@ -10,6 +11,7 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import ArtistMetaData from "./ArtistMetaData.vue";
 const route = useRoute();
+const artistStore = useArtistStore();
 const isLoading = ref(false);
 const data = ref(null);
 const songs = ref([]);
@@ -28,6 +30,7 @@ const fetchData = () => {
             data.value = response.data;
             songs.value = response.data.songs;
             albums.value = response.data.albums;
+            currentTabIndex.value = artistStore.getCurrentTabIndex(data.value.id);
         })
         .catch(error => {
             console.error(error);
@@ -42,7 +45,10 @@ const fetchData = () => {
         });
 };
 watch(() => route.params.id, fetchData, { immediate: true });
-const onTabChange = val => (currentTabIndex.value = val);
+const onTabChange = (val: number) => {
+    currentTabIndex.value = val;
+    artistStore.setCurrentTabIndex(data.value.id, val);
+};
 </script>
 
 <template>

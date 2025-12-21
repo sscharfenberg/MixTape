@@ -5,7 +5,7 @@ import { defineStore } from "pinia";
 import { usePlayerStore } from "../playerStore";
 import { usePlaylistStore } from "../playlistStore";
 /**
- * define playerStore
+ * define store
  */
 export const useQueueStore = defineStore("queueStore", {
     state: (): QueueState => {
