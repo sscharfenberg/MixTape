@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Widget;
 
 use App\Http\Controllers\Controller;
 use App\Models\GlobalProperties;
+use App\Models\Playlist;
+use App\Models\PlaylistEntry;
 use App\Models\Song;
 use App\Models\Track;
 use App\Services\FormatService;
@@ -30,6 +32,10 @@ class GlobalWidgetController extends Controller
         $totalSize = $songSize + $trackSize;
         $totalFiles = $songFiles + $trackFiles;
         $totalDuration = $songDuration + $trackDuration;
+        $playlists = Playlist::count();
+        $playlistEntries = PlaylistEntry::count();
+        $playlistsSize = PlaylistEntry::sum('size');
+        $playlistsDuration = PlaylistEntry::sum('duration');
         $fullUpdate = GlobalProperties::where('key', 'refresh.full')->first();
 
         return response()->json(
@@ -48,6 +54,12 @@ class GlobalWidgetController extends Controller
                     'size' => (int)$totalSize,
                     'files' => (int)$totalFiles,
                     'duration' => $totalDuration
+                ],
+                'playlists' => [
+                    'count' => (int)$playlists,
+                    'entries' => (int)$playlistEntries,
+                    'size' => (int)$playlistsSize,
+                    'duration' => $playlistsDuration
                 ],
                 'last_full_update' => Carbon::parse("$fullUpdate->updated_at Europe/Berlin")
                     ->format('Y-m-d\TH:i:sP')

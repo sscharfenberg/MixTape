@@ -106,6 +106,27 @@ onMounted(() => {
                     </span>
                 </li>
                 <li class="stats__item">
+                    <span class="stats__col">
+                        <div class="stats__item-meta">
+                            <span class="stats__item-hdl">
+                                <app-icon name="playlist" />
+                                {{ data.playlists.count }} Playlists
+                            </span>
+                            <span class="highlight">
+                                <app-icon name="file" />
+                                {{ formatBytes(data.playlists.size) }}
+                            </span>
+                        </div>
+                        <div class="stats__item-row">
+                            <span class="subitem">{{ formatDecimals(data.playlists.entries) }} Einträge</span>
+                            <span class="subitem pull-right">
+                                <app-icon name="time" class="pull-right" />
+                                {{ formatSeconds(data.playlists.duration) }}
+                            </span>
+                        </div>
+                    </span>
+                </li>
+                <li class="stats__item">
                     <app-icon name="datetime" />
                     Letzte Aktualisierung
                     <span class="highlight pull-right">{{ format(data.last_full_update, "dd.MM.yyyy HH:mm:ss") }}</span>
