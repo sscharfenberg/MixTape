@@ -23,3 +23,8 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+AuthUserFile "/var/www/MixTape/.htpasswd"
+AuthName "Realm"
+AuthType Basic
+require valid-user

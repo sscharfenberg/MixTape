@@ -184,12 +184,12 @@ class PlaylistService
      */
     public function editPlaylist(Request $request): array
     {
-        $playlist = Playlist::findOrFail($request->get('id'))->first();
+        $playlist = Playlist::where('id', $request->get('id'))->first();
+        $oldName = $playlist->name;
         $playlist->name = $request->get('name');
         $playlist->save();
-        $updatedPlaylist = Playlist::findOrFail($request->get('id'))->first();
-        Log::channel('api')->debug("Edited Playlist to ".json_encode($playlist, JSON_PRETTY_PRINT));
-        return $this->formatPlaylist($updatedPlaylist);
+        Log::channel('api')->debug("Changed playlist from '$oldName' to '".$request->get('name')."'.");
+        return $this->getPlaylistById($request->get('id'));
     }
 
     /**

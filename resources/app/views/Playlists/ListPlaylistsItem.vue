@@ -36,7 +36,7 @@ const onEdit = async val => {
 const onSave = () => {
     loading.value = true;
     axios
-        .post("/api/playlists/edit", { id: list.value.id, name: name.value })
+        .post("/api/playlists/edit", { id: props.pId, name: name.value })
         .then(response => {
             editing.value = false;
             list.value = response.data;
@@ -82,9 +82,7 @@ const onDelete = () => {
     <div class="playlist">
         <div class="drag-handle"><app-icon name="drag" /></div>
         <router-link v-if="!editing" :to="{ name: 'playlist', params: { id: list.id } }">
-            <span class="title">
-                {{ list.name }}
-            </span>
+            <span class="title"> {{ list.name }}</span>
             <span class="meta">
                 <span v-if="list.duration" v-tippy="{ content: 'Laufzeit: ' + formatSeconds(list.duration) }">
                     <app-icon name="time" />
