@@ -47,7 +47,7 @@ const fetchData = () => {
 watch(() => route.params.id, fetchData, { immediate: true });
 const onTabChange = (val: number) => {
     currentTabIndex.value = val;
-    artistStore.setCurrentTabIndex(data.value.genre.encodedName, val);
+    artistStore.setCurrentTabIndex(data.value.encodedName, val);
 };
 </script>
 
