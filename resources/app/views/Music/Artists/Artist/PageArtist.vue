@@ -30,7 +30,7 @@ const fetchData = () => {
             data.value = response.data;
             songs.value = response.data.songs;
             albums.value = response.data.albums;
-            currentTabIndex.value = artistStore.getCurrentTabIndex(data.value.id);
+            currentTabIndex.value = artistStore.getCurrentTabIndex(data.value.encodedName);
         })
         .catch(error => {
             console.error(error);
@@ -47,7 +47,7 @@ const fetchData = () => {
 watch(() => route.params.id, fetchData, { immediate: true });
 const onTabChange = (val: number) => {
     currentTabIndex.value = val;
-    artistStore.setCurrentTabIndex(data.value.id, val);
+    artistStore.setCurrentTabIndex(data.value.encodedName, val);
 };
 </script>
 

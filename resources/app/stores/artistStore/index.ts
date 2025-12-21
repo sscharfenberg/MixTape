@@ -17,9 +17,9 @@ export const useArtistStore = defineStore("artistStore", {
         /**
          * @function update the tabIndex of an artist
          */
-        setCurrentTabIndex(artistId: string, tabIndex: number): void {
+        setCurrentTabIndex(artistName: string, tabIndex: number): void {
             this.artists = this.artists.map((artist: Artist) => {
-                if (artist.id === artistId) {
+                if (artist.encodedName === artistName) {
                     artist.tabIndex = tabIndex;
                 }
                 return artist;
@@ -31,14 +31,16 @@ export const useArtistStore = defineStore("artistStore", {
          * @function get the tabIndex of a specific artist
          */
         getCurrentTabIndex(state) {
-            return (artistId: string) => {
-                const artist = state.artists.find((artist: Artist) => artist.id === artistId);
+            return (artistName: string) => {
+                const artist = state.artists.find((artist: Artist) => artist.encodedName === artistName);
                 if (artist) {
-                    return artist.tabIndex;
+                    return artist.tabIndex || 0;
                 } else {
-                    state.artists.push({
-                        id: artistId,
-                        currentTabIndex: 0
+                    this.$patch(state => {
+                        state.artists.push({
+                            encodedName: artistName,
+                            currentTabIndex: 0
+                        });
                     });
                     console.log("added artist", state.artists);
                     return 0;
@@ -57,6 +59,6 @@ interface QueueState {
 }
 
 interface Artist {
-    id: string;
+    encodedName: string;
     tabIndex: number;
 }
