@@ -47,9 +47,12 @@ class PlaylistService
         }
         // should we create a cover collage of random songs?
         if ($addCover && count($entries) >= 4) {
-            $randomSongs = $entries->take(4)->map(function ($entry) {
-                return $this->matchEntryToSong($entry);
-            });
+            $randomSongs = $entries
+                ->shuffle()
+                ->take(4)
+                ->map(function ($entry) {
+                    return $this->matchEntryToSong($entry);
+                });
             $json['cover'] = $c->getCoverCollage($playlist->id, $randomSongs);
         }
 
