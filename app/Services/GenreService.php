@@ -83,8 +83,12 @@ class GenreService
         $u = new UrlSafeService;
         $l = new LibraryService;
         $f = new FormatService;
-        Genre::whereLike('name', "%$name%", caseSensitive: false)
-            ->with('songs')
+        $segments = explode(" ", $name);
+        $genre = Genre::whereNotNull('id');
+        foreach ($segments as $segment) {
+            $genre = $genre->whereLike('name', "%$segment%", caseSensitive: false);
+        }
+        $genre->with('songs')
             ->take(config('collection.search_max.genres'))
             ->get()
             ->map(function ($genre) {

@@ -115,8 +115,12 @@ class ArtistService
         $u = new UrlSafeService;
         $l = new LibraryService;
         $f = new FormatService;
-        Artist::whereLike('name', "%$name%", caseSensitive: false)
-            ->with('songs')
+        $segments = explode(" ", $name);
+        $artist = Artist::whereNotNull('id');
+        foreach ($segments as $segment) {
+            $artist = $artist->whereLike('name', "%$segment%", caseSensitive: false);
+        }
+        $artist->with('songs')
             ->take(config('collection.search_max.artists'))
             ->get()
             ->map(function ($artist) {

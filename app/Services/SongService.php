@@ -260,9 +260,12 @@ class SongService
         $l = new LibraryService;
         $f = new FormatService;
         $u = new UrlSafeService;
-        Song::whereLike('name', "%$name%", caseSensitive: false)
-            ->with('artist')
-            ->take(config('collection.search_max.artists'))
+        $segments = explode(" ", $name);
+        $song = Song::whereNotNull('id');
+        foreach ($segments as $segment) {
+            $song = $song->whereLike('name', "%$segment%", caseSensitive: false);
+        }
+        $song->take(config('collection.search_max.songs'))
             ->get()
             ->sortBy('path')
             ->each(function ($song) use (&$json, $l, $f, $u) {

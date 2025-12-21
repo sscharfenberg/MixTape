@@ -276,8 +276,12 @@ class AlbumService
         $json = [];
         $l = new LibraryService;
         $f = new FormatService;
-        Album::whereAny(['name', 'year'], 'like', "%$name%")
-            ->with('songs')
+        $segments = explode(" ", $name);
+        $album = Album::whereNotNull('id');
+        foreach ($segments as $segment) {
+            $album = $album->whereLike('name', "%$segment%", caseSensitive: false);
+        }
+        $album->with('songs')
             ->take(config('collection.search_max.albums'))
             ->get()
             ->map(function ($album) {

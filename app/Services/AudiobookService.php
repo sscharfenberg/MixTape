@@ -253,8 +253,12 @@ class AudiobookService
         $l = new LibraryService;
         $f = new FormatService;
         $u = new UrlSafeService;
-        Audiobook::whereAny(['name', 'year'], 'like', "%$search%")
-            ->with('tracks')
+        $segments = explode(" ", $search);
+        $audiobook = Audiobook::whereNotNull('id');
+        foreach ($segments as $segment) {
+            $audiobook = $audiobook->whereLike('name', "%$segment%", caseSensitive: false);;
+        }
+        $audiobook->with('tracks')
             ->take(config('collection.search_max.audiobooks'))
             ->get()
             ->map(function ($book) {
