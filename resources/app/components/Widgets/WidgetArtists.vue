@@ -60,7 +60,7 @@ onMounted(() => {
                                 <app-icon name="artist" />
                                 {{ artist.name }}
                             </span>
-                            <span class="subitem">
+                            <span class="subitem" v-tippy="{ content: 'Alben des Künstlers' }">
                                 <app-icon name="album" />
                                 {{ artist.albums.length }}
                             </span>

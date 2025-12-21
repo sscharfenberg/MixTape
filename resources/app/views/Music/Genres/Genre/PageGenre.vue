@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { formatSeconds } from "@/formatters/numbers";
+import { useGenreStore } from "@/stores/genreStore";
 import axios from "axios";
 import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
-import DataTablesCore from "datatables.net-dt";
-import "datatables.net-responsive-dt";
-import DataTable from "datatables.net-vue3";
+import TabbedNavigation from "Components/TabbedNavigation/TabbedNavigation.vue";
 import { push } from "notivue";
+import GenreArtistsTable from "Views/Music/Genres/Genre/GenreArtistsTable.vue";
 import GenreMetaData from "Views/Music/Genres/Genre/GenreMetaData.vue";
+import GenreSongsTable from "Views/Music/Genres/Genre/GenreSongsTable.vue";
 import GenreTitle from "Views/Music/Genres/Genre/GenreTitle.vue";
 import { ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-DataTable.use(DataTablesCore);
+import { useRoute } from "vue-router";
+const genreStore = useGenreStore();
 const route = useRoute();
-const router = useRouter();
 const isLoading = ref(false);
 const data = ref(null);
 const hasError = ref(false);
+const currentTabIndex = ref(0);
 const fetchData = () => {
     data.value = null;
     isLoading.value = true;
@@ -25,6 +25,7 @@ const fetchData = () => {
         .get(`/api/music/genres/${route.params.id}`)
         .then(response => {
             data.value = response.data;
+            currentTabIndex.value = genreStore.getCurrentTabIndex(data.value.genre.encodedName);
         })
         .catch(error => {
             console.error(error);
@@ -38,59 +39,11 @@ const fetchData = () => {
             isLoading.value = false;
         });
 };
-const dataTableOptions = {
-    columns: [
-        { data: "name", title: "Name" },
-        { data: "artist.name", title: "Artist", orderData: [1, 3, 2, 5, 4] },
-        { data: "album.name", title: "Album" },
-        { data: "album.year", title: "Jahr", type: "num" },
-        {
-            data: "track",
-            title: "Track",
-            render: (data, type, row) => {
-                if (type === "display" || type === "filter") {
-                    if (row.track <= row.album.discTracks) {
-                        return row.track + "/" + row.album.discTracks;
-                    }
-                    return row.track;
-                }
-                return data;
-            }
-        },
-        {
-            data: "disc",
-            title: "CD",
-            render: (data, type, row) => {
-                if (row.disc && row.album.discs) {
-                    return row.disc + "/" + row.album.discs;
-                }
-                return "-";
-            }
-        },
-        {
-            data: "duration",
-            title: "Dauer",
-            render: (data, type) => {
-                if (type === "display" || type === "filter") {
-                    return formatSeconds(data);
-                }
-                return data; // for all other types
-            }
-        }
-    ],
-    fnRowCallback: (nRow, aData) => {
-        nRow.addEventListener("click", () => {
-            router.push({
-                name: "song",
-                params: { id: aData.encodedPath }
-            });
-        });
-    },
-    order: [[1, "asc"]],
-    responsive: true,
-    pageLength: 25
-};
 watch(() => route.params.id, fetchData, { immediate: true });
+const onTabChange = (val: number) => {
+    currentTabIndex.value = val;
+    genreStore.setCurrentTabIndex(data.value.genre.encodedName, val);
+};
 </script>
 
 <template>
@@ -102,7 +55,22 @@ watch(() => route.params.id, fetchData, { immediate: true });
         <div v-else class="genre">
             <genre-title :title="data.genre.name" />
             <genre-meta-data :genre="data.genre" />
-            <DataTable :data="data.songs" class="display responsive" :options="dataTableOptions" />
+            <tabbed-navigation
+                name="tabbed-navigation-genre"
+                :tabs="[
+                    {
+                        idx: 0,
+                        label: `Artists (${data.artists.length})`,
+                        icon: 'artist',
+                        checked: currentTabIndex === 0
+                    },
+                    { idx: 1, label: `Songs (${data.songs.length})`, icon: 'music', checked: currentTabIndex === 1 }
+                ]"
+                @tabchange="onTabChange"
+            >
+                <genre-artists-table v-show="currentTabIndex === 0" :artists="data.artists" />
+                <genre-songs-table v-show="currentTabIndex === 1" :songs="data.songs" />
+            </tabbed-navigation>
         </div>
     </section>
 </template>

@@ -39,7 +39,7 @@ export const useArtistStore = defineStore("artistStore", {
                     this.$patch(state => {
                         state.artists.push({
                             encodedName: artistName,
-                            currentTabIndex: 0
+                            tabIndex: 0
                         });
                     });
                     console.log("added artist", state.artists);

@@ -11,9 +11,9 @@ import WidgetSongs from "Components/Widgets/WidgetSongs.vue";
     <div class="widget-grid">
         <widget-songs />
         <widget-albums />
-        <widget-audiobooks />
         <widget-artists />
         <widget-genres />
+        <widget-audiobooks />
         <widget-global />
     </div>
 </template>

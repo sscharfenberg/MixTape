@@ -14,9 +14,11 @@ class ArtistService
      * @function json format artist data
      * @param Artist $artist
      * @param bool $addSongs
+     * @param bool $addAlbums
      * @return array
+     * @throws \Exception
      */
-    public function formatArtist(Artist $artist, bool $addSongs = false): array
+    public function formatArtist(Artist $artist, bool $addSongs = false, bool $addAlbums = true): array
     {
         $u = new UrlSafeService;
         $songs = $artist->songs;
@@ -25,7 +27,13 @@ class ArtistService
             'id' => $artist->id,
             'name' => $artist->name,
             'encodedName' => $u->encode($artist->name),
-            'albums' => $albums->map(function (Album $album) use ($u, $artist) {
+            'numAlbums' => $albums->count(),
+            'numSongs' => $songs->count(),
+            'songsDuration' => $songs->sum('duration'),
+            'songsFileSize' => $songs->sum('size'),
+        ];
+        if ($addAlbums) {
+            $arr['albums'] = $albums->map(function (Album $album) use ($u, $artist) {
                 return [
                     'id' => $album->id,
                     'name' => $album->name,
@@ -36,12 +44,8 @@ class ArtistService
                     'year' => $album->year,
                     'size' => $album->songs->sum('size'),
                 ];
-            })->toArray(),
-            'numAlbums' => $albums->count(),
-            'numSongs' => $songs->count(),
-            'songsDuration' => $songs->sum('duration'),
-            'songsFileSize' => $songs->sum('size'),
-        ];
+            })->toArray();
+        }
         if ($addSongs) {
             $s = new SongService;
             $arr['songs'] = $artist->songs->map(function ($song) use ($s) {

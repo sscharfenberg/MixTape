@@ -86,7 +86,7 @@ return [
 
     'stats' => [
         'genres' => [
-            'num_top' => 3
+            'num_top' => 4
         ],
         'albums' => [
             'random' => 4
@@ -95,7 +95,7 @@ return [
             'random' => 4
         ],
         'artists' => [
-            'random' => 3
+            'random' => 4
         ],
         'audiobooks' => [
             'random' => 3

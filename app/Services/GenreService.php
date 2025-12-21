@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Artist;
 use App\Models\Genre;
 
 class GenreService
@@ -52,6 +53,7 @@ class GenreService
      * @function get a specific genre by encoded name
      * @param string $name
      * @return array
+     * @throws \Exception
      */
     public function getGenreByName(string $name): array
     {
@@ -69,6 +71,16 @@ class GenreService
         $json['songs'] = $genre->songs->map(function ($song) use ($s) {
             return $s->formatSong($song);
         });
+        $artistIds = $genre->songs->unique('album_artist_id')->map(function ($song) {
+            return $song->artist->id;
+        })->toArray();
+        $json['artists'] = Artist::whereIn('id', array_values($artistIds))
+            ->with('albums')
+            ->with('songs')
+            ->get()
+            ->map(function ($artist) use ($a) {
+                return $a->formatArtist($artist, false, false);
+            })->toArray();
         return $json;
     }
 
