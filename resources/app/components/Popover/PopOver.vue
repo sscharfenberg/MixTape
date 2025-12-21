@@ -7,6 +7,7 @@ const props = defineProps({
         required: true
     },
     label: String,
+    ariaLabel: String,
     reference: {
         type: String,
         default: Math.random().toString(36).substring(2)
@@ -21,7 +22,7 @@ const reference = ref("--" + props.reference);
             :icon="icon"
             :text="label"
             :popovertarget="props.reference"
-            aria-label="Menu öffnen"
+            :aria-label="ariaLabel || `Menu öffnen`"
             class="popover-button"
         />
         <dialog :id="props.reference" popover class="popover-content">

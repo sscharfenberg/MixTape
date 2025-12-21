@@ -179,6 +179,10 @@ Route::prefix('api')->group(function () {
     Route::post('/playlists/{path}/export-m3u',
         [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'exportM3u']
     );
+    // cleanup playlist by removing dead files
+    Route::post('/playlists/{path}/cleanup',
+        [\App\Http\Controllers\Api\Playlists\PlaylistController::class, 'cleanup']
+    );
 
 });
 

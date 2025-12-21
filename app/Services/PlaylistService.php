@@ -8,6 +8,7 @@ use App\Models\Song;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use function PHPSTORM_META\map;
 
 class PlaylistService
@@ -19,6 +20,7 @@ class PlaylistService
      * @param bool $addSongs
      * @param bool $addCover
      * @return array
+     * @throws \Exception
      */
     private function formatPlaylist (Playlist $playlist, bool $addSongs = false, bool $addCover = false):array
     {
@@ -403,6 +405,48 @@ class PlaylistService
         ];
     }
 
-
+    /**
+     * @function cleanup playlist entries by removing dead files
+     * @param string $playlistId
+     * @return array
+     * @throws \Exception
+     */
+    public function cleanup(string $playlistId): array
+    {
+        $start = now();
+        $playlist = Playlist::findOrFail($playlistId);
+        $removedEntries = collect();
+        Log::channel('api')->info("Starting cleanup of playlist '$playlist->name'.");
+        PlaylistEntry::where('playlist_id', $playlistId)
+            ->get()
+            ->each(function ($entry) use ($playlist, &$removedEntries) {
+                $fullPath = config('collection.server.music.path').$entry->path;
+                $song = Song::where('path', $entry->path)->first();
+                $exists = file_exists($fullPath);
+                if (!$song) {
+                    $removedEntries->push($entry);
+                    $entry->delete();
+                    Log::channel('api')->debug("PlaylistEntry '$entry->song' not found in database, deleted.");
+                }
+                else if (!$exists)
+                {
+                    $removedEntries->push($entry);
+                    $entry->delete();
+                    Log::channel('api')->debug("PlaylistEntry '$entry->song' not found on disk '$fullPath', deleted.'");
+                }
+                else {
+                    Log::channel('api')->debug("PlaylistEntry '$entry->song' ok.'");
+                }
+            });
+        $json['playlist'] = $this->formatPlaylist($playlist, true);
+        $json['removedEntries'] = $removedEntries->map(function ($entry) {
+            return $this->formatPlaylistEntry($entry);
+        });
+        // all done => report time taken.
+        $ms = $start->diffInMilliseconds(now());
+        $fd = new FormatService();
+        Log::channel('api')->info("Finished cleanup of playlist '$playlist->name' in ".$fd->formatMs($ms).".");
+        return $json;
+    }
 
 }

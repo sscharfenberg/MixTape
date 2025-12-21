@@ -2,19 +2,22 @@
 import { usePlayerStore } from "@/stores/playerStore";
 import { usePlaylistStore } from "@/stores/playlistStore";
 import { useQueueStore } from "@/stores/queueStore";
-import axios from "axios";
 import AppButton from "Components/Form/Button/AppButton.vue";
 import AutoplaySwitch from "Components/Player/AutoplaySwitch.vue";
 import ShuffleSwitch from "Components/Player/ShuffleSwitch.vue";
-import { shuffleQueue } from "Components/Player/useSongQueue";
-import PopOver from "Components/Popover/PopOver.vue";
-import { push } from "notivue";
-import { computed, ref } from "vue";
-import PlaylistExportM3U from "./PlaylistExportM3U.vue";
-const sortProcessing = ref(false);
+import { computed } from "vue";
+import PlaylistPlayerNavigationCleanup from "./PlaylistPlayerNavigationCleanup.vue";
+import PlaylistPlayerNavigationExport from "./PlaylistPlayerNavigationExport.vue";
+import PlaylistPlayerNavigationSort from "./PlaylistPlayerNavigationSort.vue";
 const queueStore = useQueueStore();
 const playerStore = usePlayerStore();
 const playlistStore = usePlaylistStore();
+defineProps({
+    playlistId: {
+        type: String,
+        required: true
+    }
+});
 const songQueue = computed(() => {
     if (playerStore.shuffle) return queueStore.shuffledQueue;
     else return queueStore.sortedQueue;
@@ -49,34 +52,6 @@ const onPrev = () => {
     }
     onPlay(queueStore.currentQueueIndex);
 };
-const onSort = () => {
-    sortProcessing.value = true;
-    axios
-        .post(`/api/playlists/${playlistStore.detailedPlaylist.id}/autosort`)
-        .then(response => {
-            const serverQueue = response.data.songs.map(song => song.encodedPath);
-            playlistStore.detailedPlaylist = response.data;
-            queueStore.sortedQueue = serverQueue;
-            queueStore.shuffledQueue = shuffleQueue(serverQueue);
-            queueStore.updateCurrentPath();
-            queueStore.updateQueueIndex();
-            playlistStore.setNowPlaying("");
-        })
-        .catch(error => {
-            console.error(error);
-            push.error({
-                title: error.code,
-                message: error.response.data.message || error.message
-            });
-        })
-        .finally(() => {
-            sortProcessing.value = false;
-            console.log("sort xhr finished.");
-        });
-};
-const onClosePopover = () => {
-    document.getElementById("exportPlaylist").hidePopover();
-};
 </script>
 
 <template>
@@ -92,24 +67,8 @@ const onClosePopover = () => {
         <app-button icon="next" @click="onNext" aria-label="Nächster Song" />
         <autoplay-switch />
         <shuffle-switch />
-        <app-button icon="sort" text="Sort Playlist" @click="onSort" :loading="sortProcessing" />
-        <pop-over icon="download" reference="exportPlaylist">
-            <ul class="popover-list">
-                <li>
-                    <playlist-export-m3-u
-                        :name="playlistStore.detailedPlaylist.name"
-                        @closepopover="onClosePopover"
-                        export-type="simple"
-                    />
-                </li>
-                <li>
-                    <playlist-export-m3-u
-                        :name="playlistStore.detailedPlaylist.name"
-                        @closepopover="onClosePopover"
-                        export-type="extended"
-                    />
-                </li>
-            </ul>
-        </pop-over>
+        <playlist-player-navigation-sort :playlist-id="playlistId" />
+        <playlist-player-navigation-export />
+        <playlist-player-navigation-cleanup :playlist-id="playlistId" />
     </div>
 </template>

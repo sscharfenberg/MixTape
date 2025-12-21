@@ -138,16 +138,17 @@ class CoverService
     public function getCoverCollage(string $id, Collection $songs): string
     {
         $storagePath = $id."-playlist.jpg";
-
-        // if the file already exists in storage, return early with path.
-        if(!Storage::disk('public')->missing($storagePath)) {
-            Log::channel('api')->info("playlist cover collage '$storagePath' already present in storage.");
-        }
-        // no image in storage, create it.
-        else {
-            Log::channel('api')->info("playlist cover collage '$storagePath' missing in storage.");
-            $this->createCollage($storagePath, $songs);
-        }
+//        // if the file already exists in storage, return early with path.
+//        if(!Storage::disk('public')->missing($storagePath)) {
+//            Log::channel('api')->info("playlist cover collage '$storagePath' already present in storage.");
+//        }
+//        // no image in storage, create it.
+//        else {
+//            Log::channel('api')->info("playlist cover collage '$storagePath' missing in storage.");
+//            $this->createCollage($storagePath, $songs);
+//        }
+        Log::channel('api')->info("create playlist cover collage.");
+        $this->createCollage($storagePath, $songs);
         return "/storage/".$storagePath;
     }
 

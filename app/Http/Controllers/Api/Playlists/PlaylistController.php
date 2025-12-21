@@ -186,4 +186,17 @@ class PlaylistController extends Controller
             [ 'Content-Type' => 'application/vnd' ]
         );
     }
+
+    /**
+     * @param Request $request
+     * @param string $playlistId
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function cleanup(Request $request, string $playlistId): JsonResponse
+    {
+        $p = new PlaylistService();
+        $playlist = $p->cleanup($playlistId);
+        return response()->json($playlist);
+    }
 }

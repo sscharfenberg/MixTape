@@ -54,6 +54,7 @@ const fetchData = () => {
 const onPlay = value => {
     console.log("onPlay");
     loadingSong.value = true;
+    if (!value) return false;
     axios
         .get(`/api/playlists/play/${value}`)
         .then(response => {
@@ -108,6 +109,7 @@ onBeforeMount(() => {
             <playlist-title
                 :title="playlistStore.detailedPlaylist.name"
                 :cover="playlistStore.detailedPlaylist.cover"
+                :playlist-id="route.params.id"
                 @play="onPlay"
             />
             <playlist-play-section
