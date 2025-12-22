@@ -3,6 +3,8 @@ import { formatSeconds } from "@/formatters/numbers";
 import DataTablesCore from "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import DataTable from "datatables.net-vue3";
+import { useRouter } from "vue-router";
+const router = useRouter();
 DataTable.use(DataTablesCore);
 defineProps({
     songs: {
