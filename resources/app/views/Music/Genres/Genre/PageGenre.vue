@@ -5,6 +5,7 @@ import ShowError from "Components/Error/ShowError.vue";
 import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import TabbedNavigation from "Components/TabbedNavigation/TabbedNavigation.vue";
 import { push } from "notivue";
+import GenreAlbumsTable from "Views/Music/Genres/Genre/GenreAlbumsTable.vue";
 import GenreArtistsTable from "Views/Music/Genres/Genre/GenreArtistsTable.vue";
 import GenreMetaData from "Views/Music/Genres/Genre/GenreMetaData.vue";
 import GenreSongsTable from "Views/Music/Genres/Genre/GenreSongsTable.vue";
@@ -60,16 +61,18 @@ const onTabChange = (val: number) => {
                 :tabs="[
                     {
                         idx: 0,
-                        label: `Artists (${data.artists.length})`,
+                        label: `Künstler (${data.artists.length})`,
                         icon: 'artist',
                         checked: currentTabIndex === 0
                     },
-                    { idx: 1, label: `Songs (${data.songs.length})`, icon: 'music', checked: currentTabIndex === 1 }
+                    { idx: 1, label: `Alben (${data.albums.length})`, icon: 'album', checked: currentTabIndex === 1 },
+                    { idx: 2, label: `Songs (${data.songs.length})`, icon: 'music', checked: currentTabIndex === 2 }
                 ]"
                 @tabchange="onTabChange"
             >
                 <genre-artists-table v-show="currentTabIndex === 0" :artists="data.artists" />
-                <genre-songs-table v-show="currentTabIndex === 1" :songs="data.songs" />
+                <genre-albums-table v-show="currentTabIndex === 1" :albums="data.albums" />
+                <genre-songs-table v-show="currentTabIndex === 2" :songs="data.songs" />
             </tabbed-navigation>
         </div>
     </section>

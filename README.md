@@ -91,15 +91,33 @@ Reads the CSV files and creates database entries.
 
 ### `npm run dev`
 
-Development mode. Ensure you have `APP_ENV=local` in `.env` and the server has a `hot` file in `public` directory.
+Development mode. To ensure dev mode works:
+* Modify `.env`: 
+```.env
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://mixtape.local
+```
+* `APP_URL` needs to point to the correct local server. Use `hosts` file to forward the hostname to the server ip.
+* `public` directory on the server needs to have the `hot` file.
+* Ensure `public/.htaccess` file does not have `AuthType Basic` entries - this will screw up cors / deliverability of js bundle.
 
 ### `npm run build`
 
-Production mode. Ensure you have `APP_ENV=production` in `.env`.
+Production mode. To ensure production mode works:
+* Modify `.env`:
+```.env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=http://[yourhostname].noip.com
+```
+* `APP_URL` needs to point to the correct server domain. Use a ddns service like `noip` etc.
+* The `public` directory on the server *must not* have a `hot` file.
+* Upload all files in `public` directory to the server.
 
 ### `npm run lint`
 
 Run Eslint and Stylelint separately.
 
 ## License
-`AudioCatalogue` is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+`MixTape` is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

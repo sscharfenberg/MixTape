@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Album;
 use App\Models\Artist;
 use App\Models\Genre;
 
@@ -59,6 +60,7 @@ class GenreService
     {
         $u = new UrlSafeService;
         $a = new ArtistService;
+        $al = new AlbumService;
         $s = new SongService;
         $genre = Genre::where('name', $u->decode($name))
             ->with('songs')
@@ -72,7 +74,7 @@ class GenreService
             return $s->formatSong($song);
         });
         $artistIds = $genre->songs->unique('album_artist_id')->map(function ($song) {
-            return $song->artist->id;
+            return $song->artist_id;
         })->toArray();
         $json['artists'] = Artist::whereIn('id', array_values($artistIds))
             ->with('albums')
@@ -80,6 +82,19 @@ class GenreService
             ->get()
             ->map(function ($artist) use ($a) {
                 return $a->formatArtist($artist, false, false);
+            })->toArray();
+        $albumIds = $genre->songs->unique('album_id')->map(function ($song) {
+            return $song->album_id;
+        })->toArray();
+        $json['albums'] = Album::whereIn('id', array_values($albumIds))
+            ->with('songs')
+            ->get()
+            ->map(function ($album) use ($al) {
+                $album->numSongs = $album->songs->count();
+                $album->duration = $album->songs->sum('duration');
+                $album->fileSize = $album->songs->sum('size');
+                $album->discs = $album->songs->unique('disc')->count();
+                return $al->formatAlbum($album);
             })->toArray();
         return $json;
     }
