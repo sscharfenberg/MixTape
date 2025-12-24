@@ -20,9 +20,9 @@ class AlbumController extends Controller
     public function list(Request $request): JsonResponse
     {
         $a = new AlbumService;
-        $allAlbums = $a->getAllAlbums();
-        if (count($allAlbums) > 0) {
-            return response()->json($allAlbums, 200);
+        $res = $a->getAllAlbums();
+        if (count($res['albums']) > 0) {
+            return response()->json($res, 200);
         } else {
             return response()
                 ->json(['message' => 'Fehler beim laden der Alben. app:update durchgeführt?'], 422);

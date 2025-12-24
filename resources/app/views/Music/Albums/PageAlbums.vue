@@ -12,6 +12,7 @@ import { useRouter } from "vue-router";
 DataTable.use(DataTablesCore);
 const isLoading = ref(false);
 const data = ref(null);
+const minSongs = ref(0);
 const hasError = ref(false);
 const router = useRouter();
 const fetchData = () => {
@@ -21,7 +22,8 @@ const fetchData = () => {
     axios
         .get(`/api/music/albums`)
         .then(response => {
-            data.value = response.data;
+            data.value = response.data.albums;
+            minSongs.value = response.data.minSongs;
         })
         .catch(error => {
             console.error(error);
@@ -40,9 +42,9 @@ onMounted(() => {
 });
 const dataTableOptions = {
     columns: [
-        { data: "name", title: "Name" },
         { data: "year", title: "Jahr", type: "num" },
-        { data: "artist.name", title: "Artist", orderData: [2, 1] },
+        { data: "name", title: "Name" },
+        { data: "artist.name", title: "Artist", orderData: [2, 0] },
         { data: "numSongs", title: "Tracks" },
         { data: "discs", title: "CDs" },
         {
@@ -64,7 +66,7 @@ const dataTableOptions = {
             });
         });
     },
-    order: [[1, "desc"]],
+    order: [[0, "desc"]],
     responsive: true,
     pageLength: 25
 };
@@ -77,6 +79,7 @@ const dataTableOptions = {
         </div>
         <show-error v-else-if="hasError && !isLoading" @refresh="fetchData()" />
         <div v-else class="genres">
+            <p>Es werden nur Alben mit mindestens {{ minSongs }} Songs angezeigt.</p>
             <DataTable :data="data" class="display responsive" :options="dataTableOptions"></DataTable>
         </div>
     </section>

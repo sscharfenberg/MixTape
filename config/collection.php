@@ -2,18 +2,27 @@
 
 return [
 
-    /*
+    /**
      * Server settings. paths and filenames
      */
     'server' => [
+        /*
+         * the server path to the samba share with the music mp3 files
+         */
         'music' => [
             'path' => '/home/samba/share/music/',
             'csv' => 'music.csv'
         ],
+        /*
+         * the server path to the samba share with the audiobook mp3 files
+         */
         'audiobooks' => [
             'path' => '/home/samba/share/audiobooks/',
             'csv' => 'audiobooks.csv'
         ],
+        /*
+         * glob of objects that are to be deleted on cleanup
+         */
         'to_delete' => [
             "Thumbs.db",
             "._*",
@@ -23,8 +32,11 @@ return [
             ".@__*",
             ".smbdelete*"
         ],
+        // max filesize for album to download in bytes
         'download_album_threshold' => 1024 * 1024 * 200, // 200MiB
+        // pixel width of thumbnails
         'thumb_width' => 60,
+        // pixel width of covers
         'cover_width' => 450
     ],
 
@@ -108,6 +120,10 @@ return [
         'albums' => 10,
         'songs' => 10,
         'audiobooks' => 5,
+    ],
+
+    'filter' => [
+        'albumslist_min_songs' => 2
     ]
 
 ];

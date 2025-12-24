@@ -99,9 +99,13 @@ class AlbumService
      */
     public function getAllAlbums(string $sortedBy = ""): array
     {
+        $minSongs = config('collection.filter.albumslist_min_songs');
         $albums = Album::with('songs')
             ->with('artist')
             ->get()
+            ->filter( function ($album) use ($minSongs) {
+                return $album->songs->count() >= $minSongs;
+            })
             ->map(function (Album $album) {
                 $album->numSongs = $album->songs->count();
                 $album->duration = $album->songs->sum('duration');
@@ -112,7 +116,9 @@ class AlbumService
         if (strlen($sortedBy) > 0) {
             $albums = $albums->sortByDesc($sortedBy);
         }
-        return $albums->toArray();
+        $json['albums'] = array_values($albums->toArray());
+        $json['minSongs'] = $minSongs;
+        return $json;
     }
 
     /**
