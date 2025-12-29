@@ -42,6 +42,13 @@
             color: map.get(c.$button, "default", "surface-hover");
             border-color: map.get(c.$button, "default", "border-hover");
         }
+
+        &.active,
+        &.active:not([disabled]):hover {
+            background-color: map.get(c.$button, "default", "background-active");
+            color: map.get(c.$button, "default", "surface-active");
+            border-color: map.get(c.$button, "default", "border-active");
+        }
     }
 
     &.primary {

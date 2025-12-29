@@ -76,7 +76,7 @@ class AudiobookController extends Controller
     public function widget(Request $request): JsonResponse
     {
         $a = new AudiobookService();
-        $books = $a->getRandomAudiobooks();
+        $books = $a->getWidgetAudiobooks($request->query('shuffle') == "1");
         if (count($books) > 0) {
             return response()->json($books);
         } else {

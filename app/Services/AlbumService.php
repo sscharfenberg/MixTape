@@ -69,7 +69,8 @@ class AlbumService
             'numSongs' => $album->numSongs,
             'duration' => $album->duration,
             'fileSize' => $album->fileSize,
-            'discs' => $album->discs
+            'discs' => $album->discs,
+            'modifiedAt' => $album->modifiedAt
         ];
         if ($album->coverPath) {
             $arr['coverPath'] = $album->coverPath;
@@ -111,6 +112,7 @@ class AlbumService
                 $album->duration = $album->songs->sum('duration');
                 $album->fileSize = $album->songs->sum('size');
                 $album->discs = $album->songs->unique('disc')->count();
+                $album->modifiedAt = $album->songs->first()->modified_at;
                 return $this->formatAlbum($album);
             });
         if (strlen($sortedBy) > 0) {
@@ -123,16 +125,25 @@ class AlbumService
 
     /**
      * @function get random albums
+     * @param bool $random
      * @return array
      */
-    public function getRandomAlbums(): array
+    public function getWidgetAlbums(bool $random): array
     {
-        return Album::with('songs')
-            ->with('artist')
-            ->inRandomOrder()
-            ->limit(config('collection.stats.albums.random'))
-            ->get()
-            ->map(function (Album $album) {
+        $query = Album::with('songs')
+            ->with('artist');
+        if ($random) {
+            $query = $query->inRandomOrder()
+                ->limit(config('collection.stats.albums.random'))
+                ->get();
+        } else {
+            $query = $query->get()
+                ->sortByDesc( function ($album) {
+                    return $album->songs->first()->modified_at;
+                })
+                ->take(config('collection.stats.albums.random'));
+        }
+        return $query->map(function (Album $album) {
                 $album->numSongs = $album->songs->count();
                 $album->duration = $album->songs->sum('duration');
                 $album->fileSize = $album->songs->sum('size');
@@ -147,6 +158,7 @@ class AlbumService
      * @function get album by id ^.^
      * @param string $albumId
      * @return array
+     * @throws \Exception
      */
     public function getAlbumById(string $albumId): array
     {

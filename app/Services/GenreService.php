@@ -11,9 +11,47 @@ class GenreService
 
     /**
      * @function determine the top genres by songs and return a formatted array
+     * @param bool $random
      * @return array
      */
-    public function getGenresByDuration(): array
+    public function getWidgetGenres(bool $random): array
+    {
+        $json = [];
+        $query = Genre::with('songs');
+        if ($random) {
+            $query = $query->inRandomOrder()
+                ->limit(config('collection.stats.genres.num_top'))
+                ->get()
+                ->map(function ($genre) {
+                    $genre->numSongs = $genre->songs->count();
+                    $genre->duration = $genre->songs->sum('duration');
+                    $genre->size = $genre->songs->sum('size');
+                    $genre->numArtists = $genre->songs->unique('album_artist_id')->count();
+                    return $genre;
+                });
+        } else {
+            $query = $query->get()
+                ->map(function ($genre) {
+                    $genre->numSongs = $genre->songs->count();
+                    $genre->duration = $genre->songs->sum('duration');
+                    $genre->size = $genre->songs->sum('size');
+                    $genre->numArtists = $genre->songs->unique('album_artist_id')->count();
+                    return $genre;
+                })
+                ->sortByDesc('duration')
+                ->take(config('collection.stats.genres.num_top'));
+        }
+        $query->each(function ($genre) use (&$json) {
+            $json[] = $this->formatGenre($genre);
+        });
+        return $json;
+    }
+
+    /**
+     * @function get all genres for "genres" page
+     * @return array
+     */
+    public function getAllGenres(): array
     {
         $json = [];
         Genre::with('songs')
@@ -24,7 +62,7 @@ class GenreService
                 $genre->size = $genre->songs->sum('size');
                 $genre->numArtists = $genre->songs->unique('album_artist_id')->count();
                 return $genre;
-            })->sortByDesc('duration')
+            })
             ->each(function ($genre) use (&$json) {
                 $json[] = $this->formatGenre($genre);
             });

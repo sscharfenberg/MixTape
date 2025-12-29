@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { formatSeconds } from "@/formatters/numbers";
+import { useWidgetStore } from "@/stores/widgetStore";
 import axios from "axios";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppWidget from "Components/Widget/AppWidget.vue";
 import { push } from "notivue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 const isLoading = ref(false);
 const data = ref({});
 const hasError = ref(false);
+const widgetStore = useWidgetStore();
+const shuffle = computed(() => widgetStore.toggles.song);
 const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
+    let url = "/api/widget/song";
+    if (shuffle.value) url += "?shuffle=1";
     axios
-        .get("/api/widget/song")
+        .get(url)
         .then(response => {
             if (response.data?.length > 0) {
                 hasError.value = false;
@@ -43,11 +48,15 @@ onMounted(() => {
         :error="hasError"
         @refresh="fetchData()"
         :refresh-button="true"
+        toggle-name="song"
         ajax-url="/api/music/search/songs"
     >
-        <template #title>Songs<app-icon name="shuffle" /></template>
+        <template #title>
+            <span v-if="shuffle">Zufällige Songs</span>
+            <span v-else>Neueste Songs</span>
+        </template>
         <template #body>
-            <nav class="stats" v-if="data?.length" aria-label="Links zu zufälligen Songs">
+            <nav class="stats" v-if="data?.length" aria-label="Links zu Songs">
                 <router-link
                     class="stats__item stats__item--link"
                     v-for="song in data"

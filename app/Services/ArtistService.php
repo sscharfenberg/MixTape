@@ -57,17 +57,29 @@ class ArtistService
 
     /**
      * @function get random artists and return array for json
+     * @param bool $random
      * @return array
      */
-    public function getRandomArtists():array
+    public function getWidgetArtists(bool $random):array
     {
-        $artists = Artist::with('songs')
-            ->with('albums')
-            ->inRandomOrder()
-            ->get()
-            ->filter(function ($artist) {
-                return $artist->albums->count() > 0;
-            })->take(config('collection.stats.artists.random'))
+        $query = Artist::with('songs')
+            ->with('albums');
+        if ($random) {
+            $query = $query->inRandomOrder()
+                ->get()
+                ->filter(function ($artist) {
+                    return $artist->albums->count() > 0;
+                });
+        } else {
+            $query = $query->get()
+                ->filter(function ($artist) {
+                    return $artist->albums->count() > 0 && $artist->songs->count() > 0;
+                })
+                ->sortByDesc( function ($artist) {
+                    return $artist->songs->sortByDesc('modified_at')->first()->modified_at;
+                });
+        }
+        $artists = $query->take(config('collection.stats.artists.random'))
             ->map(function (Artist $artist) {
                 return $this->formatArtist($artist);
             })->toArray();

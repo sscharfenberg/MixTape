@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { formatDecimals, formatSeconds } from "@/formatters/numbers";
+import { useWidgetStore } from "@/stores/widgetStore";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppWidget from "Components/Widget/AppWidget.vue";
 import axios from "axios";
 import { push } from "notivue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 const isLoading = ref(false);
 const data = ref({});
 const hasError = ref(false);
+const widgetStore = useWidgetStore();
+const shuffle = computed(() => widgetStore.toggles.artist);
 const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
+    let url = "/api/widget/artist";
+    if (shuffle.value) url += "?shuffle=1";
     axios
-        .get("/api/widget/artist")
+        .get(url)
         .then(response => {
             if (response.data?.length > 0) {
                 hasError.value = false;
@@ -43,11 +48,15 @@ onMounted(() => {
         :error="hasError"
         @refresh="fetchData()"
         :refresh-button="true"
+        toggle-name="artist"
         ajax-url="/api/music/search/artists"
     >
-        <template #title>Künstler<app-icon name="shuffle" /></template>
+        <template #title>
+            <span v-if="shuffle">Zufällige Künstler</span>
+            <span v-else>Neueste Künstler</span>
+        </template>
         <template #body>
-            <nav class="stats" v-if="data?.length && !hasError" aria-label="Links zu zufälligen Artists">
+            <nav class="stats" v-if="data?.length && !hasError" aria-label="Links zu Künstlern">
                 <router-link
                     v-for="artist in data"
                     :key="artist.id"

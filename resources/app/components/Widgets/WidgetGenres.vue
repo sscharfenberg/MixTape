@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { formatBytes, formatDecimals, formatSeconds } from "@/formatters/numbers";
+import { useWidgetStore } from "@/stores/widgetStore";
 import axios from "axios";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppWidget from "Components/Widget/AppWidget.vue";
 import { push } from "notivue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 const isLoading = ref(false);
 const data = ref(null);
 const hasError = ref(false);
+const widgetStore = useWidgetStore();
+const shuffle = computed(() => widgetStore.toggles.genre);
 const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
+    let url = "/api/widget/genre";
+    if (shuffle.value) url += "?shuffle=1";
     axios
-        .get("/api/widget/genre")
+        .get(url)
         .then(response => {
             if (response.data?.length > 1) {
                 hasError.value = false;
@@ -43,11 +48,15 @@ onMounted(() => {
         :error="hasError"
         @refresh="fetchData()"
         :refresh-button="true"
+        toggle-name="genre"
         ajax-url="/api/music/search/genres"
     >
-        <template #title>Genres</template>
+        <template #title>
+            <span v-if="shuffle">Zufällige Genres</span>
+            <span v-else>Populärste Genres</span>
+        </template>
         <template #body>
-            <nav class="stats" v-if="data?.length" aria-label="Links zu zufälligen Genres">
+            <nav class="stats" v-if="data?.length" aria-label="Links zu Genres">
                 <router-link
                     v-for="genre in data"
                     :key="genre.id"

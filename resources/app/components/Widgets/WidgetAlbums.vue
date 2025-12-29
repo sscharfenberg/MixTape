@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { formatDecimals, formatSeconds } from "@/formatters/numbers";
+import { useWidgetStore } from "@/stores/widgetStore";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppWidget from "Components/Widget/AppWidget.vue";
 import axios from "axios";
 import { push } from "notivue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 const isLoading = ref(false);
 const data = ref({});
 const hasError = ref(false);
+const widgetStore = useWidgetStore();
+const shuffle = computed(() => widgetStore.toggles.album);
 const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
+    let url = "/api/widget/album";
+    if (shuffle.value) url += "?shuffle=1";
     axios
-        .get("/api/widget/album")
+        .get(url)
         .then(response => {
             if (response.data?.length > 0) {
                 hasError.value = false;
@@ -31,6 +36,7 @@ const fetchData = () => {
             isLoading.value = false;
         });
 };
+
 onMounted(() => {
     fetchData();
 });
@@ -43,11 +49,15 @@ onMounted(() => {
         :error="hasError"
         @refresh="fetchData()"
         :refresh-button="true"
+        toggle-name="album"
         ajax-url="/api/music/search/albums"
     >
-        <template #title>Alben<app-icon name="shuffle" /></template>
+        <template #title>
+            <span v-if="shuffle">Zufällige Alben</span>
+            <span v-else>Neueste Alben</span>
+        </template>
         <template #body>
-            <nav class="stats" v-if="data?.length" aria-label="Links zu zufälligen Alben">
+            <nav class="stats" v-if="data?.length" aria-label="Links zu Alben">
                 <router-link
                     v-for="album in data"
                     :key="album.id"

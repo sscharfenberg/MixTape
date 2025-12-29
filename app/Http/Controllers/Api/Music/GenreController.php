@@ -20,7 +20,7 @@ class GenreController extends Controller
     public function list(Request $request): JsonResponse
     {
         $g = new GenreService;
-        $allGenres = $g->getGenresByDuration();
+        $allGenres = $g->getAllGenres();
         if (count($allGenres) > 0) {
             return response()->json($allGenres);
         } else {
@@ -33,6 +33,7 @@ class GenreController extends Controller
      * @param Request $request
      * @param string $name
      * @return JsonResponse
+     * @throws \Exception
      */
     public function show(Request $request, string $name): JsonResponse
     {
@@ -68,13 +69,9 @@ class GenreController extends Controller
     public function widget(Request $request): JsonResponse
     {
         $g = new GenreService;
-        $genres = $g->getGenresByDuration();
+        $genres = $g->getWidgetGenres($request->query('shuffle') == "1");
         if (count($genres) > 0) {
-            return response()->json(
-                array_slice(
-                    $genres, 0, config('collection.stats.genres.num_top')
-                )
-            );
+            return response()->json(array_values($genres));
         } else {
             return response()
                 ->json(['message' => 'Fehler beim Laden der Kachel Genres.'], 422);

@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { formatSeconds } from "@/formatters/numbers";
+import { useWidgetStore } from "@/stores/widgetStore";
 import axios from "axios";
 import AppIcon from "Components/AppIcon/AppIcon.vue";
 import AppWidget from "Components/Widget/AppWidget.vue";
 import { push } from "notivue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 const isLoading = ref(false);
 const data = ref({});
 const hasError = ref(false);
+const widgetStore = useWidgetStore();
+const shuffle = computed(() => widgetStore.toggles.audiobook);
 const fetchData = () => {
     isLoading.value = true;
     hasError.value = false;
+    let url = "/api/widget/audiobook";
+    if (shuffle.value) url += "?shuffle=1";
     axios
-        .get("/api/widget/audiobook")
+        .get(url)
         .then(response => {
             if (response.data?.length > 0) {
                 hasError.value = false;
@@ -43,9 +48,13 @@ onMounted(() => {
         :error="hasError"
         @refresh="fetchData()"
         :refresh-button="true"
+        toggle-name="audiobook"
         ajax-url="/api/audiobooks/search"
     >
-        <template #title>Audiobooks<app-icon name="shuffle" /></template>
+        <template #title>
+            <span v-if="shuffle">Zufällige Audiobooks</span>
+            <span v-else>Neueste Audiobooks</span>
+        </template>
         <template #body>
             <nav class="stats" v-if="data?.length" aria-label="Links zu zufälligen Audiobooks">
                 <router-link

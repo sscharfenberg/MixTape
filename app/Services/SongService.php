@@ -233,20 +233,30 @@ class SongService
 
     /**
      * @function get Song stats
+     * @param bool $random
      * @return array[]
+     * @throws \Exception
      */
-    public function getRandomSongs(): array
+    public function getWidgetSongs(bool $random): array
     {
-        return Song::with('artist')
+        $query = Song::with('artist')
             ->with('album')
             ->with('genre')
-            ->with('albumArtist')
-            ->inRandomOrder()
-            ->limit(config('collection.stats.songs.random'))
-            ->get()
-            ->map(function (Song $song) {
-                return $this->formatSong($song, false, false, true);
-            })->toArray();
+            ->with('albumArtist');
+        if ($random) {
+            $query = $query->inRandomOrder()
+                ->limit(config('collection.stats.songs.random'))
+                ->get();
+        } else {
+            $query = $query->get()
+                ->sortByDesc( function ($song) {
+                    return $song->modified_at;
+                })
+                ->take(config('collection.stats.songs.random'));
+        }
+        return $query->map(function (Song $song) {
+            return $this->formatSong($song, false, false, true);
+        })->toArray();
     }
 
     /**

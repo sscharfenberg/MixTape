@@ -64,13 +64,14 @@ class SongController extends Controller
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function widget(Request $request): JsonResponse
     {
         $s = new SongService;
-        $stats = $s->getRandomSongs();
-        if (count($stats) > 0) {
-            return response()->json($stats, 200);
+        $songs = $s->getWidgetSongs($request->query('shuffle') == "1");
+        if (count($songs) > 0) {
+            return response()->json(array_values($songs), 200);
         } else {
             return response()
                 ->json(['message' => 'Fehler beim laden der Kachel Songs.'], 422);

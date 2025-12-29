@@ -21,6 +21,7 @@ defineProps({
         type: Boolean,
         default: false
     },
+    toggleName: String,
     ajaxUrl: String
 });
 </script>
@@ -31,6 +32,7 @@ defineProps({
             v-if="$slots.title && !loading"
             :icon="icon"
             :refresh-button="refreshButton"
+            :toggle-name="toggleName"
             @refresh="$emit('refresh')"
         >
             <slot name="title" />

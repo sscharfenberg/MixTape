@@ -6,6 +6,7 @@ import LoadingSpinner from "Components/Loading/LoadingSpinner.vue";
 import DataTablesCore from "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import DataTable from "datatables.net-vue3";
+import { format } from "date-fns";
 import { push } from "notivue";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -47,6 +48,16 @@ const dataTableOptions = {
         { data: "artist.name", title: "Artist", orderData: [2, 0] },
         { data: "numSongs", title: "Tracks" },
         { data: "discs", title: "CDs" },
+        {
+            data: "modifiedAt",
+            title: "Letzte Änderung",
+            render: (data, type) => {
+                if (type === "display" || type === "filter") {
+                    return format(data, "dd.MM.yyyy HH:mm:ss");
+                }
+                return data; // for all other types
+            }
+        },
         {
             data: "duration",
             title: "Dauer",

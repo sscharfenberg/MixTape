@@ -66,9 +66,9 @@ class ArtistController extends Controller
     public function widget(Request $request): JsonResponse
     {
         $a = new ArtistService;
-        $artists = $a->getRandomArtists();
+        $artists = $a->getWidgetArtists($request->query('shuffle') == "1");
         if (count($artists) > 0) {
-            return response()->json($artists);
+            return response()->json(array_values($artists));
         } else {
             return response()
                 ->json(['message' => 'Fehler beim laden der kachel Künstler.'], 422);

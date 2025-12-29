@@ -224,27 +224,37 @@ class AudiobookService
 
     /**
      * @function get a number of random audiobooks
+     * @param bool $random
      * @return array
      */
-    public function getRandomAudiobooks(): array
+    public function getWidgetAudiobooks(bool $random): array
     {
-        $books = Audiobook::with('tracks')
-            ->inRandomOrder()
-            ->limit(config('collection.stats.audiobooks.random'))
-            ->get()
-            ->map(function (Audiobook $audiobook) {
-                $audiobook->duration = $audiobook->tracks->sum('duration');
-                $audiobook->size = $audiobook->tracks->sum('size');
-                $audiobook->authors = $this->getBookAuthors($audiobook);
-                $audiobook->narrators = $this->getBookNarrators($audiobook);
-                // format audiobook json array
-                return $this->formatAudiobook($audiobook, false, false, true);
-            });
+        $query = Audiobook::with('tracks');
+        if ($random) {
+            $query = $query->inRandomOrder()
+                ->limit(config('collection.stats.audiobooks.random'))
+                ->get();
+        } else {
+            $query = $query->get()
+                ->sortByDesc( function ($book) {
+                    return $book->tracks->sortByDesc('modified_at')->first()->modified_at;
+                })
+                ->take(config('collection.stats.audiobooks.random'));
+        }
+        $books = $query->map(function (Audiobook $audiobook) {
+            $audiobook->duration = $audiobook->tracks->sum('duration');
+            $audiobook->size = $audiobook->tracks->sum('size');
+            $audiobook->authors = $this->getBookAuthors($audiobook);
+            $audiobook->narrators = $this->getBookNarrators($audiobook);
+            // format audiobook json array
+            return $this->formatAudiobook($audiobook, false, false, true);
+        });
         return array_values($books->toArray());
     }
 
     /**
      * @function find audiobooks by provided name
+     * @param string $search
      * @return array
      */
     public function searchAudiobookByName(string $search): array

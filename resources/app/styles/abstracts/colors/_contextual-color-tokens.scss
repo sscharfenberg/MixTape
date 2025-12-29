@@ -226,7 +226,13 @@ $button: (
         "border-hover": light-dark(
                 color.adjust(map.get(c.$grey, "black"), $lightness: 10%),
                 color.adjust(map.get(c.$grey, "white"), $lightness: 10%)
-            )
+            ),
+        "background-active": light-dark(map.get(c.$brand, "christine", "color"), map.get(c.$brand, "viking", "color")),
+        "surface-active": light-dark(
+                map.get(c.$brand, "christine", "contrast"),
+                map.get(c.$brand, "viking", "contrast")
+            ),
+        "border-active": light-dark(map.get(c.$brand, "christine", "contrast"), map.get(c.$brand, "viking", "contrast"))
     ),
     "primary": (
         "background": light-dark(map.get(c.$brand, "christine", "contrast"), map.get(c.$brand, "viking", "contrast")),

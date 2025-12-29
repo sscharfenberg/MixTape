@@ -87,9 +87,9 @@ class AlbumController extends Controller
     public function widget(Request $request): JsonResponse
     {
         $a = new AlbumService;
-        $stats = $a->getRandomAlbums();
-        if (count($stats) > 0) {
-            return response()->json($stats);
+        $albums = $a->getWidgetAlbums($request->query('shuffle') == "1");
+        if (count($albums) > 0) {
+            return response()->json(array_values($albums));
         } else {
             return response()
                 ->json(['message' => 'Fehler beim laden der Kachel Alben.'], 422);
