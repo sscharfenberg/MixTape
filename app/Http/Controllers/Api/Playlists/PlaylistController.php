@@ -178,7 +178,7 @@ class PlaylistController extends Controller
             $playlistId,
             $request->get('encoding'),
             $request->get('type'),
-            $request->get('prefixPath')
+            $request->get('prefixPath') || ""
         );
         return Storage::disk('downloads')->download(
             $download['storageName'],
