@@ -366,12 +366,15 @@ class PlaylistService
      * @param string $playlistId
      * @param string $toEncoding
      * @param string $type
-     * @param string $prefixPath
+     * @param string|null $prefixPath
      * @return array
      */
-    public function exportM3u(string $playlistId, string $toEncoding, string $type, string $prefixPath):array
+    public function exportM3u(string $playlistId, string $toEncoding, string $type, string|null $prefixPath):array
     {
         $playlist = Playlist::findOrFail($playlistId);
+        if (is_null($prefixPath)) {
+            $prefixPath = "";
+        }
         Log::channel('api')->info("Creating playlist M3U download for '$playlist->name' in $type format.");
         $entries = PlaylistEntry::where('playlist_id', $playlistId)
             ->orderByDesc('sort')
