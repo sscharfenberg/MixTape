@@ -18,7 +18,7 @@ defineProps({
             </router-link>
         </li>
         <li v-if="song.album.name" class="details-link highlight" v-tippy="{ content: 'Album' }">
-            <router-link :to="{ name: 'album', params: { id: song.album.id } }">
+            <router-link :to="{ name: 'album', params: { id: song.album.encodedNames } }">
                 <app-icon name="album" />
                 <span v-if="song.album.year">[{{ song.album.year }}]</span>
                 {{ song.album.name }}

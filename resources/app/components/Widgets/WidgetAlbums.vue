@@ -62,7 +62,7 @@ onMounted(() => {
                     v-for="album in data"
                     :key="album.id"
                     class="stats__item stats__item--link"
-                    :to="{ name: 'album', params: { id: album.id } }"
+                    :to="{ name: 'album', params: { id: album.encodedNames } }"
                 >
                     <img v-if="album.thumbnail" class="thumbnail" :src="album.thumbnail" alt="Thumbnail" />
                     <span class="stats__col">

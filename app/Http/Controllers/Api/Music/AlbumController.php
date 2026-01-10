@@ -31,18 +31,18 @@ class AlbumController extends Controller
 
     /**
      * @param Request $request
-     * @param string $id
+     * @param string $names
      * @return JsonResponse
      */
-    public function show(Request $request, string $id): JsonResponse
+    public function show(Request $request, string $names): JsonResponse
     {
         $a = new AlbumService;
-        $album = $a->getAlbumById($id);
+        $album = $a->getAlbumByNames($names);
         if (count($album) > 0) {
             return response()->json($album);
         } else {
             return response()
-                ->json(['message' => 'Es existiert kein Album mit dieser ID.'], 422);
+                ->json(['message' => 'Album konnte nicht gefunden werden.'], 422);
         }
     }
 

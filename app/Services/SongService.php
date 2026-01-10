@@ -44,7 +44,7 @@ class SongService
             'album' => [
                 'id' => $song->album->id,
                 'name' => $song->album->name,
-                'encodedName' => $u->encode($song->album->name),
+                'encodedNames' => $u->encode($song->artist->name)."--".$u->encode($song->album->name),
                 'year' => $song->album->year,
                 'tracks' => $song->album->songs->count(),
                 'discTracks' => $song->album->songs->filter(function ($albumSong) use ($song) {

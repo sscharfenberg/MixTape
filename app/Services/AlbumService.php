@@ -54,7 +54,7 @@ class AlbumService
         $arr = [
             'id' => $album->id,
             'name' => $album->name,
-            'encodedName' => $u->encode($album->name),
+            'encodedNames' => $u->encode($artist->name)."--".$u->encode($album->name),
             'year' => $album->year,
             'artist' => [
                 'id' => $artist->id,
@@ -155,18 +155,27 @@ class AlbumService
 
 
     /**
-     * @function get album by id ^.^
-     * @param string $albumId
+     * @function get album by artist name and album name
+     * @param string $albumPath
      * @return array
      * @throws \Exception
      */
-    public function getAlbumById(string $albumId): array
+    public function getAlbumByNames(string $albumPath): array
     {
-        $album = Album::with('songs')
+        $u = new UrlSafeService;
+        $paths = explode('--', $albumPath);
+        $artistName = $paths[0];
+        $albumName = $paths[1];
+        $artist = Artist::where('name', $u->decode($artistName))
+            ->first();
+        if (!$artist) {
+            return [];
+        }
+        $album = Album::where('name', $u->decode($albumName))
+            ->where('album_artist_id', $artist->id)
+            ->with('songs')
             ->with('artist')
-            ->findOr($albumId, function () {
-                return null;
-            });
+            ->first();
         if ($album) {
             $album->numSongs = $album->songs->count();
             $album->duration = $album->songs->sum('duration');

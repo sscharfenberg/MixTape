@@ -12,10 +12,10 @@
         <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-title" content="Audio.Catalogue" />
         <link rel="manifest" href="/favicons/site.webmanifest" />
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @if (file_exists(public_path('hot')))
             <meta name="hot" content="true" />
             @vite(['resources/app/main.ts'])
-        @elseif(env('APP_ENV') == 'production')
+        @else
             @php
                 $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
             @endphp

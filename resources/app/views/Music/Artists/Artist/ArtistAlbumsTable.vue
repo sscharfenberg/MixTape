@@ -43,7 +43,7 @@ const dataTableOptions = {
         nRow.addEventListener("click", () => {
             router.push({
                 name: "album",
-                params: { id: aData.id }
+                params: { id: aData.encodedNames }
             });
         });
     },

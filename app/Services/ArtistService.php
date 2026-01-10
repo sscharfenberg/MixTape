@@ -37,7 +37,7 @@ class ArtistService
                 return [
                     'id' => $album->id,
                     'name' => $album->name,
-                    'encodedName' => $u->encode($album->name),
+                    'encodedNames' => $u->encode($artist->name)."--".$u->encode($album->name),
                     'numSongs' => $album->songs->count(),
                     'discs' => $album->songs->unique('disc')->count(),
                     'duration' => $album->songs->sum('duration'),
@@ -105,6 +105,7 @@ class ArtistService
      * @function get artist by name and return array for json response
      * @param string $artistName
      * @return array
+     * @throws \Exception
      */
     public function getArtistByName(string $artistName):array
     {

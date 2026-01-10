@@ -66,7 +66,7 @@ Route::prefix('api')->group(function () {
         [\App\Http\Controllers\Api\Music\AlbumController::class, 'list']
     );
     // show a specific album
-    Route::get('/music/albums/{id}',
+    Route::get('/music/albums/{names}',
         [\App\Http\Controllers\Api\Music\AlbumController::class, 'show']
     );
     // download a specific album
