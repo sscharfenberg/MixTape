@@ -303,6 +303,7 @@ class AlbumService
         $json = [];
         $l = new LibraryService;
         $f = new FormatService;
+        $u = new UrlSafeService;
         $segments = explode(" ", $name);
         $album = Album::whereNotNull('id');
         foreach ($segments as $segment) {
@@ -315,11 +316,11 @@ class AlbumService
                 $album->duration = $album->songs->sum('duration');
                 return $album;
             })->sortBy('name')
-            ->each(function ($album) use (&$json, $l, $f) {
+            ->each(function ($album) use (&$json, $l, $f, $u) {
                 $json[] = $l->formatSearchItem(
                     'album',
                     'album',
-                    $album->id,
+                    $u->encode($album->artist->name)."--".$u->encode($album->name),
                     $album->artist->name." - ".$album->name,
                     $f->formatDuration($album->duration),
                     "time"
